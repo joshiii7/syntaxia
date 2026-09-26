@@ -1,7 +1,7 @@
 <script setup>
 /**
  * Four short columns (brand, quick links, lesson categories, connect)
- * above a copyright and license bar. Kept plain text and small type on
+ * above a credits and license bar. Kept plain text and small type on
  * purpose, this is a lightweight footer, not another homepage section.
  *
  * Lesson categories currently lists all five sections that already exist
@@ -70,7 +70,16 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="site-footer__bottom">
-			<p>© {{ year }} Joshi Angelo Z. Adlawan.</p>
+			<div class="site-footer__credits">
+				<p>© {{ year }} Syntaxia</p>
+				<p>
+					Built by
+					<a href="https://joshiii7-portfolio.vercel.app" target="_blank" rel="noopener noreferrer">
+						Joshi Angelo
+						<span class="sr-only">(opens in a new tab)</span>
+					</a>
+				</p>
+			</div>
 			<p class="site-footer__license">
 				Lessons are shared under
 				<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>.
@@ -174,6 +183,20 @@ const year = new Date().getFullYear();
 	margin: 0;
 	font-size: 12px;
 	color: var(--vp-c-text-3);
+}
+
+.site-footer__credits {
+	max-width: 80rem;
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 4px 16px;
+}
+
+.site-footer__bottom a:focus-visible {
+	outline: 2px solid var(--color-brand-500);
+	outline-offset: 2px;
 }
 
 .site-footer__license {
