@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { withBase } from 'vitepress';
 
 const props = defineProps({
 	heading: { type: String, default: 'Ready to start?' },
@@ -8,11 +9,20 @@ const props = defineProps({
 	accentText: { type: String, default: 'start' },
 	subheading: { type: String, default: 'Jump into the first lesson. It takes less than a minute to begin.' },
 	buttonText: { type: String, default: 'Start for free' },
+	// Bare root-relative path: run through withBase() at the template usage
+	// site below, not here, so a caller can still pass an already-external
+	// URL through unaffected (withBase no-ops for those).
 	buttonLink: { type: String, default: '/lessons/ide/introduction' },
 	caption: { type: String, default: 'No signup required' },
 	previewBadge: { type: String, default: 'Lesson 1' },
 	previewTag: { type: String, default: 'Published' },
 	previewCode: { type: String, default: '<h1>Hello, world!</h1>' },
+	// Optional AOS animation (e.g. 'zoom-in-up') for the content only, so the
+	// full-width background stays put while the content animates in, like
+	// portfolio's CTA band. Off by default: a [data-aos] element stays hidden
+	// on any page that never initializes AOS (see useAos.ts), so only a page
+	// that does (the home page) should pass it.
+	contentAos: { type: String, default: null },
 });
 
 // Split on `accentText` instead of accepting HTML/v-html for the heading,
@@ -39,7 +49,7 @@ const checkIcon =
 		<div class="cta-banner__glow" aria-hidden="true"></div>
 		<div class="cta-banner__grid" aria-hidden="true"></div>
 
-		<div class="cta-banner__inner">
+		<div class="cta-banner__inner" :data-aos="contentAos || undefined">
 			<div class="cta-banner__text">
 				<h2 class="cta-banner__heading">{{ headingParts.before }}<span class="cta-banner__accent">{{ headingParts.accent }}</span>{{ headingParts.after }}</h2>
 				<p class="cta-banner__subheading">{{ subheading }}</p>
@@ -67,7 +77,7 @@ const checkIcon =
 			</div>
 
 			<div class="cta-banner__action">
-				<a :href="buttonLink" class="cta-banner__button" :aria-describedby="caption ? 'cta-banner-caption' : undefined">
+				<a :href="withBase(buttonLink)" class="cta-banner__button" :aria-describedby="caption ? 'cta-banner-caption' : undefined">
 					{{ buttonText }} <span aria-hidden="true">&rarr;</span>
 				</a>
 				<span v-if="caption" id="cta-banner-caption" class="cta-banner__caption">{{ caption }}</span>
@@ -144,7 +154,7 @@ const checkIcon =
 	margin: 0 0 12px;
 	border: none;
 	padding: 0;
-	font-size: 32px;
+	font-size: clamp(1.75rem, 4vw, 2.5rem);
 	font-weight: 700;
 	line-height: 1.2;
 	color: var(--cta-text-strong);
@@ -157,7 +167,7 @@ const checkIcon =
 .cta-banner__subheading {
 	margin: 0;
 	max-width: 32ch;
-	font-size: 15px;
+	font-size: clamp(1rem, 2vw, 1.15rem);
 	line-height: 1.6;
 	color: var(--cta-text-muted);
 }
@@ -266,7 +276,7 @@ const checkIcon =
 	background: var(--color-brand-400);
 	color: var(--color-navy-900);
 	font-weight: 700;
-	font-size: 15px;
+	font-size: 1rem;
 	white-space: nowrap;
 	transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -303,10 +313,6 @@ const checkIcon =
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 24px;
-	}
-
-	.cta-banner__heading {
-		font-size: 26px;
 	}
 
 	.cta-banner__subheading {
