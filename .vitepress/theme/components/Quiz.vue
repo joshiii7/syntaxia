@@ -91,7 +91,7 @@ function tryAgain() {
 		</div>
 
 		<p v-if="submitted" role="status" class="quiz__feedback" :class="isCorrect ? 'quiz__feedback--correct' : 'quiz__feedback--incorrect'">
-			<template v-if="isCorrect">Correct!<span v-if="explanation"> {{ explanation }}</span></template>
+			<template v-if="isCorrect">Correct! <span v-if="explanation">{{ explanation }}</span></template>
 			<template v-else>Not quite. Review the lesson above and try again.</template>
 		</p>
 	</fieldset>

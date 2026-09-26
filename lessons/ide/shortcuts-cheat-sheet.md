@@ -41,6 +41,6 @@ This page is a reference, not a lesson to work through top to bottom. It collect
 
 ## A tip for remembering these
 
-Nobody memorizes a list like this by reading it once. The realistic path is to keep this page bookmarked, and reach for the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) whenever you forget one — typing what you want to do (for example "split editor") shows you the shortcut right next to the command, which tends to make it stick after a few real uses.
+Nobody memorizes a list like this by reading it once. The realistic path is to keep this page bookmarked, and reach for the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) whenever you forget one. Typing what you want to do (for example "split editor") shows you the shortcut right next to the command, which tends to make it stick after a few real uses.
 
 That wraps up this IDE section. From here, it is time to put the setup, navigation, and tools from this section to real use, starting with [Introduction to HTML](/lessons/html/introduction).

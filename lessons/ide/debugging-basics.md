@@ -15,7 +15,7 @@ The most basic debugging tool is one you likely already know: printing something
 console.log('user input was:', userInput);
 ```
 
-This works, and plenty of real debugging still happens this way. Its limit shows up once a problem is subtle, buried deep inside a function, or only happens after several steps — adding and removing `console.log` lines by hand becomes slow and messy. That is the gap an IDE's actual debugger closes.
+This works, and plenty of real debugging still happens this way. Its limit shows up once a problem is subtle, buried deep inside a function, or only happens after several steps. Adding and removing `console.log` lines by hand becomes slow and messy. That is the gap an IDE's actual debugger closes.
 
 ## Breakpoints: pausing code mid-run
 
@@ -23,9 +23,9 @@ A **breakpoint** tells the IDE "pause exactly here when this line runs." In VS C
 
 While paused, you can:
 
-- **Inspect variables** — see the exact value of every variable at that exact moment, not just the one you remembered to print.
-- **Step through code** — advance one line at a time, watching values change as each line runs.
-- **Resume** — let the code continue running normally until the next breakpoint, or the end.
+- **Inspect variables.** See the exact value of every variable at that exact moment, not just the one you remembered to print.
+- **Step through code.** Advance one line at a time, watching values change as each line runs.
+- **Resume.** Let the code continue running normally until the next breakpoint, or the end.
 
 This turns "guess what the code is doing" into "watch what the code is actually doing," one step at a time.
 

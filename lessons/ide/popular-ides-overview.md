@@ -7,7 +7,7 @@ description: A tour of real IDEs and code editors developers use today, who made
 
 There is no single IDE that every developer uses. Different ones grew popular for different reasons, often shaped by the language they were originally built for. This lesson introduces several real ones you are likely to hear about, and answers a simple follow-up question: which one do most developers actually reach for?
 
-Each program below links to its own official website, where you can see real, current screenshots of its interface. This book does not reproduce those images directly, since each interface is the copyrighted design of its own company — but the official page is one click away for every one of them.
+Each program below links to its own official website, where you can see real, current screenshots of its interface. This book does not reproduce those images directly, since each interface is the copyrighted design of its own company, but the official page is one click away for every one of them.
 
 ## Visual Studio Code
 

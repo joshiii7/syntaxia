@@ -48,7 +48,7 @@ None of this means a plain text editor is wrong to use. This book's own built-in
 
 <Quiz
 	question="According to this lesson, when does the difference between a plain text editor and an IDE become most noticeable?"
-	:options="['Immediately, on the very first line of code', 'Once a project grows to include several connected files', 'Only when writing JavaScript specifically', 'Never — they are functionally identical']"
+	:options="['Immediately, on the very first line of code', 'Once a project grows to include several connected files', 'Only when writing JavaScript specifically', 'Never (they are functionally identical)']"
 	:answer-index="1"
 	explanation="A single short file barely shows a difference. The gap becomes clear once a project spans multiple files that need to stay organized together."
 />
@@ -66,6 +66,6 @@ None of this means a plain text editor is wrong to use. This book's own built-in
 - IDEs tend to catch mistakes earlier, often as you type, rather than later when you open the page in a browser.
 - An IDE's file explorer keeps multi-file projects (HTML, CSS, JavaScript together) organized in one place.
 - Suggestions while typing can also help you learn a language faster, not just type it faster.
-- Using an IDE is a choice about convenience, not a requirement — this book's own built-in editor is intentionally simpler, so you can focus on the language first.
+- Using an IDE is a choice about convenience, not a requirement. This book's own built-in editor is intentionally simpler, so you can focus on the language first.
 
 The next lesson takes a tour of several real IDEs developers use today, including who built them and why.

@@ -1,63 +1,143 @@
 ---
-title: Forms Part 1
-description: Building a simple form with input fields and labels.
+title: "HTML Forms Basics: form, label, input, button"
+description: "Forms are a conversation between your visitor and your site. Learn form, label, input types, the name attribute, and submit buttons, and why labels matter so much."
 ---
 
-# Forms Part 1
+# Forms: The Basics
 
-A form is how a webpage asks a visitor for information, like their name or email address. Think of a paper form you fill out at a doctor's office, with blank lines to write on, and a label next to each line telling you what to write.
+*Every other element talks at your visitor. A form lets them talk back.*
 
-This lesson covers the first two pieces: input fields and labels. In our editor here, a form will not actually send information anywhere, since that needs a server on the other end. We are only learning what a form looks like and how to build one.
+Think about everything you've built so far. Headings, paragraphs, images, tables. All of it is one-way: the page speaks, the visitor listens.
 
-## The input tag
+Forms change that. A form is a **conversation**. Your site asks a question ("What's your name?"), the visitor answers, and then your site responds. Login screens, search bars, checkout pages, "contact us" boxes, even the like button on a post: all conversations, all built on forms.
 
-An `<input>` tag creates a blank field for typing into. Like `<img>`, it has no closing tag.
+Let's learn to hold one.
 
-```html
-<input type="text">
-```
-
-The `type` attribute controls what kind of field it is. `type="text"` makes a normal typing box. Later in this book, you will see other types, like checkboxes and buttons.
-
-## The label tag
-
-A `<label>` tag is the text that tells a visitor what to type into a field. On its own, an input field is just a blank box. A label gives it meaning.
+## The whole conversation: `<form>`
 
 ```html
-<label for="name">Your Name</label>
-<input type="text" id="name">
+<form action="/subscribe" method="post">
+	<label for="email">Your email address</label>
+	<input type="email" id="email" name="email">
+
+	<button type="submit">Subscribe</button>
+</form>
 ```
 
-Notice two matching pieces here.
+The `<form>` element wraps the whole exchange. Its two main attributes say what happens when the visitor finishes answering:
 
-- The label's `for` attribute.
-- The input's `id` attribute.
+- `action` is **where** the answers get sent, like the address on a reply envelope.
+- `method` is **how** they get sent. `get` puts the answers right in the web address (fine for a search box, since you might want to bookmark the results). `post` tucks them inside the request, out of sight (the right choice for anything private, or anything that changes something, like signing up).
 
-Both are set to the same value, `name` in this example. This connects the label to that exact input. Once connected, clicking the label text also moves your cursor into the matching field, which makes forms much easier to use.
+Where those answers actually go is a server, a program that receives the data and does something with it. That's a story for later in the book, in the backend tracks. For now, we're building the question side of the conversation.
+
+## Asking a question: `<label>` + `<input>`
+
+Every good question has two parts: the question itself, and a place to answer.
+
+- `<label>` is the question: "Your email address."
+- `<input>` is the blank line where the answer goes.
+
+They're connected by matching the label's `for` to the input's `id`. That link is more important than it looks:
+
+1. **Clicking the label focuses the input.** Try it in the preview below. That makes tiny checkboxes and radio buttons far easier to hit, especially on phones.
+2. **Screen readers read the label aloud** when someone lands on the input. Without it, a blind visitor hears "edit text, blank." Edit text for *what*? Their name? Their card number? No idea.
+
+## "Can't I just use a placeholder?"
+
+You'll see this everywhere:
+
+```html
+<!-- Please don't -->
+<input type="email" placeholder="Email address">
+```
+
+It looks clean, so the temptation is real. But a placeholder is a hint, not a label. It vanishes the moment someone starts typing, so if they get distracted halfway through, the question is gone. It's usually pale grey text that's hard to read, and some assistive tools don't treat it as a label at all.
+
+It's like a waiter who asks you a question, then forgets it the moment you open your mouth. Use a real `<label>`. Keep placeholders for small example hints, like `placeholder="name@example.com"`.
+
+## `name`: the label on the answer
+
+When the form is sent, the browser packages up each answer with its `name`:
+
+```
+email=maria@example.com
+```
+
+Without a `name`, an input's answer is simply left out of the package. The visitor typed it, the form looked fine, and the data never arrived. If you ever build a form where one field mysteriously "doesn't send," check for a missing `name` first.
+
+So you've now got three similar-looking attributes. Here's the quick way to keep them straight:
+
+- `id` connects the input to its **label** on the page.
+- `name` labels the **answer** when it's sent away.
+- `for` (on the label) points to the input's `id`.
+
+## Different questions, different inputs
+
+The `type` attribute changes what kind of answer an input expects, and that changes a lot, especially on phones:
+
+```html
+<input type="text">      <!-- anything -->
+<input type="email">     <!-- phone keyboards show an @ key -->
+<input type="password">  <!-- hides what's typed -->
+<input type="tel">       <!-- phones show a number pad -->
+<input type="number">    <!-- up/down arrows for quantities -->
+<input type="url">       <!-- for web addresses -->
+<input type="date">      <!-- a date picker -->
+<input type="search">    <!-- a search box -->
+```
+
+Picking the right type is like handing someone the right tool before they ask. A phone number field that pops up a number pad instead of the full keyboard? That's a small kindness your visitors will feel even if they never notice why.
+
+## Ending the conversation: `<button>`
+
+```html
+<button type="submit">Subscribe</button>
+```
+
+A submit button sends the form off. Always write the `type`, because a `<button>` inside a form defaults to submitting, which surprises people when they add a button meant to do something else, like "Show password."
+
+And make the button text say what will happen. "Subscribe," "Send message," "Create account." Not just "Submit." Would you trust a real person who ended every conversation with "Submit"?
 
 ## Try it
 
+This preview is a sandbox, so pressing the button won't really send anything anywhere. Everything else works.
+
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<form>\n\t<label for=\'first-name\'>First Name</label>\n\t<input type=\'text\' id=\'first-name\'>\n\n\t<label for=\'email\'>Email Address</label>\n\t<input type=\'email\' id=\'email\'>\n</form>'"
+	:initial-html="'<form action=\'/subscribe\' method=\'post\'>\n\t<p>\n\t\t<label for=\'full-name\'>Your name</label><br>\n\t\t<input type=\'text\' id=\'full-name\' name=\'full-name\'>\n\t</p>\n\t<p>\n\t\t<label for=\'email\'>Your email address</label><br>\n\t\t<input type=\'email\' id=\'email\' name=\'email\' placeholder=\'name@example.com\'>\n\t</p>\n\t<p>\n\t\t<label for=\'birthday\'>Birthday (optional)</label><br>\n\t\t<input type=\'date\' id=\'birthday\' name=\'birthday\'>\n\t</p>\n\t<button type=\'submit\'>Subscribe to the newsletter</button>\n</form>'"
+	preview-height="300px"
 />
 
 ## Try it yourself
 
-Add a third label and input pair for a "Last Name" field. Give the label and input matching id and for values, just like the examples above.
+1. Click the words "Your name" in the preview. The cursor jumps into the box. That's the label doing its job.
+2. Change the `for` on the first label to `wrong-id` and click it again. The connection is broken.
+3. Add a phone number question with the right `type`, a `label`, an `id`, and a `name`.
 
 ## Check your understanding
 
 <Quiz
-	question="How does a label connect to a specific input field?"
-	:options="['They must be right next to each other in the code', 'The label needs a name attribute matching the input', 'The label for attribute matches the input id attribute', 'They are automatically connected by the browser']"
-	:answer-index="2"
-	explanation="A label's for attribute must match the input's id attribute exactly. That match is what connects them."
+	question="How do you connect a label to an input?"
+	:options="['Put them next to each other', 'Match the label for attribute to the input id', 'Give them the same class', 'Match the label name to the input name']"
+	:answer-index="1"
+	explanation="The label's for attribute must match the input's id. Then clicking the label focuses the input and screen readers read the label."
 />
 
-## What you learned
+<Quiz
+	question="An input's value never arrives when the form is sent. What is the most likely cause?"
+	:options="['It has no placeholder', 'It has no name attribute', 'It has no class', 'The label is too long']"
+	:answer-index="1"
+	explanation="Only inputs with a name are included in the submitted data."
+/>
 
-- The input tag creates a field for typing into, and has no closing tag.
-- The type attribute controls what kind of field an input is.
-- The label tag describes what a field is for.
-- A label connects to an input by matching the label's for attribute to the input's id attribute.
+<Quiz
+	question="Why is a placeholder not a good replacement for a label?"
+	:options="['It disappears once the visitor starts typing', 'It makes the form submit twice', 'Browsers do not display it', 'It only works on email inputs']"
+	:answer-index="0"
+	explanation="The placeholder vanishes as soon as typing starts, and it is often hard to read and not treated as a label."
+/>
+
+## Up next
+
+A conversation with only text answers gets dull fast. In [More Form Controls](/lessons/html/forms-part-2) you'll add dropdowns, checkboxes, and multiple-choice questions. Labels come back again in [Accessibility Basics](/lessons/html/accessibility-basics), where you'll see just how much they matter. And if the `id` versus `name` versus `for` difference is still blurry, a quick look back at [Attributes](/lessons/html/attributes) might help.

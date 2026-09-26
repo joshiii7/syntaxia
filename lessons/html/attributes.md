@@ -1,90 +1,111 @@
 ---
-title: Attributes
-description: What an HTML attribute is, and a reference list of the most common ones.
+title: "HTML Attributes Explained for Beginners"
+description: "Attributes are the extra details on an HTML tag, like where a link goes or which image to show. Learn how they work, how to write them, and the common ones."
 ---
 
 # Attributes
 
-In earlier lessons, you already saw things like `href="https://example.com"` and `alt="A cat"` sitting inside a tag. This lesson finally explains what those actually are, and gives you a full list to come back to whenever you need it.
+*A tag says what something is. An attribute says which one, where, and how.*
 
-## What is an attribute
+Let's say I hand you a box labeled "Photo." Useful, sure. But which photo? Where is it stored? What's in it, in case you can't see it?
 
-An **attribute** is extra information added inside an opening tag, written as a name and a value, like `name="value"`.
+A tag on its own has the same problem. `<img>` tells the browser "an image goes here," and then just... stops. The browser has no idea which image. That's where **attributes** come in. They're the extra details written on the label.
 
-Think of a tag like a noun. A tag such as `<img>` says "there is a picture here." An attribute is like an adjective describing that picture in more detail, such as which file it comes from, or what it shows.
+## What an attribute looks like
 
-```html
-<img src="cat.jpg" alt="A sleeping cat">
-```
-
-Here, `<img>` is the tag. `src` and `alt` are both attributes, each with their own value in quotes. A tag can have as many attributes as it needs, each separated by a space.
-
-## Attributes do not need a closing tag of their own
-
-Attributes always live inside the opening tag itself. They are never written separately, and they never get their own closing tag. Only the whole element gets a closing tag, if it needs one at all.
+An attribute always lives inside the **opening** tag, and it's written as a name, an equals sign, and a value in quotes:
 
 ```html
-<a href="https://example.com" title="Goes to example.com">Click here</a>
+<img src="sunset.webp" alt="An orange sunset over the sea">
 ```
 
-## Global attributes
+Read it like a shipping label:
 
-A few attributes can be added to almost any tag at all. These are called **global attributes**.
+- `src` ("source") says *where the photo is*: the file `sunset.webp`.
+- `alt` ("alternative text") says *what's in it*, for anyone who can't see the picture.
 
-- **id**: gives one single element a unique name on the page. Think of it like a house's street address. Only one house should ever have that exact address.
-- **class**: gives one or more elements a shared label. Many elements can share the same class, similar to how many players on a team wear the same jersey, marking them as part of the same group.
-- **title**: adds a small tooltip that appears when a visitor hovers their mouse over the element.
-- **style**: adds a bit of styling directly onto one element. It works, but the CSS section later in this book teaches a better way to style a whole page at once, instead of one element at a time.
-- **lang**: tells the browser what human language the content is written in, like `lang="en"` for English.
+You can stack as many attributes as you need, separated by spaces, in any order. The browser doesn't care whether `alt` comes before `src`.
 
-## A reference list of common attributes
+## Some attributes are required for the tag to make sense
 
-Keep this table handy. You do not need to memorize it, just know it is here to check whenever you forget.
+Think of a link without a destination. A doorway that leads nowhere. That's `<a>` without `href`:
 
-| Attribute | Used on | What it does |
-|---|---|---|
-| id | any tag | Gives one element a unique name, for linking or styling it specifically. |
-| class | any tag | Gives one or more elements a shared label, for styling or grouping many at once. |
-| src | img | Points to the file location of a picture. |
-| href | a | Points to the address a link goes to. |
-| alt | img | Describes a picture in words. |
-| title | any tag | Adds a small tooltip shown on hover. |
-| style | any tag | Adds a bit of direct styling. Covered properly in the CSS section. |
-| type | input, button | Sets what kind of input or button it is. |
-| value | input | Sets the starting text or state of a field. |
-| placeholder | input | Shows light gray hint text inside an empty field. |
-| name | input, select | Groups related fields together, especially radio buttons. |
-| for | label | Connects a label to a specific input, matching its id. |
-| checked | checkbox, radio | Makes a checkbox or radio button start out already selected. |
-| disabled | input, button | Grays out a field or button so it cannot be used. |
-| required | input | Marks a field as one that must be filled in before a form can be sent. |
-| target | a | Controls whether a link opens in the same tab or a new one. |
-| width, height | img | Sets the size of a picture. |
-| lang | html | Tells the browser what language the page's text is written in. |
+```html
+<a href="https://example.com">Visit Example</a>
+```
+
+The `href` attribute is the whole point of a link. Same for `src` on an image. These aren't optional flavor. They're the part that makes the element actually work. We'll dig into both in [Links and Navigation](/lessons/html/links) and [Images](/lessons/html/images).
+
+## `id` and `class`: names and team jerseys
+
+Two attributes you'll use constantly work on almost any element:
+
+- **`id`** gives one element a unique name, like a name tag. Only one element on the page should wear a given `id`.
+- **`class`** puts an element on a team, like a jersey. Lots of elements can wear the same class, and one element can wear several, separated by spaces.
+
+```html
+<h1 id="page-title">My Recipes</h1>
+
+<p class="note">Preheat the oven first.</p>
+<p class="note warning">The tray will be hot!</p>
+```
+
+Right now these don't *do* anything visible. So why bother? Because later, CSS and JavaScript will use them to find elements. "Paint every `.warning` red." "When someone clicks, jump to `#page-title`." You're labeling the boxes now so future-you can find them in a hurry.
+
+## Boolean attributes: just being there is enough
+
+A few attributes don't need a value at all. Their presence alone switches something on, like a light switch:
+
+```html
+<input type="checkbox" checked>
+<button disabled>Can't click me</button>
+```
+
+`checked` means "start this box ticked." `disabled` means "grey this out." Writing `disabled="false"` does *not* turn it off, by the way. The switch is flipped simply because the word is there. To turn it off, you remove the attribute entirely. That one surprises a lot of people, so if a button stubbornly stays disabled, look for this.
+
+## A few habits worth building now
+
+- **Always quote your values.** HTML sometimes lets you skip quotes, but a value with a space in it (`alt=A cat`) will break. Quotes every time means no surprises.
+- **Write attribute names in lowercase.** HTML doesn't care about case here, but everyone reading your code will expect lowercase.
+- **Don't repeat an attribute** on the same tag. If you write `class` twice, the browser uses the first one and ignores the second.
 
 ## Try it
 
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<h1 id=\'main-title\' title=\'This is the page title\'>Hello!</h1>\n<p class=\'note\'>Hover over the heading above to see its tooltip.</p>\n<input type=\'text\' placeholder=\'Type your name\'>'"
+	:initial-html="'<h1 id=\'page-title\' title=\'Hover me for a tooltip\'>My Recipes</h1>\n<p class=\'note\'>Preheat the oven first.</p>\n<p>Read more at <a href=\'https://example.com\'>Example Kitchen</a>.</p>\n\n<input type=\'checkbox\' checked> Ingredients ready\n<br>\n<button disabled>Start cooking</button>'"
+	preview-height="220px"
 />
 
 ## Try it yourself
 
-Add a `title` attribute to the paragraph, with your own tooltip text. Hover over it in the preview to see it appear.
+1. Hover over the heading. The `title` attribute shows as a small tooltip.
+2. Remove `checked` from the checkbox and run it again. Then remove `disabled` from the button. Notice how you turn these off by deleting them, not by changing a value.
+3. Give the second paragraph a class of `note warning`, so it's on two teams at once.
 
 ## Check your understanding
 
 <Quiz
-	question="Which attribute gives one specific element a unique name on the page?"
-	:options="['class', 'id', 'title', 'style']"
+	question="Where do attributes go?"
+	:options="['Inside the closing tag', 'Inside the opening tag', 'Between the opening and closing tags', 'In a separate file']"
 	:answer-index="1"
-	explanation="id gives one single element a unique name. class is meant to be shared across many elements."
+	explanation="Attributes always live inside the opening tag, like details written on a label."
 />
 
-## What you learned
+<Quiz
+	question="Which attribute should be unique, used by only one element on the page?"
+	:options="['class', 'id', 'title', 'alt']"
+	:answer-index="1"
+	explanation="An id is like a name tag. A class is like a team jersey that many elements can share."
+/>
 
-- An attribute is extra information added inside an opening tag, written as name equals value.
-- Attributes always live inside the opening tag, and never get their own closing tag.
-- Global attributes like id, class, title, style, and lang can be used on almost any tag.
-- A reference table of common attributes is here whenever you need to look one up again.
+<Quiz
+	question="How do you turn off a disabled button?"
+	:options="['Change it to disabled=false', 'Change it to disabled=no', 'Remove the disabled attribute', 'Add enabled next to it']"
+	:answer-index="2"
+	explanation="Boolean attributes are on whenever they are present, whatever their value. Remove it to turn it off."
+/>
+
+## Up next
+
+You now have the tools to label and describe elements. Next, we fill the body with real content, starting with [Headings and Paragraphs](/lessons/html/headings-and-paragraphs). Later on, once you've seen more elements, we'll come back for the advanced stuff (global attributes and your own custom `data-*` attributes) in [Attributes Deep Dive](/lessons/html/attributes-deep-dive). And if the idea of elements living inside elements still feels shaky, [Nesting and the DOM](/lessons/html/nesting-and-the-dom) is worth a revisit.

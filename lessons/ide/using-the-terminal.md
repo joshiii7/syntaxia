@@ -13,7 +13,7 @@ A terminal is a text-based way to give your computer instructions, by typing com
 
 ## Opening it in VS Code
 
-Press `` Ctrl+` `` (Windows/Linux) or `` Cmd+` `` (Mac) — the backtick key, usually just above Tab. A panel opens at the bottom of the window, already pointed at your current project folder. This is the entire benefit of an *integrated* terminal: it opens already in the right place, with no separate window to manage, and sits right next to the files you are editing.
+Press `` Ctrl+` `` (Windows/Linux) or `` Cmd+` `` (Mac), the backtick key, usually just above Tab. A panel opens at the bottom of the window, already pointed at your current project folder. This is the entire benefit of an *integrated* terminal: it opens already in the right place, with no separate window to manage, and sits right next to the files you are editing.
 
 ## A handful of commands worth knowing
 

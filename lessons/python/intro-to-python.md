@@ -5,9 +5,9 @@ description: Write your first Python variables and a print statement in a dedica
 
 # Intro to Python
 
-Python doesn't need `<html>` scaffolding — you can print a value with a single line: `print("Hello, world!")`.
+Python doesn't need `<html>` scaffolding. You can print a value with a single line: `print("Hello, world!")`.
 
-Use the editor below to practice. It's the same editor component the HTML lesson uses, just switched into Python mode (via CodeMirror's language support) — syntax highlighting only for now.
+Use the editor below to practice. It's the same editor component the HTML lesson uses, just switched into Python mode (via CodeMirror's language support), syntax highlighting only for now.
 
 <CodeEditor
 	language="python"
@@ -17,7 +17,7 @@ Use the editor below to practice. It's the same editor component the HTML lesson
 />
 
 ::: info Running this code
-This scaffold doesn't execute Python yet — see the project README for the client-side (Pyodide) vs. server-side (Judge0/Piston) trade-off and which one this book will adopt.
+This scaffold doesn't execute Python yet. See the project README for the client-side (Pyodide) vs. server-side (Judge0/Piston) trade-off and which one this book will adopt.
 :::
 
 ## Check your understanding
