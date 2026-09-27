@@ -23,7 +23,7 @@ const year = new Date().getFullYear();
 				<p class="site-footer__tagline">Learn to code, one page at a time.</p>
 				<div class="site-footer__social">
 					<a
-						href="https://github.com/Joshiii7"
+						href="https://github.com/joshiii7"
 						class="site-footer__social-link"
 						target="_blank"
 						rel="noopener noreferrer"
@@ -74,13 +74,13 @@ const year = new Date().getFullYear();
 				<ul>
 					<li><a :href="withBase('/lessons/')">All Lessons</a></li>
 					<li>
-						<a href="https://github.com/Joshiii7/syntaxia" target="_blank" rel="noopener noreferrer">
+						<a href="https://github.com/joshiii7/syntaxia" target="_blank" rel="noopener noreferrer">
 							Source Code
 							<span class="sr-only">(opens in a new tab)</span>
 						</a>
 					</li>
 					<li>
-						<a href="https://github.com/Joshiii7/syntaxia/issues" target="_blank" rel="noopener noreferrer">
+						<a href="https://github.com/joshiii7/syntaxia/issues" target="_blank" rel="noopener noreferrer">
 							Report an Issue
 							<span class="sr-only">(opens in a new tab)</span>
 						</a>

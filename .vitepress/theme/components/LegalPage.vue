@@ -20,7 +20,7 @@ defineProps({
 
 // Syntaxia has no contact form or email address, so questions go to the
 // same GitHub issues page the footer's "Report an Issue" link uses.
-const issuesUrl = 'https://github.com/Joshiii7/syntaxia/issues';
+const issuesUrl = 'https://github.com/joshiii7/syntaxia/issues';
 
 useAos();
 </script>

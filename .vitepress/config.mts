@@ -233,7 +233,7 @@ export default defineConfig({
 		},
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/Joshiii7' },
+			{ icon: 'github', link: 'https://github.com/joshiii7' },
 		],
 
 		search: {

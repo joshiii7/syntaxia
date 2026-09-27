@@ -157,7 +157,7 @@ const whoThisIsFor = [
 
 // Syntaxia has no contact page, so the FAQ's "ask a question" links go to
 // the same GitHub issues page SiteFooter.vue's "Report an Issue" uses.
-const issuesUrl = 'https://github.com/Joshiii7/syntaxia/issues';
+const issuesUrl = 'https://github.com/joshiii7/syntaxia/issues';
 
 const faqs = [
 	{

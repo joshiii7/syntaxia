@@ -100,7 +100,7 @@ const githubIcon =
 						right now, I wrote and built by hand, one page at a time.
 					</p>
 					<a
-						href="https://github.com/Joshiii7"
+						href="https://github.com/joshiii7"
 						class="about-creator__link"
 						target="_blank"
 						rel="noopener noreferrer"

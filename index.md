@@ -14,7 +14,7 @@ hero:
       link: /lessons/ide/introduction
     - theme: alt
       text: View on GitHub
-      link: https://github.com/Joshiii7/syntaxia
+      link: https://github.com/joshiii7/syntaxia
 ---
 
 <HomeSections />
