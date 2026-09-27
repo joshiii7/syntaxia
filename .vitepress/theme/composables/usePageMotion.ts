@@ -1,10 +1,12 @@
 /**
- * The home page's GSAP motion, ported from portfolio's MotionService,
- * HomeMotionService and hero component:
+ * The site's GSAP motion, ported from portfolio's MotionService,
+ * HomeMotionService and hero component. Written for the home page and
+ * shared by every other page with a hero band (About, Lessons, the legal
+ * pages); individual lesson pages don't use it.
  *
- * - Hero (VitePress's own VPHero, above HomeSections): the headline reveals
- *   line by line (SplitText), then the tagline and buttons follow. The
- *   background video (HeroVideo.vue) stays put.
+ * - Hero (the home page's VPHero, or a page's own banner, see HeroTargets):
+ *   the headline reveals line by line (SplitText), then the intro and
+ *   buttons follow. The home page's background video stays put.
  *   On desktop with a mouse, the buttons drift toward the pointer and the
  *   copy has a slight scroll parallax.
  * - Sections: `.motion-card` elements rise and fade in batches as they
@@ -117,25 +119,51 @@ function animateSections(motion: Motion, root: HTMLElement): MatchMedia {
 	return mm;
 }
 
-function animateHero(motion: Motion, hero: HTMLElement): MatchMedia | undefined {
+/**
+ * Where a page's hero pieces are. Selectors are looked up inside the hero
+ * element; `intro` may match several elements (an eyebrow and a subtitle),
+ * which then fade in together after the title.
+ */
+export interface HeroTargets {
+	/** The hero band itself, or null if the page has none. */
+	hero: () => HTMLElement | null;
+	title: string;
+	intro: string;
+	/** The block that gets the desktop scroll parallax. */
+	copy: string;
+	buttons?: string;
+	/** Wrappers that drift toward the pointer (usually around `buttons`). */
+	magnets?: string;
+}
+
+/** The home page's hero is VitePress's own VPHero, above HomeSections. */
+export const HOME_HERO: HeroTargets = {
+	hero: () => document.querySelector<HTMLElement>('.VPHero'),
+	title: '.heading',
+	intro: '.tagline',
+	copy: '.main',
+	buttons: '.actions .VPButton',
+	magnets: '.actions .action',
+};
+
+function animateHero(motion: Motion, hero: HTMLElement, targets: HeroTargets): MatchMedia | undefined {
 	const { gsap, SplitText } = motion;
-	const q = (selector: string) => hero.querySelector<HTMLElement>(selector);
-	const title = q('.heading');
-	const intro = q('.tagline');
-	const copy = q('.main');
-	const buttons = gsap.utils.toArray<HTMLElement>('.actions .VPButton', hero);
-	const magnets = gsap.utils.toArray<HTMLElement>('.actions .action', hero);
-	if (!title || !intro || !copy) return undefined;
+	const title = hero.querySelector<HTMLElement>(targets.title);
+	const intro = gsap.utils.toArray<HTMLElement>(targets.intro, hero);
+	const copy = hero.querySelector<HTMLElement>(targets.copy);
+	const buttons = targets.buttons ? gsap.utils.toArray<HTMLElement>(targets.buttons, hero) : [];
+	const magnets = targets.magnets ? gsap.utils.toArray<HTMLElement>(targets.magnets, hero) : [];
+	if (!title || !intro.length || !copy) return undefined;
 
 	const mm = gsap.matchMedia(hero);
 
 	mm.add(MOTION.ok, (context) => {
-		const later = [intro, ...buttons];
+		const later = [...intro, ...buttons];
 
 		// Start hidden right away, before the first paint. Opacity (not
 		// visibility) keeps the links focusable while the entrance runs.
 		gsap.set(title, { opacity: 0 });
-		gsap.set([intro, ...buttons], { opacity: 0, y: 18, transition: 'none' });
+		gsap.set(later, { opacity: 0, y: 18, transition: 'none' });
 
 		let split: InstanceType<typeof SplitText> | undefined;
 		let cancelled = false;
@@ -168,8 +196,8 @@ function animateHero(motion: Motion, hero: HTMLElement): MatchMedia | undefined 
 					// Hand hover (and the buttons' transitions) back to the stylesheet.
 					onComplete: () => void gsap.set(later, { clearProps: 'transform,opacity,transition' }),
 				});
-				timeline.to(intro, { opacity: 1, y: 0, duration: 0.7 }, 0.35);
-				timeline.to(buttons, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 }, 0.5);
+				timeline.to(intro, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 }, 0.35);
+				if (buttons.length) timeline.to(buttons, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 }, 0.5);
 			});
 		});
 
@@ -228,8 +256,12 @@ function animateHero(motion: Motion, hero: HTMLElement): MatchMedia | undefined 
 	return mm;
 }
 
-/** Wires up the hero and every section inside `root` for the page's lifetime. */
-export function useHomeMotion(root: Ref<HTMLElement | null>): void {
+/**
+ * Wires up the page's hero (if `heroTargets` is given) and every section
+ * inside `root` (`.motion-card` and `.heading-accent`) for the page's
+ * lifetime.
+ */
+export function usePageMotion(root: Ref<HTMLElement | null>, heroTargets?: HeroTargets): void {
 	const contexts: MatchMedia[] = [];
 	let unmounted = false;
 
@@ -237,8 +269,8 @@ export function useHomeMotion(root: Ref<HTMLElement | null>): void {
 		const motion = await loadGsap();
 		if (unmounted || !root.value) return;
 
-		const hero = document.querySelector<HTMLElement>('.VPHero');
-		const heroContext = hero ? animateHero(motion, hero) : undefined;
+		const hero = heroTargets?.hero() ?? null;
+		const heroContext = hero && heroTargets ? animateHero(motion, hero, heroTargets) : undefined;
 		if (heroContext) contexts.push(heroContext);
 		contexts.push(animateSections(motion, root.value));
 	});

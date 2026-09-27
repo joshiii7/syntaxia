@@ -15,25 +15,22 @@
  *
  * - Motion, split the same way portfolio splits it: AOS (useAos) fades
  *   headings, intros, buttons and the editor in via `data-aos`, while
- *   GSAP (useHomeMotion) handles the cards (`.motion-card`), the
+ *   GSAP (usePageMotion) handles the cards (`.motion-card`), the
  *   scrambling `.heading-accent` word in each title, and the hero
  *   entrance above this component. Both stay off under reduced motion.
  *
- * - FAQ accordion: portfolio's button+panel accordion, single item open
- *   at a time, with a real height animation (JS measures scrollHeight,
- *   transitions to it, then swaps to `auto` once open) rather than a
- *   plain instant native <details> toggle.
+ * - FAQ accordion: FaqAccordion.vue, shared with the Lessons page.
  */
 import { ref } from 'vue';
 import { withBase } from 'vitepress';
 import { useAos } from '../composables/useAos';
-import { useHomeMotion } from '../composables/useHomeMotion';
-import ScrollProgress from './ScrollProgress.vue';
+import { HOME_HERO, usePageMotion } from '../composables/usePageMotion';
+import FaqAccordion from './FaqAccordion.vue';
 
 const rootEl = ref(null);
 
 useAos();
-useHomeMotion(rootEl);
+usePageMotion(rootEl, HOME_HERO);
 
 // Card structure, glow-on-hover, and colored-per-item styling are ported
 // from ../../../../portfolio's "Languages & Frameworks" tech grid
@@ -190,72 +187,10 @@ const faqs = [
 	},
 ];
 
-// --- FAQ accordion, ported from portfolio/js/main.js's initAccordion ---
-const openFaqIndex = ref(null);
-const faqPanelRefs = ref([]);
-
-function setFaqPanelRef(el, index) {
-	if (el) faqPanelRefs.value[index] = el;
-}
-
-function clearPendingHeightListener(panel) {
-	if (panel._pendingHeightListener) {
-		panel.removeEventListener('transitionend', panel._pendingHeightListener);
-		panel._pendingHeightListener = null;
-	}
-}
-
-// Height can't be transitioned to/from `auto` directly: expand to a
-// measured pixel value, then swap to `auto` once the transition ends, so
-// it stays reflow-safe if the panel's content ever changes size later.
-function expandPanel(panel) {
-	clearPendingHeightListener(panel);
-	panel.style.height = `${panel.scrollHeight}px`;
-	const onEnd = (event) => {
-		if (event.propertyName !== 'height') return;
-		panel.style.height = 'auto';
-		panel.removeEventListener('transitionend', onEnd);
-		panel._pendingHeightListener = null;
-	};
-	panel._pendingHeightListener = onEnd;
-	panel.addEventListener('transitionend', onEnd);
-}
-
-// Pin the current rendered height as a pixel value first, forcing a
-// reflow so the browser registers it, then drop to 0, so the collapse
-// actually animates instead of snapping shut instantly.
-function collapsePanel(panel) {
-	clearPendingHeightListener(panel);
-	panel.style.height = `${panel.scrollHeight}px`;
-	void panel.offsetHeight;
-	panel.style.height = '0px';
-}
-
-function setFaqOpen(index, isOpen) {
-	const panel = faqPanelRefs.value[index];
-	if (!panel) return;
-	if (isOpen) {
-		expandPanel(panel);
-	} else {
-		collapsePanel(panel);
-	}
-}
-
-// Accordion behavior: opening one closes whichever other item was open.
-function toggleFaq(index) {
-	const wasOpen = openFaqIndex.value === index;
-	if (openFaqIndex.value !== null && openFaqIndex.value !== index) {
-		setFaqOpen(openFaqIndex.value, false);
-	}
-	openFaqIndex.value = wasOpen ? null : index;
-	setFaqOpen(index, !wasOpen);
-}
 </script>
 
 <template>
 	<div ref="rootEl">
-		<ScrollProgress />
-
 		<section id="why-syntaxia" class="home-section home-section--surface home-why">
 			<div class="home-section__inner">
 				<h2 class="home-section__title" data-aos="fade-up">Why <span class="heading-accent">Syntaxia</span></h2>
@@ -361,34 +296,7 @@ function toggleFaq(index) {
 					</a>
 				</div>
 
-				<div class="accordion" data-aos="fade-up" data-aos-delay="100">
-					<div v-for="(faq, index) in faqs" :key="faq.question" class="accordion-item">
-						<h3>
-							<button
-								:id="`faq-trigger-${index}`"
-								type="button"
-								class="accordion-trigger"
-								:aria-expanded="openFaqIndex === index"
-								:aria-controls="`faq-panel-${index}`"
-								@click="toggleFaq(index)"
-							>
-								<span>{{ faq.question }}</span>
-								<span class="accordion-icon" aria-hidden="true"></span>
-							</button>
-						</h3>
-						<div
-							:id="`faq-panel-${index}`"
-							class="accordion-panel"
-							:class="{ 'is-open': openFaqIndex === index }"
-							role="region"
-							:aria-labelledby="`faq-trigger-${index}`"
-							:aria-hidden="openFaqIndex !== index"
-							:ref="(el) => setFaqPanelRef(el, index)"
-						>
-							<p>{{ faq.answer }}</p>
-						</div>
-					</div>
-				</div>
+				<FaqAccordion :items="faqs" data-aos="fade-up" data-aos-delay="100" />
 			</div>
 		</section>
 
@@ -423,15 +331,13 @@ function toggleFaq(index) {
 
 .home-section--surface .home-why__card,
 .home-section--surface .home-how__card,
-.home-section--surface .home-who__list li,
-.home-section--surface .accordion-item {
+.home-section--surface .home-who__list li {
 	background: var(--color-surface-card);
 }
 
-/* One word per title in the brand color, e.g. "How it <works>", like
-   portfolio's .heading-accent. useHomeMotion scrambles it into place. */
-.heading-accent {
-	color: var(--vp-c-brand-1);
+/* FaqAccordion.vue reads this for its items. */
+.home-section--surface {
+	--faq-item-bg: var(--color-surface-card);
 }
 
 /*
@@ -452,8 +358,8 @@ function toggleFaq(index) {
 
 .home-section__title {
 	margin: 0 0 32px;
-	font-size: clamp(2rem, 5vw, 3rem);
-	line-height: 1.2;
+	font-size: var(--font-size-section-title);
+	line-height: var(--line-height-heading);
 	font-weight: 700;
 	color: var(--vp-c-text-1);
 	border: none;
@@ -462,8 +368,8 @@ function toggleFaq(index) {
 
 .home-section__subtitle {
 	margin: 0 0 40px;
-	font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-	line-height: 1.6;
+	font-size: var(--font-size-section-lead);
+	line-height: var(--line-height-body);
 	color: var(--vp-c-text-2);
 }
 
@@ -544,13 +450,13 @@ function toggleFaq(index) {
 }
 
 .home-why__card strong {
-	font-size: 1.2rem;
+	font-size: var(--font-size-card-title);
 	color: var(--vp-c-brand-1);
 }
 
 .home-why__card span {
-	font-size: 0.95rem;
-	line-height: 1.6;
+	font-size: var(--font-size-body-sm);
+	line-height: var(--line-height-body);
 	color: var(--vp-c-text-2);
 }
 
@@ -660,7 +566,7 @@ function toggleFaq(index) {
 	background: rgba(255, 255, 255, 0.14);
 	color: rgba(255, 255, 255, 0.85);
 	font-weight: 700;
-	font-size: 9px;
+	font-size: var(--font-size-4xs);
 	letter-spacing: 0.03em;
 	text-transform: uppercase;
 }
@@ -688,14 +594,14 @@ function toggleFaq(index) {
 .skill-card__icon--text {
 	color: #ffffff;
 	font-weight: 800;
-	font-size: 11px;
+	font-size: var(--font-size-3xs);
 	letter-spacing: 0.02em;
 }
 
 .skill-card .content p {
 	margin: 0.5rem 0 0;
 	color: var(--vp-c-text-1);
-	font-size: 0.875rem;
+	font-size: var(--font-size-sm);
 	font-weight: 600;
 	text-align: center;
 	line-height: 1.3;
@@ -719,7 +625,7 @@ function toggleFaq(index) {
 	border-radius: 999px;
 	border: 1px solid var(--vp-c-divider);
 	color: var(--vp-c-text-1);
-	font-size: 1rem;
+	font-size: var(--font-size-body);
 	font-weight: 600;
 	transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
@@ -788,7 +694,7 @@ function toggleFaq(index) {
 	background: var(--color-brand-400);
 	color: var(--color-navy-900);
 	font-weight: 700;
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 	transition: transform 0.25s ease;
 }
 
@@ -798,13 +704,13 @@ function toggleFaq(index) {
 }
 
 .home-how__card strong {
-	font-size: 1.2rem;
+	font-size: var(--font-size-card-title);
 	color: var(--vp-c-text-1);
 }
 
 .home-how__card span {
-	font-size: 0.95rem;
-	line-height: 1.6;
+	font-size: var(--font-size-body-sm);
+	line-height: var(--line-height-body);
 	color: var(--vp-c-text-2);
 }
 
@@ -857,7 +763,7 @@ function toggleFaq(index) {
 	border-radius: 8px;
 	border: 1px solid transparent;
 	background: var(--vp-c-bg-soft);
-	font-size: 0.95rem;
+	font-size: var(--font-size-body-sm);
 	color: var(--vp-c-text-2);
 	transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
@@ -893,7 +799,7 @@ function toggleFaq(index) {
 	height: 16px;
 }
 
-/* FAQ accordion, ported from portfolio's .accordion / .accordion-item */
+/* FAQ section layout. The accordion itself is FaqAccordion.vue. */
 
 /*
  * Side by side from 1024px, like portfolio's FAQ section: the heading, a
@@ -928,8 +834,8 @@ function toggleFaq(index) {
 .home-faq__intro p {
 	margin: 0;
 	color: var(--vp-c-text-2);
-	font-size: 1rem;
-	line-height: 1.7;
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-prose);
 }
 
 .home-faq__intro p + p {
@@ -960,119 +866,5 @@ function toggleFaq(index) {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
-}
-
-.accordion {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-}
-
-.accordion-item {
-	background: var(--vp-c-bg-soft);
-	border: 1px solid var(--vp-c-divider);
-	border-radius: 12px;
-	overflow: hidden;
-}
-
-.accordion-item h3 {
-	margin: 0;
-	padding: 0;
-	border: none;
-	font-size: inherit;
-}
-
-.accordion-trigger {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 16px;
-	background: none;
-	border: none;
-	color: var(--vp-c-text-1);
-	font-weight: 600;
-	font-size: 1rem;
-	text-align: left;
-	padding: 16px 20px;
-	cursor: pointer;
-}
-
-.accordion-trigger:hover {
-	color: var(--vp-c-brand-1);
-}
-
-.accordion-trigger:focus-visible {
-	outline: 2px solid var(--color-brand-500);
-	outline-offset: -2px;
-}
-
-/* Plus-to-minus icon, built from two CSS pseudo-elements rather than an
-   icon font or SVG: a horizontal and vertical bar form a plus sign, and
-   the vertical bar fades out and rotates when the panel is expanded,
-   leaving just the horizontal bar behind as a minus sign. */
-.accordion-icon {
-	position: relative;
-	flex-shrink: 0;
-	width: 16px;
-	height: 16px;
-}
-
-.accordion-icon::before,
-.accordion-icon::after {
-	content: '';
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	background: var(--vp-c-brand-1);
-	transform: translate(-50%, -50%);
-	transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.accordion-icon::before {
-	width: 100%;
-	height: 2px;
-}
-
-.accordion-icon::after {
-	width: 2px;
-	height: 100%;
-}
-
-.accordion-trigger[aria-expanded='true'] .accordion-icon::after {
-	opacity: 0;
-	transform: translate(-50%, -50%) rotate(90deg);
-}
-
-.accordion-panel {
-	height: 0;
-	overflow: hidden;
-	transition: height 0.35s ease;
-}
-
-.accordion-panel.is-open {
-	height: auto;
-}
-
-.accordion-panel p {
-	margin: 0;
-	padding: 0 20px 18px;
-	font-size: 1rem;
-	line-height: 1.6;
-	color: var(--vp-c-text-2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.accordion-panel {
-		/* Not 0/none: a transitionend event still has to fire so the JS step
-		   that swaps height to auto after expanding still runs. */
-		transition-duration: 0.001s;
-	}
-
-	.accordion-icon::before,
-	.accordion-icon::after {
-		transition: none;
-	}
 }
 </style>

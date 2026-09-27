@@ -205,7 +205,7 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 
 /* 1. Section headers — chapter titles (level-1 without .is-link). */
 .lesson-sidebar .VPSidebarItem.level-1:not(.is-link) > .item > .text {
-	font-size: 12px;
+	font-size: var(--font-size-2xs);
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	text-transform: uppercase;

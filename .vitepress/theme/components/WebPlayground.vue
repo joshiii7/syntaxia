@@ -397,7 +397,7 @@ onBeforeUnmount(() => {
 
 .web-playground__pane-title {
 	margin: 0 0 6px;
-	font-size: 13px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;

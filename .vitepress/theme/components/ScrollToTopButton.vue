@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
 }
 
 .scroll-to-top__label {
-	font-size: 11px;
+	font-size: var(--font-size-3xs);
 	font-weight: 500;
 	line-height: 1;
 }

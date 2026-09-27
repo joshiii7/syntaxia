@@ -154,9 +154,9 @@ const checkIcon =
 	margin: 0 0 12px;
 	border: none;
 	padding: 0;
-	font-size: clamp(1.75rem, 4vw, 2.5rem);
+	font-size: var(--font-size-banner-title);
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: var(--line-height-heading);
 	color: var(--cta-text-strong);
 }
 
@@ -167,8 +167,8 @@ const checkIcon =
 .cta-banner__subheading {
 	margin: 0;
 	max-width: 32ch;
-	font-size: clamp(1rem, 2vw, 1.15rem);
-	line-height: 1.6;
+	font-size: var(--font-size-banner-lead);
+	line-height: var(--line-height-body);
 	color: var(--cta-text-muted);
 }
 
@@ -189,7 +189,7 @@ const checkIcon =
 	border-radius: 999px;
 	background: var(--color-brand-400);
 	color: var(--color-navy-900);
-	font-size: 12px;
+	font-size: var(--font-size-2xs);
 	font-weight: 700;
 }
 
@@ -221,8 +221,8 @@ const checkIcon =
 	margin: 0;
 	padding: 16px 14px 20px;
 	font-family: var(--vp-font-family-mono, monospace);
-	font-size: 12px;
-	line-height: 1.6;
+	font-size: var(--font-size-2xs);
+	line-height: var(--line-height-body);
 	color: var(--color-brand-400);
 	white-space: pre-wrap;
 	word-break: break-word;
@@ -240,7 +240,7 @@ const checkIcon =
 	background: var(--vp-c-bg-alt);
 	border: 1px solid color-mix(in srgb, #ffffff 14%, transparent);
 	color: var(--vp-c-text-1);
-	font-size: 11px;
+	font-size: var(--font-size-3xs);
 	font-weight: 600;
 }
 
@@ -276,7 +276,7 @@ const checkIcon =
 	background: var(--color-brand-400);
 	color: var(--color-navy-900);
 	font-weight: 700;
-	font-size: 1rem;
+	font-size: var(--font-size-body);
 	white-space: nowrap;
 	transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -292,7 +292,7 @@ const checkIcon =
 }
 
 .cta-banner__caption {
-	font-size: 13px;
+	font-size: var(--font-size-xs);
 	color: var(--cta-text-subtle);
 }
 

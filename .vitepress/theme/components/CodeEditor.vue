@@ -150,7 +150,7 @@ watch(
 
 .code-editor__host :deep(.cm-editor) {
 	min-height: var(--code-editor-min-height);
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 }
 
 .code-editor__host :deep(.cm-editor.cm-focused) {

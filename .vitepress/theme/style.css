@@ -132,7 +132,57 @@
 	--color-surface-card: #141b2e;
 }
 
-/* The hero's buttons drift toward the pointer on desktop (useHomeMotion.ts);
+/*
+ * Type scale. Every value here is taken from the home page, which is the
+ * reference for sizing across the site; components use these tokens
+ * instead of hardcoded px/rem so other pages can't drift from it again.
+ * Headings and leads are named by role (what they are on a page); the
+ * smaller UI sizes are a plain step scale since they're shared by many
+ * unrelated roles (badges, captions, nav links, footer text).
+ */
+:root {
+	/* Page title: the home hero's h1, and every other page's banner h1. */
+	--font-size-hero-title: clamp(2.25rem, 6vw, 4rem);
+	/* Intro paragraph under a page title. */
+	--font-size-hero-lead: 1.125rem;
+	/* Centered title at the top of a content section. */
+	--font-size-section-title: clamp(2rem, 5vw, 3rem);
+	/* Intro paragraph under a section title. */
+	--font-size-section-lead: clamp(0.95rem, 1.5vw, 1.1rem);
+	/* Closing call-to-action band (CtaBanner.vue). */
+	--font-size-banner-title: clamp(1.75rem, 4vw, 2.5rem);
+	--font-size-banner-lead: clamp(1rem, 2vw, 1.15rem);
+	/* Heading inside a long prose column (Accessibility, Privacy Policy).
+	   The home page has no prose column, so this one isn't copied from it;
+	   it sits between the card title and the section title on purpose. */
+	--font-size-prose-heading: 1.4rem;
+	/* Card or callout heading. */
+	--font-size-card-title: 1.2rem;
+	/* Body copy and buttons. */
+	--font-size-body: 1rem;
+	/* Supporting text inside cards and lists. */
+	--font-size-body-sm: 0.95rem;
+
+	--font-size-sm: 0.875rem;
+	--font-size-xs: 0.8125rem;
+	--font-size-2xs: 0.75rem;
+	--font-size-3xs: 0.6875rem;
+	--font-size-4xs: 0.5625rem;
+
+	--line-height-heading: 1.2;
+	--line-height-body: 1.6;
+	--line-height-prose: 1.7;
+}
+
+/* One word per section title in the brand color, e.g. "How it <works>",
+   like portfolio's .heading-accent. usePageMotion.ts scrambles it into
+   place. Global rather than scoped, since every page with section titles
+   (home, About, Lessons) uses it. */
+.heading-accent {
+	color: var(--vp-c-brand-1);
+}
+
+/* The hero's buttons drift toward the pointer on desktop (usePageMotion.ts);
    clip so motion can never add a horizontal scrollbar, same as portfolio. */
 .VPHome {
 	overflow-x: clip;
@@ -218,13 +268,13 @@
  */
 .VPHero .heading .name,
 .VPHero .heading .text {
-	font-size: clamp(2.25rem, 6vw, 4rem);
-	line-height: 1.2;
+	font-size: var(--font-size-hero-title);
+	line-height: var(--line-height-heading);
 }
 
 .VPHero .main .tagline {
-	font-size: 1.125rem;
-	line-height: 1.6;
+	font-size: var(--font-size-hero-lead);
+	line-height: var(--line-height-body);
 }
 
 /*

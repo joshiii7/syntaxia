@@ -21,8 +21,20 @@
  * per-lesson curriculum breakdown. That second block is gone now that this
  * grid itself covers every track (not just the ready five), which is what
  * it existed to show in the first place.
+ *
+ * Motion is the home page's (see HomeSections.vue): AOS fades the title
+ * and intro in, usePageMotion runs the hero entrance, rises the track
+ * cards in (`.motion-card`) and scrambles each title's `.heading-accent`.
+ *
+ * A short FAQ closes the page, using the home page's accordion
+ * (FaqAccordion.vue) with questions about picking and moving through
+ * tracks.
  */
+import { ref } from 'vue';
 import { withBase } from 'vitepress';
+import { useAos } from '../composables/useAos';
+import { usePageMotion } from '../composables/usePageMotion';
+import FaqAccordion from './FaqAccordion.vue';
 import { curriculum, firstLessonPath } from '../data/curriculum';
 
 // Real brand mark + real brand color for every track, ready or
@@ -148,48 +160,100 @@ const TRACKS = curriculum.map((track) => {
 		monogram: meta ? null : track.title.slice(0, 2).toUpperCase(),
 	};
 });
+
+// Questions about picking a track and moving through lessons. The home
+// page's FAQ covers the "should I start at all" questions, so none of
+// those are repeated here.
+const faqs = [
+	{
+		question: 'Which track should I start with?',
+		answer:
+			'If you are new to coding, start with IDEs, then move on to HTML. The ready tracks are listed in the order they build on each other: IDEs, HTML, CSS, JavaScript, then Python. If you already know the basics, jump straight to the track you need.',
+	},
+	{
+		question: 'Do I have to go through the lessons in order?',
+		answer:
+			'No. You can open any lesson from the sidebar at any time. Lessons inside a track do build on each other, though, so going in order is the easiest way to learn a topic that is new to you.',
+	},
+	{
+		question: "Why can't I click Next Lesson?",
+		answer:
+			'Some lessons end with a quiz or an exercise. The Next Lesson button unlocks once you answer the quiz correctly or finish the exercise, so you know the idea stuck before you build on it. You can still reach any lesson from the sidebar.',
+	},
+	{
+		question: 'What does "Soon" mean on a track?',
+		answer:
+			'That track is planned, but its lessons are not written yet. You can open it now to see a short introduction page, and the full lessons will take its place once they are ready.',
+	},
+	{
+		question: 'What is the difference between a track and a guided path?',
+		answer:
+			'A track teaches one language or tool from start to finish, like HTML or CSS. A guided path is built around a project instead: it picks lessons from several tracks, in order, so you finish with one working thing, like a todo app.',
+		link: { href: '/paths/', text: 'Browse the guided paths' },
+	},
+];
+
+const rootEl = ref(null);
+
+useAos();
+usePageMotion(rootEl, {
+	hero: () => rootEl.value?.querySelector('.lessons-hero') ?? null,
+	title: '.lessons-hero__title',
+	intro: '.lessons-hero__eyebrow, .lessons-hero__subtitle',
+	copy: '.lessons-hero__inner',
+});
 </script>
 
 <template>
-	<section class="lessons-hero">
-		<div class="lessons-hero__glow" aria-hidden="true"></div>
-		<div class="lessons-hero__grid" aria-hidden="true"></div>
+	<div ref="rootEl">
+		<section class="lessons-hero">
+			<div class="lessons-hero__glow" aria-hidden="true"></div>
+			<div class="lessons-hero__grid" aria-hidden="true"></div>
 
-		<div class="lessons-hero__inner">
-			<span class="lessons-hero__eyebrow">Lessons</span>
-			<h1 class="lessons-hero__title">Pick a language, <span class="lessons-hero__accent">start writing code</span></h1>
-			<p class="lessons-hero__subtitle">
-				Five sections are ready today, and every one of them builds on the last, from your first line of HTML
-				to real logic in Python.
-			</p>
-		</div>
-	</section>
+			<div class="lessons-hero__inner">
+				<span class="lessons-hero__eyebrow">Lessons</span>
+				<h1 class="lessons-hero__title">Pick a language, <span class="lessons-hero__accent">start writing code</span></h1>
+				<p class="lessons-hero__subtitle">
+					Five sections are ready today, and every one of them builds on the last, from your first line of HTML
+					to real logic in Python.
+				</p>
+			</div>
+		</section>
 
-	<section class="lessons-path" aria-labelledby="lessons-path-title">
-		<div class="lessons-path__inner">
-			<h2 id="lessons-path-title">Your Learning Path</h2>
-			<p class="lessons-path__subtitle">Start with the five sections ready today. Everything else is on the way.</p>
+		<section class="lessons-path" aria-labelledby="lessons-path-title">
+			<div class="lessons-path__inner">
+				<h2 id="lessons-path-title" data-aos="fade-up">Your Learning <span class="heading-accent">Path</span></h2>
+				<p class="lessons-path__subtitle" data-aos="fade-up" data-aos-delay="100">Start with the five sections ready today. Everything else is on the way.</p>
 
-			<ul class="skills" aria-label="Every language, framework, and tool Syntaxia teaches or plans to teach">
-				<li v-for="item in TRACKS" :key="item.slug" class="skills__item">
-					<a
-						:href="item.href"
-						class="skill-card"
-						:class="{ 'skill-card--soon': item.comingSoon }"
-						:aria-label="item.comingSoon ? `${item.title} (coming soon)` : item.title"
-					>
-						<div class="glow" :style="{ background: item.color }"></div>
-						<div class="content">
-							<span v-if="item.comingSoon" class="skill-card__badge">Soon</span>
-							<span v-if="item.icon" class="skill-card__icon" v-html="item.icon"></span>
-							<span v-else class="skill-card__icon skill-card__icon--text" aria-hidden="true">{{ item.monogram }}</span>
-							<p>{{ item.title }}</p>
-						</div>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</section>
+				<ul class="skills" aria-label="Every language, framework, and tool Syntaxia teaches or plans to teach">
+					<li v-for="item in TRACKS" :key="item.slug" class="skills__item motion-card">
+						<a
+							:href="item.href"
+							class="skill-card"
+							:class="{ 'skill-card--soon': item.comingSoon }"
+							:aria-label="item.comingSoon ? `${item.title} (coming soon)` : item.title"
+						>
+							<div class="glow" :style="{ background: item.color }"></div>
+							<div class="content">
+								<span v-if="item.comingSoon" class="skill-card__badge">Soon</span>
+								<span v-if="item.icon" class="skill-card__icon" v-html="item.icon"></span>
+								<span v-else class="skill-card__icon skill-card__icon--text" aria-hidden="true">{{ item.monogram }}</span>
+								<p>{{ item.title }}</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="lessons-faq" aria-labelledby="lessons-faq-title">
+			<div class="lessons-faq__inner">
+				<h2 id="lessons-faq-title" data-aos="fade-up">Frequently asked <span class="heading-accent">questions</span></h2>
+				<p class="lessons-faq__subtitle" data-aos="fade-up" data-aos-delay="100">About picking a track and moving through the lessons.</p>
+				<FaqAccordion :items="faqs" id-prefix="lessons-faq" data-aos="fade-up" data-aos-delay="100" />
+			</div>
+		</section>
+	</div>
 </template>
 
 <style scoped>
@@ -247,7 +311,7 @@ const TRACKS = curriculum.map((track) => {
 	border: 1px solid color-mix(in srgb, #ffffff 18%, transparent);
 	background: color-mix(in srgb, #ffffff 6%, transparent);
 	color: var(--hero-text-muted);
-	font-size: 13px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	letter-spacing: 0.02em;
 	text-transform: uppercase;
@@ -257,9 +321,9 @@ const TRACKS = curriculum.map((track) => {
 	margin: 20px 0 0;
 	border: none;
 	padding: 0;
-	font-size: 40px;
-	font-weight: 800;
-	line-height: 1.2;
+	font-size: var(--font-size-hero-title);
+	font-weight: 700;
+	line-height: var(--line-height-heading);
 	color: var(--hero-text-strong);
 }
 
@@ -270,18 +334,14 @@ const TRACKS = curriculum.map((track) => {
 .lessons-hero__subtitle {
 	margin: 16px auto 0;
 	max-width: 46ch;
-	font-size: 16px;
-	line-height: 1.6;
+	font-size: var(--font-size-hero-lead);
+	line-height: var(--line-height-body);
 	color: var(--hero-text-muted);
 }
 
 @media (max-width: 640px) {
 	.lessons-hero {
 		padding: 48px 20px;
-	}
-
-	.lessons-hero__title {
-		font-size: 30px;
 	}
 }
 
@@ -297,7 +357,8 @@ const TRACKS = curriculum.map((track) => {
 
 .lessons-path h2 {
 	margin: 0 0 8px;
-	font-size: 28px;
+	font-size: var(--font-size-section-title);
+	line-height: var(--line-height-heading);
 	font-weight: 700;
 	color: var(--vp-c-text-1);
 	text-align: center;
@@ -307,7 +368,8 @@ const TRACKS = curriculum.map((track) => {
 
 .lessons-path__subtitle {
 	margin: 0 0 32px;
-	font-size: 16px;
+	font-size: var(--font-size-section-lead);
+	line-height: var(--line-height-body);
 	color: var(--vp-c-text-2);
 }
 
@@ -423,7 +485,7 @@ const TRACKS = curriculum.map((track) => {
 	background: rgba(255, 255, 255, 0.14);
 	color: rgba(255, 255, 255, 0.85);
 	font-weight: 700;
-	font-size: 9px;
+	font-size: var(--font-size-4xs);
 	letter-spacing: 0.03em;
 	text-transform: uppercase;
 }
@@ -449,26 +511,57 @@ const TRACKS = curriculum.map((track) => {
 .skill-card__icon--text {
 	color: #ffffff;
 	font-weight: 800;
-	font-size: 11px;
+	font-size: var(--font-size-3xs);
 	letter-spacing: 0.02em;
 }
 
 .skill-card .content p {
 	margin: 0.5rem 0 0;
 	color: var(--vp-c-text-1);
-	font-size: 0.875rem;
+	font-size: var(--font-size-sm);
 	font-weight: 600;
 	text-align: center;
 	line-height: 1.3;
 }
 
-@media (max-width: 640px) {
-	.lessons-path {
-		padding: 40px 20px;
-	}
+/* FAQ band: the home page's raised surface (--color-surface), so it reads
+   as its own section after the plain "Your Learning Path" band, with the
+   accordion items switched to the card color to stand apart from it. */
+.lessons-faq {
+	--faq-item-bg: var(--color-surface-card);
 
-	.lessons-path h2 {
-		font-size: 22px;
+	padding: 56px 24px;
+	background: var(--color-surface);
+}
+
+.lessons-faq__inner {
+	max-width: 48rem;
+	margin: 0 auto;
+}
+
+.lessons-faq h2 {
+	margin: 0 0 8px;
+	font-size: var(--font-size-section-title);
+	line-height: var(--line-height-heading);
+	font-weight: 700;
+	color: var(--vp-c-text-1);
+	text-align: center;
+	border: none;
+	padding: 0;
+}
+
+.lessons-faq__subtitle {
+	margin: 0 0 32px;
+	font-size: var(--font-size-section-lead);
+	line-height: var(--line-height-body);
+	color: var(--vp-c-text-2);
+	text-align: center;
+}
+
+@media (max-width: 640px) {
+	.lessons-path,
+	.lessons-faq {
+		padding: 40px 20px;
 	}
 }
 </style>

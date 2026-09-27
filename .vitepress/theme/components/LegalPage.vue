@@ -9,8 +9,13 @@
  * Portfolio's banner puts a photo behind the heading; this site has no
  * photography, so it uses portfolio's plain variant instead: a flat
  * surface band, the same --color-surface the home page's bands use.
+ *
+ * Motion is the home page's (see HomeSections.vue): usePageMotion runs the
+ * hero entrance on the banner, and AOS fades the prose column in.
  */
+import { ref } from 'vue';
 import { useAos } from '../composables/useAos';
+import { usePageMotion } from '../composables/usePageMotion';
 
 defineProps({
 	title: { type: String, required: true },
@@ -22,31 +27,41 @@ defineProps({
 // same GitHub issues page the footer's "Report an Issue" link uses.
 const issuesUrl = 'https://github.com/joshiii7/syntaxia/issues';
 
+const rootEl = ref(null);
+
 useAos();
+usePageMotion(rootEl, {
+	hero: () => rootEl.value?.querySelector('.legal-banner') ?? null,
+	title: 'h1',
+	intro: 'p',
+	copy: '.legal-banner__inner',
+});
 </script>
 
 <template>
-	<section class="legal-banner">
-		<div class="legal-banner__inner">
-			<h1>{{ title }}</h1>
-			<p>{{ text }}</p>
-		</div>
-	</section>
+	<div ref="rootEl">
+		<section class="legal-banner">
+			<div class="legal-banner__inner">
+				<h1>{{ title }}</h1>
+				<p>{{ text }}</p>
+			</div>
+		</section>
 
-	<section class="legal-section">
-		<div class="legal-content" data-aos="fade-up">
-			<p class="legal-updated">Last updated: {{ updated }}</p>
-			<slot />
-			<ul>
-				<li>
-					<a :href="issuesUrl" target="_blank" rel="noopener noreferrer">
-						Open an issue on GitHub
-						<span class="sr-only">(opens in a new tab)</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</section>
+		<section class="legal-section">
+			<div class="legal-content" data-aos="fade-up">
+				<p class="legal-updated">Last updated: {{ updated }}</p>
+				<slot />
+				<ul>
+					<li>
+						<a :href="issuesUrl" target="_blank" rel="noopener noreferrer">
+							Open an issue on GitHub
+							<span class="sr-only">(opens in a new tab)</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</div>
 </template>
 
 <style scoped>
@@ -63,17 +78,17 @@ useAos();
 
 .legal-banner h1 {
 	margin: 0;
-	font-size: clamp(2.25rem, 5vw, 3.25rem);
+	font-size: var(--font-size-hero-title);
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: var(--line-height-heading);
 	color: var(--vp-c-text-1);
 }
 
 .legal-banner p {
 	max-width: 640px;
 	margin: 1rem auto 0;
-	font-size: clamp(1rem, 2vw, 1.15rem);
-	line-height: 1.6;
+	font-size: var(--font-size-hero-lead);
+	line-height: var(--line-height-body);
 	color: var(--vp-c-text-2);
 }
 
@@ -96,7 +111,7 @@ useAos();
 	margin: 2.5rem 0 0;
 	padding: 0;
 	border: none;
-	font-size: 1.4rem;
+	font-size: var(--font-size-prose-heading);
 	line-height: 1.3;
 	color: var(--vp-c-text-1);
 }
@@ -104,8 +119,8 @@ useAos();
 .legal-content :deep(p),
 .legal-content :deep(li) {
 	color: var(--vp-c-text-2);
-	font-size: 1rem;
-	line-height: 1.8;
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-prose);
 }
 
 .legal-content :deep(p) {
@@ -128,7 +143,7 @@ useAos();
 
 .legal-content .legal-updated {
 	margin: 0;
-	font-size: 0.9rem;
+	font-size: var(--font-size-sm);
 	color: var(--vp-c-text-3);
 }
 

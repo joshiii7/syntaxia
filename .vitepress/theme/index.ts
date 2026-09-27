@@ -6,6 +6,7 @@ import Quiz from './components/Quiz.vue';
 import HomeSections from './components/HomeSections.vue';
 import CtaBanner from './components/CtaBanner.vue';
 import HeroVideo from './components/HeroVideo.vue';
+import ScrollProgress from './components/ScrollProgress.vue';
 import ScrollToTopButton from './components/ScrollToTopButton.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import LessonSidebar from './components/LessonSidebar.vue';
@@ -46,7 +47,10 @@ export default {
 
 		// layout-bottom is the default theme's supported slot for content
 		// outside the scrolling doc area: a fixed scroll-to-top button and a
-		// real, always-present page footer both belong here.
+		// real, always-present page footer both belong here. So does the
+		// scroll progress bar, on every page except an individual lesson
+		// (lessons keep their own reading chrome: sidebar, breadcrumb, nav).
+		// It's keyed by path so it remounts, and re-measures, on navigation.
 		//
 		// home-hero-image is the default theme's supported slot for replacing
 		// the hero's image side with arbitrary content (it normally renders
@@ -77,7 +81,11 @@ export default {
 		// body, this is how LessonSidebar/TopicNav/Breadcrumb/LessonNav slot
 		// in without replacing DefaultTheme.Layout wholesale.
 		return h(DefaultTheme.Layout, null, {
-			'layout-bottom': () => [h(SiteFooter), h(ScrollToTopButton)],
+			'layout-bottom': () => [
+				h(SiteFooter),
+				h(ScrollToTopButton),
+				isLessonRoute.value ? null : h(ScrollProgress, { key: route.path }),
+			],
 			'home-hero-image': () => h(HeroVideo),
 			'home-hero-before': () => h(TopicNav),
 			'sidebar-nav-before': () => (isLessonRoute.value ? h(LessonSidebar) : null),
