@@ -1,48 +1,54 @@
 <script setup>
 /**
- * Sticky, site-wide topic-switcher sub-header: a horizontal list of every
- * track (IDEs, HTML, CSS, JavaScript, Python, ...) so a learner can jump to
- * a different language/topic from anywhere on the site, not just from
- * inside a lesson. This is deliberately separate from LessonSidebar.vue,
- * which only ever shows the CURRENT track's own chapters/lessons — TopicNav
- * is the thing that lets you switch tracks at all.
+ * Site-wide topic-switcher sub-header: a horizontal list of every track
+ * (IDEs, HTML, CSS, JavaScript, Python, ...) so a learner can jump to a
+ * different language/topic from anywhere on the site, not just from inside
+ * a lesson. This is deliberately separate from LessonSidebar.vue, which
+ * only ever shows the CURRENT track's own chapters/lessons — TopicNav is
+ * the thing that lets you switch tracks at all.
  *
  * Data-driven from curriculum.ts (the site's single source of truth for
  * tracks/lessons, already used by LessonSidebar/Breadcrumb/LessonNav) — a
  * future topic only needs adding there, no per-page edits, and no layout
  * change here either: new items simply join the horizontal scroll.
  *
- * Placement (see theme/index.ts): the `home-hero-before` slot on the home
- * page, and the `doc-before` slot (before Breadcrumb, which only renders on
- * an actual lesson page) everywhere else — i.e. every page on the site, the
- * same component and markup throughout so it never reads as a different bar
- * from one page to the next.
+ * Part of the site header: on every page it is fixed, full width, right
+ * under the real nav bar (which style.css also fixes at every width), the
+ * same way the home page shows it. Rendered from the `home-hero-before`
+ * slot on the home page and `doc-before` everywhere else (see
+ * theme/index.ts), so it still comes right after the nav in tab order.
+ * `position: fixed` (not sticky) is what lets it span the full viewport
+ * even inside a lesson page's sidebar-narrowed content column.
  *
- * Two positioning modes, both sticking to `top: var(--vp-nav-height)` (the
- * same variable VPContent/VPSidebar already use for this height):
- * - Default (`fixed` false) — `position: sticky`, used on the home page and
- *   the sidebar-less /lessons//paths/ index pages. Those pages' own content
- *   column already spans the full viewport, so sticky-in-normal-flow is
- *   already full width with zero extra CSS.
- * - `fixed` true — `position: fixed`, used only on an actual lesson page.
- *   There, the `doc-before` slot lives inside the sidebar-narrowed content
- *   column, and `position: sticky` can't escape that column's own width —
- *   only `position: fixed` (which ignores its DOM ancestors' width/position
- *   entirely) can span the true full viewport there. Because that takes it
- *   out of normal flow, the sidebar and doc content need to reserve the
- *   same height back — see the `--topic-nav-height` var and the
- *   `.VPSidebar`/`--vp-doc-top-height` rules in style.css, plus the raised
- *   `.VPNav` z-index there so the real header still stacks above this.
+ * Being fixed, it takes no room in the page flow, so the page reserves its
+ * height at the top instead (the .VPContent/.VPSidebar/.VPLocalNav rules in
+ * style.css). That height isn't constant: the topic list scrolls sideways,
+ * and a desktop browser with classic scrollbars adds the scrollbar to it.
+ * So the bar measures itself and publishes the real value as
+ * --topic-nav-height; style.css's 45px (link height + border) is only the
+ * fallback before this runs, which is also the right value on phones.
  */
 import { useData, withBase } from 'vitepress';
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { curriculum, firstLessonPath } from '../data/curriculum';
 
-defineProps({
-	fixed: { type: Boolean, default: false },
+const { page } = useData();
+
+const bar = ref(null);
+let resizeObserver = null;
+
+onMounted(() => {
+	if (!bar.value || typeof ResizeObserver === 'undefined') return;
+	resizeObserver = new ResizeObserver(([entry]) => {
+		const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height;
+		document.documentElement.style.setProperty('--topic-nav-height', `${Math.ceil(height)}px`);
+	});
+	resizeObserver.observe(bar.value);
 });
 
-const { page } = useData();
+onBeforeUnmount(() => {
+	resizeObserver?.disconnect();
+});
 
 // e.g. "lessons/html/introduction.md" -> "html"
 const currentTrackSlug = computed(() => page.value.relativePath.split('/')[1] ?? null);
@@ -61,7 +67,7 @@ const topics = computed(() =>
 </script>
 
 <template>
-	<nav class="topic-nav" :class="{ 'topic-nav--fixed': fixed }" aria-label="Topics">
+	<nav ref="bar" class="topic-nav" aria-label="Topics">
 		<div class="topic-nav__inner">
 			<ul class="topic-nav__list">
 				<li v-for="topic in topics" :key="topic.slug" class="topic-nav__item">
@@ -80,38 +86,22 @@ const topics = computed(() =>
 </template>
 
 <style scoped>
+/* z-index sits above SiteFooter.vue (+1, which covers the sidebar) and
+   below the real nav bar (+3), see the matching --vp-z-index-sidebar-based
+   values in style.css. */
 .topic-nav {
-	/* Sticks right under the real nav bar once scrolled past — same
-	   variable VPContent/VPSidebar already use for this, so it always
-	   tracks the header's actual height with no hardcoded number. */
-	position: sticky;
-	top: var(--vp-nav-height);
-	z-index: 11;
-	margin: 0 0 24px;
-	background: var(--vp-c-bg);
-	border-bottom: 1px solid var(--vp-c-divider);
-}
-
-/* Lesson-page mode: escape the sidebar-narrowed content column entirely
-   (position: sticky can't do this — it's still exactly as wide as it would
-   be in normal flow at its DOM location, only its own Y position "sticks").
-   z-index sits strictly between the sidebar and the real nav bar — see the
-   matching --vp-z-index-sidebar-based values in style.css. */
-.topic-nav.topic-nav--fixed {
 	position: fixed;
 	top: var(--vp-nav-height);
 	left: 0;
 	right: 0;
-	width: 100%;
-	z-index: calc(var(--vp-z-index-sidebar) + 1);
+	z-index: calc(var(--vp-z-index-sidebar) + 2);
+	background: var(--vp-c-bg);
+	border-bottom: 1px solid var(--vp-c-divider);
 }
 
 /* Same full-bleed-bar/centered-content split the nav bar and CtaBanner
-   already use: the background/border-bottom above spans whatever width
-   this component is given (the full viewport on the home page and the
-   sidebar-less /lessons//paths/ index pages; the narrower content column
-   next to the sidebar on an actual lesson page), while the topic list
-   itself never grows past 80rem, matching every other homepage section. */
+   already use: the background and border span the viewport, while the
+   topic list itself never grows past 80rem, matching the header. */
 .topic-nav__inner {
 	max-width: 80rem;
 	margin: 0 auto;
@@ -123,13 +113,22 @@ const topics = computed(() =>
 	margin: 0;
 	padding: 0 2px;
 	list-style: none;
-	/* Horizontal scroll, never wrap — chosen over a dropdown for this few
-	   items (5 tracks today): every topic stays one tap away and visible
-	   as you scroll, rather than hidden behind an extra open/close step. */
+	/* Horizontal scroll, never wrap — chosen over a dropdown: every topic
+	   stays one tap away and visible as you scroll, rather than hidden
+	   behind an extra open/close step. */
 	overflow-x: auto;
 	overflow-y: hidden;
-	scrollbar-width: thin;
 	-webkit-overflow-scrolling: touch;
+}
+
+/* A thin scrollbar: the 4px ::-webkit-scrollbar rules below for Chrome,
+   Edge and Safari, and scrollbar-width only where those aren't supported
+   (Firefox). Setting scrollbar-width everywhere made Chrome ignore the 4px
+   rules and draw a full-size scrollbar. */
+@supports not selector(::-webkit-scrollbar) {
+	.topic-nav__list {
+		scrollbar-width: thin;
+	}
 }
 
 .topic-nav__item {

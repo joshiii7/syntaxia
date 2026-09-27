@@ -17,11 +17,58 @@
  * text blocks in, usePageMotion runs the hero entrance, rises the cards in
  * (`.motion-card`) and scrambles each title's `.heading-accent` word.
  */
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useAos } from '../composables/useAos';
 import { usePageMotion } from '../composables/usePageMotion';
 
 const rootEl = ref(null);
+
+// --- "Hear it" button beside the name's pronunciation ---
+// Browsers read the plain word "Syntaxia" with the stress in the wrong
+// place, so the utterance is the phonetic respelling instead, lowercase
+// (some voices spell out capitalized syllables letter by letter) and a
+// little slower than default so each syllable is clear.
+const PRONUNCIATION_TEXT = 'sin-tack-see-uh';
+
+// Starts false, so the prerendered HTML has no button, and only turns on
+// in a browser that has the Web Speech API. Browsers without it never see
+// the button at all.
+const canSpeak = ref(false);
+const isSpeaking = ref(false);
+let currentUtterance = null;
+
+onMounted(() => {
+	canSpeak.value = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+});
+
+function pronounceName() {
+	if (!canSpeak.value) return;
+	const synth = window.speechSynthesis;
+	// Clicking again while it's talking restarts it instead of queueing.
+	synth.cancel();
+
+	const utterance = new SpeechSynthesisUtterance(PRONUNCIATION_TEXT);
+	utterance.lang = 'en-US';
+	utterance.rate = 0.85;
+	// cancel() fires the previous utterance's error event asynchronously,
+	// possibly after this one has started, so each handler only updates
+	// the button for the utterance that is current.
+	const settle = () => {
+		if (currentUtterance === utterance) isSpeaking.value = false;
+	};
+	utterance.onstart = () => {
+		if (currentUtterance === utterance) isSpeaking.value = true;
+	};
+	utterance.onend = settle;
+	utterance.onerror = settle;
+	currentUtterance = utterance;
+	synth.speak(utterance);
+}
+
+// Don't keep talking after the visitor has navigated to another page.
+onBeforeUnmount(() => {
+	if (canSpeak.value) window.speechSynthesis.cancel();
+});
 
 useAos();
 usePageMotion(rootEl, {
@@ -99,39 +146,66 @@ const features = [
 			<div class="about-section__inner">
 				<h2 id="about-why-title" data-aos="fade-up">Why Syntaxia <span class="heading-accent">exists</span></h2>
 
-				<p data-aos="fade-up">
-					Most people learning to code run into the same wall early on. Tutorials show you code instead of letting you
-					touch it. Documentation assumes you already know what you're looking for. And by the time you've found a
-					decent explanation of one concept, it's scattered across three different sites that don't agree on where to
-					go next.
-				</p>
-				<p data-aos="fade-up">
-					Syntaxia exists to be the version of that experience worth wanting: one place, one consistent format, and a
-					live editor that's always one scroll away instead of a separate tab you have to context-switch into. Every
-					lesson is kept short on purpose, and every quiz exists to catch the moment an idea half-sinks in, before it's
-					assumed to have fully landed. The goal was never to explain a language completely on day one. It was to
-					get you writing real code as early as possible, and let everything else build from there.
-				</p>
+				<div class="about-why">
+					<div class="about-why__text">
+						<p data-aos="fade-up">
+							Most people learning to code run into the same wall early on. Tutorials show you code instead of letting you
+							touch it. Documentation assumes you already know what you're looking for. And by the time you've found a
+							decent explanation of one concept, it's scattered across three different sites that don't agree on where to
+							go next.
+						</p>
+						<p data-aos="fade-up">
+							Syntaxia exists to be the version of that experience worth wanting: one place, one consistent format, and a
+							live editor that's always one scroll away instead of a separate tab you have to context-switch into. Every
+							lesson is kept short on purpose, and every quiz exists to catch the moment an idea half-sinks in, before it's
+							assumed to have fully landed. The goal was never to explain a language completely on day one. It was to
+							get you writing real code as early as possible, and let everything else build from there.
+						</p>
+					</div>
 
-				<div class="about-callout motion-card">
-					<h3>Meaning and Origin of the Name</h3>
-					<p class="about-callout__pronunciation">
-						<strong>Syntaxia</strong>
-						(<span class="about-callout__ipa">/sɪnˈtæksiə/</span>, <span class="about-callout__phonetic">sin-TAK-see-uh</span>)
-					</p>
-					<dl class="about-callout__breakdown">
-						<div class="about-callout__term">
-							<dt>The "Syntax" part</dt>
-							<dd>
-								Refers to syntax, the set of rules that define the structure of a programming language (the
-								core subject this platform teaches).
-							</dd>
-						</div>
-						<div class="about-callout__term">
-							<dt>The "ia" part</dt>
-							<dd>A suffix seen in words like encyclopedia and Wikipedia, suggesting a place or repository of knowledge.</dd>
-						</div>
-					</dl>
+					<div class="about-callout motion-card">
+						<h3>Meaning and Origin of the Name</h3>
+						<p class="about-callout__pronunciation">
+							<strong>Syntaxia</strong>
+							(<span class="about-callout__ipa">/sɪnˈtæksiə/</span>, <span class="about-callout__phonetic">sin-TAK-see-uh</span>)
+							<button
+								v-if="canSpeak"
+								type="button"
+								class="about-callout__speak"
+								:class="{ 'is-speaking': isSpeaking }"
+								aria-label="Pronounce Syntaxia"
+								@click="pronounceName"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+									<path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+									<path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+								</svg>
+							</button>
+						</p>
+						<dl class="about-callout__breakdown">
+							<div class="about-callout__term">
+								<dt>The "Syntax" part</dt>
+								<dd>
+									Refers to syntax, the set of rules that define the structure of a programming language (the
+									core subject this platform teaches).
+								</dd>
+							</div>
+							<div class="about-callout__term">
+								<dt>The "ia" part</dt>
+								<dd>A suffix seen in words like encyclopedia and Wikipedia, suggesting a place or repository of knowledge.</dd>
+							</div>
+						</dl>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -349,9 +423,29 @@ const features = [
 	color: var(--vp-c-text-2);
 }
 
+/* "Why Syntaxia exists": the story on the left and the name callout on the
+   right from 1024px, the same breakpoint and 7:5 split (flipped, since the
+   text is the longer side here) as the home page's FAQ. Stacks below. */
+.about-why {
+	display: grid;
+	gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+	.about-why {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: 4rem;
+		align-items: start;
+	}
+
+	/* The callout column is too narrow for the two terms side by side. */
+	.about-why .about-callout__breakdown {
+		grid-template-columns: 1fr;
+	}
+}
+
 /* Name-origin callout */
 .about-callout {
-	margin-top: 32px;
 	padding: 24px;
 	border-radius: 12px;
 	border: 1px solid var(--vp-c-divider);
@@ -377,7 +471,9 @@ const features = [
 /* Pronunciation line, same "wiki (/ˈwɪki/ WIK-ee)" format Wikipedia uses for
    its own name: IPA in monospace so the symbols stay legible, the plain
    phonetic respelling next to it in italics. */
-.about-callout__pronunciation {
+/* Scoped under .about-callout so it outranks the `.about-callout p` rule,
+   which otherwise zeroes this line's bottom margin. */
+.about-callout .about-callout__pronunciation {
 	margin: 0 0 16px;
 	font-size: var(--font-size-body);
 	color: var(--vp-c-text-2);
@@ -386,6 +482,42 @@ const features = [
 .about-callout__ipa {
 	font-family: var(--vp-font-family-mono, monospace);
 	color: var(--vp-c-text-1);
+}
+
+/* Small inline "hear it" button: just the icon at rest, a soft brand tint on
+   hover/focus and while speaking. The 28px box keeps it an easy tap target
+   while the 16px icon keeps it visually quiet next to the text. */
+.about-callout__speak {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	margin-left: 4px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--vp-c-text-3);
+	vertical-align: middle;
+	cursor: pointer;
+	transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.about-callout__speak svg {
+	width: 16px;
+	height: 16px;
+}
+
+.about-callout__speak:hover,
+.about-callout__speak.is-speaking {
+	color: var(--vp-c-brand-1);
+	background: color-mix(in srgb, var(--color-brand-400) 14%, transparent);
+}
+
+.about-callout__speak:focus-visible {
+	outline: 2px solid var(--color-brand-500);
+	outline-offset: 2px;
 }
 
 .about-callout__phonetic {

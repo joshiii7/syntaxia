@@ -5,11 +5,7 @@
  * "hero + centered 80rem section" pattern so the two pages read as one
  * site), then a "Your Learning Path" grid covering every track in
  * curriculum.ts, real brand mark, real color, and a "Soon" badge for every
- * "comingSoon" track. This grid is also this page's stand-in for
- * the site-wide topic switcher (TopicNav, hidden on this page specifically,
- * see isLessonsIndexRoute in theme/index.ts): it already lists every track
- * TopicNav does, so a second, redundant switcher bar above it would just
- * repeat the same list twice. The glowing skill-card visual treatment is
+ * "comingSoon" track. The glowing skill-card visual treatment is
  * the same one the home page's "What you'll learn" section uses (colors/icons duplicated from
  * HomeSections.vue on purpose: this is a second, differently-framed
  * presentation of the same tracks, not a reusable shared component, so a
@@ -161,6 +157,9 @@ const TRACKS = curriculum.map((track) => {
 	};
 });
 
+// Same GitHub issues page the home page's FAQ and the footer use.
+const issuesUrl = 'https://github.com/joshiii7/syntaxia/issues';
+
 // Questions about picking a track and moving through lessons. The home
 // page's FAQ covers the "should I start at all" questions, so none of
 // those are repeated here.
@@ -247,9 +246,24 @@ usePageMotion(rootEl, {
 		</section>
 
 		<section class="lessons-faq" aria-labelledby="lessons-faq-title">
-			<div class="lessons-faq__inner">
-				<h2 id="lessons-faq-title" data-aos="fade-up">Frequently asked <span class="heading-accent">questions</span></h2>
-				<p class="lessons-faq__subtitle" data-aos="fade-up" data-aos-delay="100">About picking a track and moving through the lessons.</p>
+			<div class="lessons-faq__layout">
+				<div class="lessons-faq__intro" data-aos="fade-up">
+					<h2 id="lessons-faq-title">Frequently asked <span class="heading-accent">questions</span></h2>
+					<p>The things people usually ask once they're picking a track and working through the lessons.</p>
+					<p>
+						Don't see your question here?
+						<a :href="issuesUrl" target="_blank" rel="noopener noreferrer">
+							Ask it on GitHub
+							<span class="sr-only">(opens in a new tab)</span>
+						</a>
+						and it'll get a direct answer.
+					</p>
+					<a :href="issuesUrl" class="lessons-faq__button" target="_blank" rel="noopener noreferrer">
+						Ask a question
+						<span class="sr-only">(opens in a new tab)</span>
+					</a>
+				</div>
+
 				<FaqAccordion :items="faqs" id-prefix="lessons-faq" data-aos="fade-up" data-aos-delay="100" />
 			</div>
 		</section>
@@ -534,28 +548,106 @@ usePageMotion(rootEl, {
 	background: var(--color-surface);
 }
 
-.lessons-faq__inner {
-	max-width: 48rem;
+/*
+ * Side by side from 1024px, same as the home page's FAQ (HomeSections.vue's
+ * .home-faq__layout): the heading, a short intro and an "ask a question"
+ * button on the left, sticky so it stays in view beside the list, and the
+ * questions on the right. Stacks on smaller screens. The sticky offset
+ * clears the fixed header (nav + topic bar), same as the home page.
+ */
+.lessons-faq__layout {
+	display: grid;
+	gap: 2.5rem;
+	max-width: 80rem;
 	margin: 0 auto;
+	text-align: left;
+}
+
+@media (min-width: 1024px) {
+	.lessons-faq__layout {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.lessons-faq__intro {
+		position: sticky;
+		top: calc(var(--vp-nav-height) + var(--topic-nav-height) + 1.5rem);
+	}
 }
 
 .lessons-faq h2 {
-	margin: 0 0 8px;
+	margin: 0 0 1.25rem;
 	font-size: var(--font-size-section-title);
 	line-height: var(--line-height-heading);
 	font-weight: 700;
 	color: var(--vp-c-text-1);
-	text-align: center;
+	text-align: left;
 	border: none;
 	padding: 0;
 }
 
-.lessons-faq__subtitle {
-	margin: 0 0 32px;
-	font-size: var(--font-size-section-lead);
-	line-height: var(--line-height-body);
+.lessons-faq__intro p {
+	margin: 0;
 	color: var(--vp-c-text-2);
-	text-align: center;
+	font-size: var(--font-size-body);
+	line-height: var(--line-height-prose);
+}
+
+.lessons-faq__intro p + p {
+	margin-top: 1rem;
+}
+
+.lessons-faq__intro p a {
+	color: var(--vp-c-brand-1);
+	text-decoration: underline;
+}
+
+.lessons-faq__intro p a:focus-visible {
+	outline: 2px solid var(--color-brand-500);
+	outline-offset: 2px;
+}
+
+/* The home page's .home-showcase__button, duplicated like the rest of this
+   page's home styles. text-decoration is reset because this page renders
+   inside .vp-doc, which underlines every link. */
+.lessons-faq__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 1.5rem;
+	padding: 12px 24px;
+	border-radius: 999px;
+	border: 1px solid var(--vp-c-divider);
+	color: var(--vp-c-text-1);
+	font-size: var(--font-size-body);
+	font-weight: 600;
+	text-decoration: none;
+	transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lessons-faq__button:hover {
+	border-color: var(--color-brand-400);
+	color: var(--color-brand-400);
+	background: color-mix(in srgb, var(--color-brand-400) 8%, transparent);
+	transform: translateY(-1px);
+}
+
+.lessons-faq__button:focus-visible {
+	outline: 2px solid var(--color-brand-500);
+	outline-offset: 2px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 @media (max-width: 640px) {

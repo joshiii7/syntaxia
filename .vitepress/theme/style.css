@@ -43,12 +43,11 @@
 	--vp-sidebar-bg-color: var(--vp-c-bg);
 
 	/*
-	 * Rendered height of TopicNav.vue's bar (44px link height + its own 1px
-	 * border-bottom = 45px). Used to reserve the same space back on a lesson
-	 * page, where TopicNav renders `position: fixed` (see its own component
-	 * comment) and so needs the sidebar/doc content pushed down by hand
-	 * instead of taking up room in normal flow the way it does everywhere
-	 * else on the site.
+	 * Rendered height of TopicNav.vue's bar, which is fixed under the nav on
+	 * every page and so takes no room in the flow; the rules further down
+	 * reserve it back. 45px (44px link height + its 1px border-bottom) is the
+	 * fallback: TopicNav measures its real height once mounted and
+	 * overwrites this, since a classic desktop scrollbar makes it taller.
 	 */
 	--topic-nav-height: 45px;
 
@@ -188,9 +187,10 @@
 	overflow-x: clip;
 }
 
+/* In-page anchor jumps land below the fixed header (nav + topic bar). */
 .vp-doc h1,
 .vp-doc h2 {
-	scroll-margin-top: 4rem;
+	scroll-margin-top: calc(var(--vp-nav-height) + var(--topic-nav-height) + 1rem);
 }
 
 /*
@@ -339,6 +339,37 @@
 	.VPNavBar.has-sidebar .divider {
 		padding-left: 0 !important;
 	}
+
+	/* The default theme draws a divider under the logo on sidebar pages to
+	   line up with its sidebar column; with the unified header that column
+	   is gone, so the line just looked like a stray underline. */
+	.VPNavBarTitle.has-sidebar .title {
+		border-bottom-color: transparent !important;
+	}
+}
+
+/*
+ * One header on every page, at every width, the home page's: the nav bar
+ * with TopicNav.vue's topic bar fixed right under it, always in view.
+ *
+ * Fixed at every width: the default theme only fixes .VPNav from 960px up
+ * and lets it scroll away below that, which left a gap above the (fixed)
+ * topic bar on a phone. The page reserves nav + topic bar height at the top
+ * instead (the .VPContent rule further down).
+ *
+ * Opaque everywhere, with no divider line: the default theme makes the
+ * nav see-through on the home page at the top of the page and draws a
+ * divider under it only on some pages and widths. The topic bar's own
+ * border-bottom is the header's one bottom line on every page.
+ */
+.VPNav {
+	position: fixed !important;
+	background-color: var(--vp-c-bg) !important;
+}
+
+.VPNavBar .divider-line,
+.VPNavBar .divider {
+	background-color: transparent !important;
 }
 
 /*
@@ -351,10 +382,10 @@
  * erases the logo/search/menu-toggle underneath it instead of just
  * covering page content.
  *
- * Fixed by raising the nav above the sidebar specifically (two more than
- * --vp-z-index-sidebar — one more than that leaves room for TopicNav.vue's
- * own fixed-position lesson-page bar, which sits at +1, strictly between
- * the sidebar and the nav — so it tracks whichever value is active at the
+ * Fixed by raising the nav above the sidebar specifically (three more than
+ * --vp-z-index-sidebar: SiteFooter.vue sits at +1 to cover the sidebar,
+ * TopicNav.vue's fixed bar at +2 so the footer never paints over it as it
+ * scrolls under the header, and the nav at +3 above both, so it tracks whichever value is active at the
  * current breakpoint) rather than lowering the sidebar itself — the
  * sidebar's current z-index is also what keeps it above
  * --vp-z-index-backdrop (the dimming layer behind the open mobile drawer);
@@ -365,9 +396,10 @@
  * theme normally paints its opaque surface on a nested `.content-body`
  * element instead, which doesn't span the logo/title area, so the sidebar
  * would still show straight through a "correctly stacked" but see-through
- * nav. Giving `.VPNav` its own opaque background fixes that. Scoped to
- * `:has(.has-sidebar)` (i.e. only on lesson pages) so this never touches
- * the home page's own intentional transparent-nav-over-hero look.
+ * nav. The opaque .VPNav background above covers that.
+ *
+ * The z-index applies on every page, not just lesson pages, since the
+ * topic bar (+1) sits under the nav everywhere now.
  *
  * padding-top on the sidebar is bumped to match so its first item still
  * clears the now-higher header instead of starting underneath it (this
@@ -376,9 +408,29 @@
  * the same reason as elsewhere in this file: the default theme's own
  * rules carry a Vue scoped-style attribute selector.
  */
-.VPNav:has(.has-sidebar) {
-	z-index: calc(var(--vp-z-index-sidebar) + 2) !important;
-	background-color: var(--vp-c-bg) !important;
+.VPNav {
+	z-index: calc(var(--vp-z-index-sidebar) + 3) !important;
+}
+
+/*
+ * The default theme's "Menu / On this page" bar (.VPLocalNav, shown below
+ * 1280px on lesson pages and on doc pages with an outline) sticks at the
+ * top of the screen (under the nav from 960px), which put it underneath
+ * the fixed topic bar; it sticks below both instead. !important for the
+ * same reason as elsewhere in this file: the default theme's own rules
+ * carry a Vue scoped-style attribute selector.
+ */
+.VPLocalNav {
+	top: calc(var(--vp-nav-height) + var(--topic-nav-height)) !important;
+}
+
+/* On a page with no sidebar and no outline (About, Lessons, the legal
+   pages) that bar has nothing in it but a "Return to top" button, which
+   the default theme pins under the header once you scroll (its .fixed
+   class). The home page has no such bar, and ScrollToTopButton.vue already
+   covers returning to the top, so it's hidden to keep one header. */
+.VPLocalNav.fixed {
+	display: none !important;
 }
 
 /*
@@ -427,33 +479,28 @@
 }
 
 /*
- * Doc content column, same reservation as .VPSidebar above. Verified by
- * measuring rects directly: VPDoc.vue's own hardcoded padding-top (48px at
- * 960px+) happens to already exceed --topic-nav-height on its own, so the
- * breadcrumb/doc-before area doesn't currently overlap the fixed TopicNav
- * bar even without this rule — but that's a coincidence of VPDoc's
- * unrelated 48px spacing value, not a deliberate reservation, and would
- * silently break if either number ever changed. This makes the reservation
- * explicit at the .VPContent level instead of relying on it. Scoped to
- * `.has-sidebar` — i.e. only an actual lesson page, where TopicNav renders
- * `position: fixed` and needs this; the sidebar-less /lessons//paths/ doc
- * pages are untouched, since TopicNav there is `position: sticky` in
- * normal flow and already reserves its own space with no help needed.
- * !important for the same reason as elsewhere in this file: the default
- * theme's own rule carries a Vue scoped-style attribute selector.
+ * Every page's content starts below the fixed header, same reservation as
+ * .VPSidebar above. The default theme reserves only the nav's height, and
+ * only from 960px up (below that the nav used to sit in the flow). On the
+ * home page this is also what the hero is built around: VPHero pulls
+ * itself up by the nav height, so it starts right under the topic bar and
+ * the background video (top: var(--vp-nav-height) inside it) lines up with
+ * the bar's bottom edge. !important for the same reason as elsewhere in
+ * this file: the default theme's own rule carries a Vue scoped-style
+ * attribute selector.
  */
-.VPContent.has-sidebar {
+.VPContent {
 	padding-top: calc(var(--vp-nav-height) + var(--topic-nav-height)) !important;
 }
 
 /*
  * The right-hand "On this page" outline aside is a second, independent
  * fixed-position element (see VPDoc.vue's .aside-container) that also
- * needs to clear the fixed TopicNav bar — VitePress exposes exactly this
+ * needs to clear the fixed topic bar — VitePress exposes exactly this
  * extension point for it (`var(--vp-doc-top-height, 0px)`, additive to its
  * own padding-top), so this one gets the real hook instead of an override.
  */
-.VPContent.has-sidebar .VPDoc {
+.VPDoc {
 	--vp-doc-top-height: var(--topic-nav-height);
 }
 
