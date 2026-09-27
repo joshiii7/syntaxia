@@ -172,6 +172,19 @@ export default defineConfig({
 					isPartOf: { '@type': 'WebSite', name: SITE_TITLE, url: `${SITE_URL}/` },
 				}),
 			]);
+		} else if (page === 'accessibility.md' || page === 'privacy.md') {
+			head.push([
+				'script',
+				{ type: 'application/ld+json' },
+				JSON.stringify({
+					'@context': 'https://schema.org',
+					'@type': 'BreadcrumbList',
+					itemListElement: [
+						{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+						{ '@type': 'ListItem', position: 2, name: title, item: url },
+					],
+				}),
+			]);
 		} else if (isLessonsIndex) {
 			head.push([
 				'script',
@@ -196,7 +209,7 @@ export default defineConfig({
 		nav: [
 			{ text: 'Home', link: '/' },
 			{ text: 'Lessons', link: '/lessons/' },
-			{ text: 'Paths', link: '/paths/' },
+			{ text: 'About', link: '/about' },
 		],
 
 		// Real per-track/chapter/lesson navigation is now owned by curriculum.ts
@@ -220,7 +233,7 @@ export default defineConfig({
 		},
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/Joshiii7/syntaxia' },
+			{ icon: 'github', link: 'https://github.com/joshiii7' },
 		],
 
 		search: {

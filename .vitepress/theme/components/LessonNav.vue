@@ -112,7 +112,7 @@ function onNextClick(event) {
 
 .lesson-nav__hint {
 	margin: 4px 0 0;
-	font-size: 13px;
+	font-size: var(--font-size-xs);
 	color: var(--vp-c-text-2);
 }
 </style>

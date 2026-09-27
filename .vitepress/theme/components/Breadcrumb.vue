@@ -71,7 +71,7 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-size: 13px;
+	font-size: var(--font-size-xs);
 	color: var(--vp-c-text-2);
 }
 

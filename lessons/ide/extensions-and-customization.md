@@ -15,13 +15,13 @@ An **extension** is a small add-on that adds a specific feature to your IDE: sup
 
 1. Click the square-icon "Extensions" panel in VS Code's left sidebar, or press `Ctrl+Shift+X` / `Cmd+Shift+X`.
 2. Type the name of what you want in the search box.
-3. Click **Install** on the result from the actual publisher you intend, not just the first result — many extensions share similar names.
+3. Click **Install** on the result from the actual publisher you intend, not just the first result. Many extensions share similar names.
 
 ## A few genuinely useful ones for this book
 
-- **Live Server** — adds a "Go Live" button that opens your HTML file in a browser and automatically refreshes it every time you save, removing the manual "find the file, double-click it again" step from earlier lessons like [Your First HTML File](/lessons/html/your-first-html-file).
-- **Prettier** — automatically reformats your code's spacing and indentation to a consistent style whenever you save, useful once you are writing enough CSS or JavaScript that formatting by hand becomes tedious.
-- **Python** (by Microsoft) — adds the smart suggestions, error checking, and debugging support covered in the [previous lesson](/lessons/ide/debugging-basics), specifically for Python files.
+- **Live Server.** Adds a "Go Live" button that opens your HTML file in a browser and automatically refreshes it every time you save, removing the manual "find the file, double-click it again" step from earlier lessons like [Your First HTML File](/lessons/html/your-first-html-file).
+- **Prettier.** Automatically reformats your code's spacing and indentation to a consistent style whenever you save, useful once you are writing enough CSS or JavaScript that formatting by hand becomes tedious.
+- **Python** (by Microsoft). Adds the smart suggestions, error checking, and debugging support covered in the [previous lesson](/lessons/ide/debugging-basics), specifically for Python files.
 
 None of these are required to follow this book. They are conveniences worth adding once you are comfortable with the basics, not before.
 
@@ -29,13 +29,13 @@ None of these are required to follow this book. They are conveniences worth addi
 
 A few settings are worth knowing about even without installing anything:
 
-- **Color theme** — `Ctrl+K Ctrl+T` (Windows/Linux) or `Cmd+K Cmd+T` (Mac) opens a live preview picker for VS Code's built-in themes, changing the editor's colors without touching your actual code.
-- **Font size** — found in `File > Preferences > Settings` (or `Code > Settings` on Mac), searchable by typing "font size."
-- **Auto save** — `File > Auto Save` toggles saving automatically as you type, instead of remembering to press `Ctrl+S`/`Cmd+S` every time.
+- **Color theme.** `Ctrl+K Ctrl+T` (Windows/Linux) or `Cmd+K Cmd+T` (Mac) opens a live preview picker for VS Code's built-in themes, changing the editor's colors without touching your actual code.
+- **Font size.** Found in `File > Preferences > Settings` (or `Code > Settings` on Mac), searchable by typing "font size."
+- **Auto save.** `File > Auto Save` toggles saving automatically as you type, instead of remembering to press `Ctrl+S`/`Cmd+S` every time.
 
 ## A word of caution
 
-Extensions run code on your computer, written by whoever published them, not by Microsoft. Before installing one, it is worth glancing at how many people have installed it and its rating, both shown right on its listing, and preferring extensions published by a name you recognize (like "Microsoft" for the Python extension above) when one is available. Installing dozens of extensions "just in case" also tends to slow an IDE down over time — a small, deliberate set beats installing everything you come across.
+Extensions run code on your computer, written by whoever published them, not by Microsoft. Before installing one, it is worth glancing at how many people have installed it and its rating, both shown right on its listing, and preferring extensions published by a name you recognize (like "Microsoft" for the Python extension above) when one is available. Installing dozens of extensions "just in case" also tends to slow an IDE down over time. A small, deliberate set beats installing everything you come across.
 
 ## Check your understanding
 

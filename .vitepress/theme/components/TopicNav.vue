@@ -151,7 +151,7 @@ const topics = computed(() =>
 	height: 44px;
 	padding: 0 14px;
 	white-space: nowrap;
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 	font-weight: 500;
 	color: var(--vp-c-text-2);
 	border-bottom: 2px solid transparent;

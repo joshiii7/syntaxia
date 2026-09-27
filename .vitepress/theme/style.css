@@ -116,34 +116,165 @@
 	--vp-c-text-3: #8a93b3;
 }
 
+/*
+ * Home page section bands (HomeSections.vue), handled the way portfolio
+ * does: flat tones that alternate between the page color (--vp-c-bg) and
+ * this raised surface, no gradients. --color-surface-card is what a card
+ * sits on inside a surface band, so it still stands apart from the band.
+ */
+:root {
+	--color-surface: #eef2f7;
+	--color-surface-card: #ffffff;
+}
+
+:root.dark {
+	--color-surface: #111827;
+	--color-surface-card: #141b2e;
+}
+
+/*
+ * Type scale. Every value here is taken from the home page, which is the
+ * reference for sizing across the site; components use these tokens
+ * instead of hardcoded px/rem so other pages can't drift from it again.
+ * Headings and leads are named by role (what they are on a page); the
+ * smaller UI sizes are a plain step scale since they're shared by many
+ * unrelated roles (badges, captions, nav links, footer text).
+ */
+:root {
+	/* Page title: the home hero's h1, and every other page's banner h1. */
+	--font-size-hero-title: clamp(2.25rem, 6vw, 4rem);
+	/* Intro paragraph under a page title. */
+	--font-size-hero-lead: 1.125rem;
+	/* Centered title at the top of a content section. */
+	--font-size-section-title: clamp(2rem, 5vw, 3rem);
+	/* Intro paragraph under a section title. */
+	--font-size-section-lead: clamp(0.95rem, 1.5vw, 1.1rem);
+	/* Closing call-to-action band (CtaBanner.vue). */
+	--font-size-banner-title: clamp(1.75rem, 4vw, 2.5rem);
+	--font-size-banner-lead: clamp(1rem, 2vw, 1.15rem);
+	/* Heading inside a long prose column (Accessibility, Privacy Policy).
+	   The home page has no prose column, so this one isn't copied from it;
+	   it sits between the card title and the section title on purpose. */
+	--font-size-prose-heading: 1.4rem;
+	/* Card or callout heading. */
+	--font-size-card-title: 1.2rem;
+	/* Body copy and buttons. */
+	--font-size-body: 1rem;
+	/* Supporting text inside cards and lists. */
+	--font-size-body-sm: 0.95rem;
+
+	--font-size-sm: 0.875rem;
+	--font-size-xs: 0.8125rem;
+	--font-size-2xs: 0.75rem;
+	--font-size-3xs: 0.6875rem;
+	--font-size-4xs: 0.5625rem;
+
+	--line-height-heading: 1.2;
+	--line-height-body: 1.6;
+	--line-height-prose: 1.7;
+}
+
+/* One word per section title in the brand color, e.g. "How it <works>",
+   like portfolio's .heading-accent. usePageMotion.ts scrambles it into
+   place. Global rather than scoped, since every page with section titles
+   (home, About, Lessons) uses it. */
+.heading-accent {
+	color: var(--vp-c-brand-1);
+}
+
+/* The hero's buttons drift toward the pointer on desktop (usePageMotion.ts);
+   clip so motion can never add a horizontal scrollbar, same as portfolio. */
+.VPHome {
+	overflow-x: clip;
+}
+
 .vp-doc h1,
 .vp-doc h2 {
 	scroll-margin-top: 4rem;
 }
 
 /*
- * Hero layout: puts the rotating cube (home-hero-image slot, see theme
- * index.ts) at the opposite end of the hero from the h1/tagline/actions
- * block, vertically centered against it, per the explicit flex spec asked
- * for. !important is required for the same reason as the sidebar rules
- * below: the default theme's own `.container` rule inside VPHero.vue
- * carries a Vue scoped-style attribute selector, which ties or beats a
- * plain class selector's specificity regardless of stylesheet order.
- *
- * max-width is included here too: the default theme hardcodes the hero's
- * own container at 1152px, unrelated to --vp-layout-max-width, so it never
- * picked up the 80rem (1280px) cap used everywhere else on this page (nav,
- * every home section, footer). This brings it in line with the rest.
+ * Hero layout: the default theme hardcodes the hero's own container at
+ * 1152px, unrelated to --vp-layout-max-width, so it never picked up the
+ * 80rem (1280px) cap used everywhere else on this page (nav, every home
+ * section, footer). This brings it in line with the rest. !important is
+ * required for the same reason as the sidebar rules below: the default
+ * theme's own rules inside VPHero.vue carry a Vue scoped-style attribute
+ * selector, which ties or beats a plain class selector's specificity.
  */
 .VPHero .container {
 	max-width: 80rem !important;
 }
 
-@media (min-width: 960px) {
-	.VPHero .container {
-		justify-content: space-between !important;
-		align-items: center !important;
-	}
+/*
+ * Hero background video (HeroVideo.vue, in the home-hero-image slot). The
+ * slot's .image column is taken out of the flex layout and stretched
+ * behind the whole hero, so the text column keeps the left side and the
+ * video fills everything. It starts below --vp-nav-height, not at the very
+ * top: the hero is pulled up under the see-through nav and the topic bar,
+ * and the nav's dark light-mode text would be unreadable on the video.
+ *
+ * The video is always dark, so inside the hero the text and the "alt"
+ * button switch to light colors in both themes (the same fixed-dark idea
+ * as CtaBanner/.about-hero).
+ */
+.VPHero {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+
+	--vp-c-text-1: #f5f6fa;
+	--vp-c-text-2: #c3c9dd;
+	--vp-home-hero-name-color: var(--color-brand-400);
+	--vp-button-alt-border: rgba(255, 255, 255, 0.25);
+	--vp-button-alt-text: #ffffff;
+	--vp-button-alt-bg: rgba(255, 255, 255, 0.1);
+	--vp-button-alt-hover-border: rgba(255, 255, 255, 0.4);
+	--vp-button-alt-hover-text: #ffffff;
+	--vp-button-alt-hover-bg: rgba(255, 255, 255, 0.18);
+	--vp-button-alt-active-border: rgba(255, 255, 255, 0.4);
+	--vp-button-alt-active-text: #ffffff;
+	--vp-button-alt-active-bg: rgba(255, 255, 255, 0.24);
+}
+
+.VPHero .image {
+	position: absolute !important;
+	top: var(--vp-nav-height) !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	z-index: 0;
+	margin: 0 !important;
+	min-height: 0 !important;
+}
+
+.VPHero .image-container {
+	position: static !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	transform: none !important;
+}
+
+.VPHero .image-bg {
+	display: none !important;
+}
+
+/*
+ * Hero type sizes from portfolio's hero (h1 and intro paragraph), in place
+ * of the default theme's fixed 32/48/56px and 18/20/24px breakpoint steps.
+ * The extra .heading/.main class in each selector outranks VPHero.vue's
+ * scoped rules without needing !important.
+ */
+.VPHero .heading .name,
+.VPHero .heading .text {
+	font-size: var(--font-size-hero-title);
+	line-height: var(--line-height-heading);
+}
+
+.VPHero .main .tagline {
+	font-size: var(--font-size-hero-lead);
+	line-height: var(--line-height-body);
 }
 
 /*
@@ -324,4 +455,33 @@
  */
 .VPContent.has-sidebar .VPDoc {
 	--vp-doc-top-height: var(--topic-nav-height);
+}
+
+/*
+ * Hero-led pages (About, Lessons, Accessibility, Privacy Policy): full-bleed layout, matching the Home page
+ * rather than a docs-style page. VPDoc's own non-sidebar container/content
+ * caps out at 992px (1104px at 1440px+) with side padding baked in,
+ * narrower than the 80rem every other non-lesson surface (nav, home
+ * sections, CtaBanner, footer) uses, and AboutPage.vue/LessonsIndex.vue's
+ * sections already manage their own full-width backgrounds and centered
+ * inner content (see .about-hero__inner/.about-section__inner and
+ * .lessons-hero__inner/.lessons-path__inner there), the same pattern
+ * HomeSections.vue uses for the actual home page. Scoped via :has()
+ * targeting each page's own hero class (present only on that page) rather
+ * than a page-path selector, matching the .VPNav:has(.has-sidebar)
+ * technique above. !important throughout for the same reason as elsewhere
+ * in this file: the default theme's own rules carry a Vue scoped-style
+ * attribute selector.
+ */
+.VPDoc:has(.about-hero, .lessons-hero, .legal-banner) {
+	padding: 0 !important;
+}
+
+.VPDoc:has(.about-hero, .lessons-hero, .legal-banner) .container,
+.VPDoc:has(.about-hero, .lessons-hero, .legal-banner) .content,
+.VPDoc:has(.about-hero, .lessons-hero, .legal-banner) .content-container,
+.VPDoc:has(.about-hero, .lessons-hero, .legal-banner) .vp-doc {
+	max-width: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }

@@ -137,7 +137,7 @@ function onGraded(result) {
 	display: flex;
 	align-items: baseline;
 	gap: 8px;
-	font-size: 14px;
+	font-size: var(--font-size-sm);
 }
 
 .exercise__check--pass {

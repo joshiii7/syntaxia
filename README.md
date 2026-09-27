@@ -37,26 +37,57 @@ syntaxia/
 │   │   ├── debugging-basics.md           # breakpoints, stepping, reading error messages
 │   │   ├── extensions-and-customization.md # what extensions are, a few useful ones, themes/settings
 │   │   └── shortcuts-cheat-sheet.md      # reference page, no quiz — all shortcuts in one place
-│   ├── html/                   # 18-page curriculum, in sidebar/prev-next order:
-│   │   ├── introduction.md               # theory only, no editor
-│   │   ├── your-first-html-file.md       # tags + writing/opening a real .html file
-│   │   ├── attributes.md                 # what an attribute is + reference table
-│   │   ├── basic-structure.md            # html/head/body
-│   │   ├── meta-and-head-tags.md         # meta charset/viewport/description, link
-│   │   ├── headings-and-paragraphs.md
-│   │   ├── text-formatting.md            # bold/italic/underline/line breaks
-│   │   ├── links.md
-│   │   ├── images.md
-│   │   ├── lists.md                      # ordered + unordered
-│   │   ├── tables.md
-│   │   ├── forms-part-1.md               # inputs + labels
-│   │   ├── forms-part-2.md               # buttons/dropdowns/checkboxes/radios
-│   │   ├── divs-and-spans.md
-│   │   ├── semantic-html.md              # header/footer/nav/section/article
-│   │   ├── comments-and-clean-code.md
-│   │   ├── putting-it-all-together.md    # profile-page mini project
-│   │   └── final-quiz.md                 # reviews lessons 2-17, no editor
-│   ├── css/intro-to-css.md     # standalone CSS lesson + playground + quiz
+│   ├── html/                   # 25-page curriculum, in sidebar/prev-next order:
+│   │   ├── introduction.md                 # theory only, no editor
+│   │   ├── your-first-html-file.md         # tags + writing/opening a real .html file
+│   │   ├── basic-structure.md              # doctype/html/head/body, the "letter" analogy
+│   │   ├── nesting-and-the-dom.md          # nesting, DOM family tree, block/inline, whitespace, comments
+│   │   ├── attributes.md                   # attribute basics, id/class, boolean attributes
+│   │   ├── headings-and-paragraphs.md      # h1-h6 outline, p vs br
+│   │   ├── text-formatting.md              # em/strong, quotes, abbr, code/pre, entities
+│   │   ├── lists.md                        # ul/ol/dl, nesting
+│   │   ├── links.md                        # absolute/relative URLs, fragments, mailto/tel, nav
+│   │   ├── images.md                       # alt text, width/height, lazy, srcset, picture
+│   │   ├── audio-and-video.md              # video/audio, source, track, figure/figcaption
+│   │   ├── tables.md                       # accessible data tables, when not to use them
+│   │   ├── forms-part-1.md                 # form, label, input types, name, submit
+│   │   ├── forms-part-2.md                 # radio/checkbox/select/textarea, fieldset/legend
+│   │   ├── form-validation.md              # required/pattern/min/max, hints, server caveat
+│   │   ├── divs-and-spans.md               # generic containers, div soup
+│   │   ├── semantic-html.md                # landmark elements, article vs section vs div
+│   │   ├── attributes-deep-dive.md         # global attributes, data-*
+│   │   ├── accessibility-basics.md         # focus order, skip link, ARIA basics
+│   │   ├── meta-and-head-tags.md           # title/description/viewport/canonical/OG/JSON-LD, SEO
+│   │   ├── iframes-and-embedding.md        # iframe, title, sandbox/allow, srcdoc
+│   │   ├── details-dialog-and-template.md  # details/summary, dialog, template
+│   │   ├── best-practices.md               # habits, anti-patterns, validator, bug hunt
+│   │   ├── html-meets-css-and-js.md        # bridge lesson: link, script defer, hooks
+│   │   └── putting-it-all-together.md      # capstone: graded <Exercise> profile page + self-check
+│   ├── css/                    # 24-page curriculum, in sidebar/prev-next order:
+│   │   ├── intro-to-css.md                       # bridge from HTML, what CSS is, rule anatomy
+│   │   ├── applying-css.md                       # inline vs internal vs external
+│   │   ├── selectors.md                          # type/class/id/attribute, combinators
+│   │   ├── pseudo-classes-and-pseudo-elements.md # :nth-child, :not, :has, ::before/::after
+│   │   ├── cascade-and-specificity.md            # specificity scoring, order, inheritance, !important
+│   │   ├── box-model.md                          # padding/border/margin, border-box, collapsing
+│   │   ├── colors.md                             # named/hex/rgb/hsl, alpha, contrast
+│   │   ├── units.md                              # px/rem/em/%/vw/ch, when to use which
+│   │   ├── typography.md                         # font stacks, web fonts, line-height
+│   │   ├── backgrounds-and-borders.md            # gradients, border-radius, box-shadow, outline
+│   │   ├── display.md                            # block/inline/inline-block, none vs hidden, overflow
+│   │   ├── positioning.md                        # relative/absolute/fixed/sticky, z-index
+│   │   ├── flexbox.md                            # axes, justify-content, align-items, gap
+│   │   ├── flexbox-in-practice.md                # grow/shrink/basis, wrap, nav bar, media object
+│   │   ├── grid.md                               # columns/rows, fr, lines, span
+│   │   ├── grid-in-practice.md                   # template areas, auto-fit + minmax
+│   │   ├── responsive-design.md                  # mobile-first media queries, clamp, preferences
+│   │   ├── css-variables.md                      # custom properties, theming, dark mode
+│   │   ├── interactive-states.md                 # :hover/:focus-visible/:active, form states
+│   │   ├── transitions-and-animations.md         # transitions, @keyframes, reduced motion
+│   │   ├── layout-patterns.md                    # centering, sticky header/footer, card grid
+│   │   ├── best-practices.md                     # organization, naming, anti-patterns, bug hunt
+│   │   ├── css-meets-javascript.md               # bridge lesson: classList, aria state, variables
+│   │   └── capstone.md                           # graded <Exercise> styling the HTML capstone page
 │   ├── javascript/intro-to-javascript.md
 │   └── python/intro-to-python.md
 ├── public/                     # static assets (favicon, etc.)

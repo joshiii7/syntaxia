@@ -5,7 +5,7 @@ description: Make a page respond and change after it loads, using JavaScript to 
 
 # Intro to JavaScript
 
-HTML describes structure and CSS describes appearance, but neither can make a page *do* anything after it loads. **JavaScript** is the language that runs inside the browser and can change the page in response to code — or, eventually, in response to clicks, typing, and other events.
+HTML describes structure and CSS describes appearance, but neither can make a page *do* anything after it loads. **JavaScript** is the language that runs inside the browser and can change the page in response to code (or, eventually, in response to clicks, typing, and other events).
 
 The example below finds an element already on the page (by its `id`) and changes its text:
 
