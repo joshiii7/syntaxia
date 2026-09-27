@@ -56,7 +56,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Fixed 3px bar above VitePress's own nav (--vp-z-index-nav). It starts
+/* Fixed 3px bar above the site header, which style.css raises to
+   --vp-z-index-sidebar + 3 on every page, so this sits one above. It starts
    collapsed (scaleX(0)) and only the transform changes as you scroll. */
 .scroll-progress {
 	position: fixed;
@@ -64,7 +65,7 @@ onBeforeUnmount(() => {
 	left: 0;
 	right: 0;
 	height: 3px;
-	z-index: calc(var(--vp-z-index-nav) + 1);
+	z-index: calc(var(--vp-z-index-sidebar) + 4);
 	background: var(--color-brand-400);
 	transform: scaleX(0);
 	transform-origin: left center;

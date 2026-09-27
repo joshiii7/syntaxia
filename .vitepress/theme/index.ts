@@ -32,19 +32,6 @@ export default {
 		// any base-prefixed deploy.
 		const isLessonRoute = computed(() => route.path.includes('/lessons/') && !route.path.endsWith('/lessons/'));
 
-		// The About and Lessons-index pages are standalone marketing-style
-		// pages (their own hero, their own full-bleed sections, see
-		// AboutPage.vue/LessonsIndex.vue) rather than lesson-adjacent doc
-		// pages, so the topic-switcher bar TopicNav renders everywhere else
-		// on the site doesn't belong on either. Lessons-index doubles as
-		// that switcher now anyway: its "Your Learning Path" grid lists
-		// every track TopicNav does.
-		const isAboutRoute = computed(() => route.path.endsWith('/about'));
-		const isLessonsIndexRoute = computed(() => route.path.endsWith('/lessons/'));
-		// Accessibility and Privacy Policy (LegalPage.vue) get the same
-		// treatment as About: their own title banner, no topic switcher.
-		const isLegalRoute = computed(() => route.path.endsWith('/accessibility') || route.path.endsWith('/privacy'));
-
 		// layout-bottom is the default theme's supported slot for content
 		// outside the scrolling doc area: a fixed scroll-to-top button and a
 		// real, always-present page footer both belong here. So does the
@@ -63,17 +50,12 @@ export default {
 		// thing inside .VPHome, before the hero (full width, since the home
 		// layout has no sidebar to share space with, unlike doc-before below).
 		//
-		// doc-before renders TopicNav on every non-home page except About and
-		// Lessons-index (see isAboutRoute/isLessonsIndexRoute above), with
-		// Breadcrumb added right after it only on an actual lesson page, where
-		// a track/chapter/lesson trail makes sense (/paths/ gets the topic
-		// switcher without a breadcrumb, since it isn't "in" any one
-		// track/lesson). TopicNav gets `fixed: true` only on a lesson page,
-		// since that's the one case where it renders inside the
-		// sidebar-narrowed content column and needs `position: fixed` to
-		// still span the full viewport, see TopicNav.vue's own comment and
-		// the matching style.css rules for why that also means adjusting how
-		// much top space the sidebar/doc content reserve there.
+		// doc-before renders TopicNav on every non-home page, the same bar the
+		// home page renders from home-hero-before: it is part of the site
+		// header, fixed right under the nav (see TopicNav.vue). An actual lesson
+		// page adds Breadcrumb after it, where a track/chapter/lesson trail
+		// makes sense (/paths/ and the other standalone pages aren't "in" any
+		// one track/lesson).
 		//
 		// sidebar-nav-before/doc-before/doc-after are the default theme's
 		// supported extension points around, respectively, its own
@@ -89,12 +71,7 @@ export default {
 			'home-hero-image': () => h(HeroVideo),
 			'home-hero-before': () => h(TopicNav),
 			'sidebar-nav-before': () => (isLessonRoute.value ? h(LessonSidebar) : null),
-			'doc-before': () =>
-				isLessonRoute.value
-					? [h(TopicNav, { fixed: true }), h(Breadcrumb)]
-					: isAboutRoute.value || isLessonsIndexRoute.value || isLegalRoute.value
-						? null
-						: h(TopicNav),
+			'doc-before': () => (isLessonRoute.value ? [h(TopicNav), h(Breadcrumb)] : h(TopicNav)),
 			'doc-after': () => (isLessonRoute.value ? h(LessonNav) : null),
 		});
 	},

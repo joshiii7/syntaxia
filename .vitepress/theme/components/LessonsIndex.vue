@@ -5,11 +5,7 @@
  * "hero + centered 80rem section" pattern so the two pages read as one
  * site), then a "Your Learning Path" grid covering every track in
  * curriculum.ts, real brand mark, real color, and a "Soon" badge for every
- * "comingSoon" track. This grid is also this page's stand-in for
- * the site-wide topic switcher (TopicNav, hidden on this page specifically,
- * see isLessonsIndexRoute in theme/index.ts): it already lists every track
- * TopicNav does, so a second, redundant switcher bar above it would just
- * repeat the same list twice. The glowing skill-card visual treatment is
+ * "comingSoon" track. The glowing skill-card visual treatment is
  * the same one the home page's "What you'll learn" section uses (colors/icons duplicated from
  * HomeSections.vue on purpose: this is a second, differently-framed
  * presentation of the same tracks, not a reusable shared component, so a
@@ -556,8 +552,8 @@ usePageMotion(rootEl, {
  * Side by side from 1024px, same as the home page's FAQ (HomeSections.vue's
  * .home-faq__layout): the heading, a short intro and an "ask a question"
  * button on the left, sticky so it stays in view beside the list, and the
- * questions on the right. Stacks on smaller screens. This page has no
- * TopicNav bar, so the sticky offset only clears the nav.
+ * questions on the right. Stacks on smaller screens. The sticky offset
+ * clears the fixed header (nav + topic bar), same as the home page.
  */
 .lessons-faq__layout {
 	display: grid;
@@ -576,7 +572,7 @@ usePageMotion(rootEl, {
 
 	.lessons-faq__intro {
 		position: sticky;
-		top: calc(var(--vp-nav-height) + 1.5rem);
+		top: calc(var(--vp-nav-height) + var(--topic-nav-height) + 1.5rem);
 	}
 }
 
