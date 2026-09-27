@@ -99,39 +99,43 @@ const features = [
 			<div class="about-section__inner">
 				<h2 id="about-why-title" data-aos="fade-up">Why Syntaxia <span class="heading-accent">exists</span></h2>
 
-				<p data-aos="fade-up">
-					Most people learning to code run into the same wall early on. Tutorials show you code instead of letting you
-					touch it. Documentation assumes you already know what you're looking for. And by the time you've found a
-					decent explanation of one concept, it's scattered across three different sites that don't agree on where to
-					go next.
-				</p>
-				<p data-aos="fade-up">
-					Syntaxia exists to be the version of that experience worth wanting: one place, one consistent format, and a
-					live editor that's always one scroll away instead of a separate tab you have to context-switch into. Every
-					lesson is kept short on purpose, and every quiz exists to catch the moment an idea half-sinks in, before it's
-					assumed to have fully landed. The goal was never to explain a language completely on day one. It was to
-					get you writing real code as early as possible, and let everything else build from there.
-				</p>
+				<div class="about-why">
+					<div class="about-why__text">
+						<p data-aos="fade-up">
+							Most people learning to code run into the same wall early on. Tutorials show you code instead of letting you
+							touch it. Documentation assumes you already know what you're looking for. And by the time you've found a
+							decent explanation of one concept, it's scattered across three different sites that don't agree on where to
+							go next.
+						</p>
+						<p data-aos="fade-up">
+							Syntaxia exists to be the version of that experience worth wanting: one place, one consistent format, and a
+							live editor that's always one scroll away instead of a separate tab you have to context-switch into. Every
+							lesson is kept short on purpose, and every quiz exists to catch the moment an idea half-sinks in, before it's
+							assumed to have fully landed. The goal was never to explain a language completely on day one. It was to
+							get you writing real code as early as possible, and let everything else build from there.
+						</p>
+					</div>
 
-				<div class="about-callout motion-card">
-					<h3>Meaning and Origin of the Name</h3>
-					<p class="about-callout__pronunciation">
-						<strong>Syntaxia</strong>
-						(<span class="about-callout__ipa">/sɪnˈtæksiə/</span>, <span class="about-callout__phonetic">sin-TAK-see-uh</span>)
-					</p>
-					<dl class="about-callout__breakdown">
-						<div class="about-callout__term">
-							<dt>The "Syntax" part</dt>
-							<dd>
-								Refers to syntax, the set of rules that define the structure of a programming language (the
-								core subject this platform teaches).
-							</dd>
-						</div>
-						<div class="about-callout__term">
-							<dt>The "ia" part</dt>
-							<dd>A suffix seen in words like encyclopedia and Wikipedia, suggesting a place or repository of knowledge.</dd>
-						</div>
-					</dl>
+					<div class="about-callout motion-card">
+						<h3>Meaning and Origin of the Name</h3>
+						<p class="about-callout__pronunciation">
+							<strong>Syntaxia</strong>
+							(<span class="about-callout__ipa">/sɪnˈtæksiə/</span>, <span class="about-callout__phonetic">sin-TAK-see-uh</span>)
+						</p>
+						<dl class="about-callout__breakdown">
+							<div class="about-callout__term">
+								<dt>The "Syntax" part</dt>
+								<dd>
+									Refers to syntax, the set of rules that define the structure of a programming language (the
+									core subject this platform teaches).
+								</dd>
+							</div>
+							<div class="about-callout__term">
+								<dt>The "ia" part</dt>
+								<dd>A suffix seen in words like encyclopedia and Wikipedia, suggesting a place or repository of knowledge.</dd>
+							</div>
+						</dl>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -349,9 +353,29 @@ const features = [
 	color: var(--vp-c-text-2);
 }
 
+/* "Why Syntaxia exists": the story on the left and the name callout on the
+   right from 1024px, the same breakpoint and 7:5 split (flipped, since the
+   text is the longer side here) as the home page's FAQ. Stacks below. */
+.about-why {
+	display: grid;
+	gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+	.about-why {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: 4rem;
+		align-items: start;
+	}
+
+	/* The callout column is too narrow for the two terms side by side. */
+	.about-why .about-callout__breakdown {
+		grid-template-columns: 1fr;
+	}
+}
+
 /* Name-origin callout */
 .about-callout {
-	margin-top: 32px;
 	padding: 24px;
 	border-radius: 12px;
 	border: 1px solid var(--vp-c-divider);
