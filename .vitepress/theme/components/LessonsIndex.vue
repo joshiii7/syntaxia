@@ -142,6 +142,13 @@ const TRACK_ICONS = {
 	},
 };
 
+// Tracks that deliberately show a plain, unbranded text badge instead of a
+// brand mark or a title monogram. Oracle Database waits on a check of
+// Oracle's trademark usage terms before any logo (or "OR" monogram) is used.
+const TEXT_BADGES = {
+	'oracle-database': 'DB',
+};
+
 const TRACKS = curriculum.map((track) => {
 	const meta = TRACK_ICONS[track.slug];
 	return {
@@ -153,7 +160,7 @@ const TRACKS = curriculum.map((track) => {
 		// curriculum.ts before a matching entry lands above.
 		color: meta ? meta.color : '#64748b',
 		icon: meta ? meta.icon : null,
-		monogram: meta ? null : track.title.slice(0, 2).toUpperCase(),
+		monogram: meta ? null : TEXT_BADGES[track.slug] ?? track.title.slice(0, 2).toUpperCase(),
 	};
 });
 

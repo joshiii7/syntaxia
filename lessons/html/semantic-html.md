@@ -77,7 +77,7 @@ Bonus: `<time datetime="2026-03-14">` wraps a date so machines can read it relia
 
 That's a really fair question. Delete all the CSS from a semantic page and a div-soup page, and they look identical. So who's the labeling for?
 
-**People using screen readers.** Semantic elements create **landmarks**. A screen reader user can pull up a list, "banner, navigation, main, complementary, content info," and jump straight to the main content, skipping the menu they've already heard fifty times. With div soup, there's nothing to jump to. They listen to the whole page from the top, every single time. We'll build on this in [Accessibility Basics](/lessons/html/accessibility-basics).
+**People using screen readers.** Semantic elements create **landmarks**. A screen reader user can pull up a list, "banner, navigation, main, complementary, contentinfo," and jump straight to the main content, skipping the menu they've already heard fifty times. With div soup, there's nothing to jump to. They listen to the whole page from the top, every single time. We'll build on this in [Accessibility Basics](/lessons/html/accessibility-basics).
 
 **Search engines.** Google reads your page more like a screen reader than like a human with eyes. When the recipe is inside `<main>` and `<article>`, and the "you might also like" is in an `<aside>`, it's much clearer what your page is actually about. That's part of the story in [Meta Tags and SEO](/lessons/html/meta-and-head-tags).
 
@@ -95,7 +95,7 @@ And don't overthink it. Two experienced developers might mark up the same page s
 
 ## Headers and footers inside articles
 
-One more thing that surprises people: `<header>` and `<footer>` aren't only for the top and bottom of the whole page. An article can have its own header (title, author, date) and footer (tags, share links). Think of it as a room with its own doorway and its own light switch by the exit.
+One more thing that surprises people: `<header>` and `<footer>` aren't only for the top and bottom of the whole page. An article can have its own header (title, author, date) and footer (tags, share links). Think of it as a room with its own doorway and its own light switch by the exit. (One detail: a header or footer inside an article belongs to that article, so screen readers don't list it as the whole page's banner or contentinfo landmark.)
 
 ## Try it
 

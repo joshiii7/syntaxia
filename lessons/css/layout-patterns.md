@@ -44,7 +44,7 @@ Web layout works the same way. Once you've built a few sites, you realize you ke
 }
 ```
 
-Or with flexbox, if the parent is already a flex container:
+Or with flexbox:
 
 ```css
 .hero {
@@ -104,7 +104,8 @@ A page with very little content, and the footer floats up into the middle of the
 
 ```css
 body {
-	min-height: 100vh;
+	min-height: 100dvh;
+	margin: 0;
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 }
@@ -112,7 +113,7 @@ body {
 
 Three rows: the header takes what it needs (`auto`), the main area takes all the remaining space (`1fr`), and the footer takes what it needs. The footer can't help but sit at the bottom.
 
-This one assumes `<header>`, `<main>`, and `<footer>` are the body's direct children, which is exactly the structure you built in the HTML track. Semantic HTML makes layout easier. Funny how that keeps happening.
+This one assumes `<header>`, `<main>`, and `<footer>` are the only children of the body that take up rows, which is the structure you built in the HTML track. What about the skip link your HTML final project put first in the body? Hidden with the skip-link pattern from [Display](/lessons/css/display), it's `position: absolute`, and absolutely positioned children don't take a grid row, so the recipe still works. A visible skip link, or any other extra child, would take the first row and push everything down one, so hide it properly first. Semantic HTML makes layout easier. Funny how that keeps happening.
 
 ## Recipe 5: The responsive card grid
 

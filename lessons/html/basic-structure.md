@@ -27,6 +27,7 @@ An HTML document is built the exact same way. Here's the whole skeleton:
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>My First Real Page</title>
 	</head>
 	<body>
@@ -58,9 +59,10 @@ Here's the part that confuses almost everyone at first. The `<head>` is *not* th
 
 The head holds information **about** the page. Like the date and subject line on a letter, it's there for whoever handles the letter, not for the story inside.
 
-In our example the head holds two things:
+In our example the head holds three things:
 
 - `<meta charset="UTF-8">` tells the browser which set of characters to use. UTF-8 covers practically every writing system on Earth, plus emoji. Without it, a word like "café" or "piñata" can come out as garbled symbols.
+- `<meta name="viewport" ...>` makes the page fit phone screens, instead of showing a tiny, zoomed-out desktop version. Every page needs it; there's more in [Meta Tags and SEO](/lessons/html/meta-and-head-tags).
 - `<title>` sets the text in the browser tab and the name used when someone bookmarks your page. Search engines also show it as the clickable headline in their results.
 
 The head can hold much more than this: descriptions for search engines, links to style sheets, icons. We have a whole lesson on it later, [Meta Tags and SEO](/lessons/html/meta-and-head-tags), once you've got more tools in your belt.
@@ -83,13 +85,13 @@ The preview below is already wrapped in its own page by the editor, so the `<tit
 
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<!DOCTYPE html>\n<html lang=\'en\'>\n\t<head>\n\t\t<meta charset=\'UTF-8\'>\n\t\t<title>My First Real Page</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello!</h1>\n\t\t<p>This is the part people actually see. Try a word like café or piñata.</p>\n\t</body>\n</html>'"
+	:initial-html="'<!DOCTYPE html>\n<html lang=\'en\'>\n\t<head>\n\t\t<meta charset=\'UTF-8\'>\n\t\t<meta name=\'viewport\' content=\'width=device-width, initial-scale=1\'>\n\t\t<title>My First Real Page</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello!</h1>\n\t\t<p>This is the part people actually see. Try a word like café or piñata.</p>\n\t</body>\n</html>'"
 	preview-height="220px"
 />
 
 ## Try it yourself
 
-1. Move the `<h1>` so it sits inside the `<head>` instead of the `<body>`. Press **Run**. What happens? (Browsers will often rescue you by moving it into the body, which is exactly the kind of guessing we want to avoid relying on.)
+1. Delete the closing `</p>` tag and press **Run**. The paragraph still shows up fine, because the browser quietly closes it for you. That's exactly the kind of guessing we don't want to rely on. Put it back.
 2. Put it back, then add a second paragraph to the body that says what you had for breakfast.
 
 ## Check your understanding

@@ -3,7 +3,7 @@ title: "HTML Tables, and When Not to Use Them"
 description: "Build accessible data tables with caption, thead, tbody, th, and scope, merge cells with colspan and rowspan, and learn why tables should never be used for layout."
 ---
 
-# Tables (and When Not to Use Them)
+# Tables
 
 *A table is a train timetable: rows, columns, and the promise that you can find any answer by running your finger across and down.*
 
@@ -88,7 +88,7 @@ For page layout, like putting a sidebar next to your content, you'll use [Semant
 <WebPlayground
 	:panes="['html', 'css']"
 	:initial-html="'<table>\n\t<caption>Weekday trains from Central Station</caption>\n\t<thead>\n\t\t<tr>\n\t\t\t<th scope=\'col\'>Train</th>\n\t\t\t<th scope=\'col\'>Riverside</th>\n\t\t\t<th scope=\'col\'>Hilltop</th>\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t<tr>\n\t\t\t<th scope=\'row\'>Morning Express</th>\n\t\t\t<td>7:15</td>\n\t\t\t<td>7:40</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<th scope=\'row\'>Midday Local</th>\n\t\t\t<td>12:05</td>\n\t\t\t<td>12:45</td>\n\t\t</tr>\n\t</tbody>\n</table>'"
-	:initial-css="'/* Just enough CSS to see the grid. You will learn this in the CSS track. */\ntable, th, td {\n\tborder: 1px solid #999;\n\tborder-collapse: collapse;\n\tpadding: 6px 10px;\n}\n'"
+	:initial-css="'/* Just enough CSS to see the grid. You will learn this in the CSS track. */\ntable {\n\tborder-collapse: collapse;\n}\n\nth,\ntd {\n\tborder: 1px solid #999;\n\tpadding: 6px 10px;\n}\n'"
 	preview-height="240px"
 />
 

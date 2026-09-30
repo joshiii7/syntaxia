@@ -19,7 +19,7 @@ Walk around your kitchen. The toaster, the kettle, the microwave, the blender. T
 
 - `id`: a unique name tag.
 - `class`: a team jersey.
-- `title`: a tooltip with extra info.
+- `title`: a tooltip with extra info. (Only for extras: keyboard and touch users never see it.)
 
 Here are the others worth knowing.
 
@@ -43,7 +43,7 @@ Some languages, like Arabic and Hebrew, read right to left. `dir="rtl"` tells th
 <p hidden>This paragraph is not shown to anyone.</p>
 ```
 
-`hidden` removes an element from the page completely: not shown, not read by screen readers. It's useful for content JavaScript will reveal later, like a "Thanks for subscribing!" message.
+`hidden` removes an element from the page completely: not shown, not read by screen readers. It's useful for content JavaScript will reveal later, like a "Thanks for subscribing!" message. One catch you'll meet in CSS: if a stylesheet gives the element a `display` value, like `display: flex`, that wins, and the "hidden" element shows up again.
 
 ### `tabindex`: joining the keyboard line
 
@@ -71,7 +71,7 @@ We'll dig into why the order of that queue matters so much in [Accessibility Bas
 
 Picture a conference name badge. The front says "Maria, Designer." That's for everyone. But flip it over and the organizers have written notes for staff only: "Vegetarian meal. Workshop B. Checked in."
 
-`data-*` attributes are the back of the badge. They let you attach your own private information to any element, for your own CSS and JavaScript to use later:
+`data-*` attributes are the back of the badge. They let you attach your own extra information to any element, for your own CSS and JavaScript to use later:
 
 ```html
 <article class="product-card" data-product-id="1042" data-stock="3" data-category="kitchen">
@@ -86,7 +86,7 @@ The rules are simple:
 - After that, use lowercase words joined by hyphens: `data-product-id`, `data-stock`.
 - The value is always text.
 
-Visitors never see these. But later, your JavaScript could read `data-stock` and show "Only 3 left!", or your CSS could give every `data-category="kitchen"` card a little icon. You'll see exactly how in the [JavaScript track](/lessons/javascript/intro-to-javascript).
+Visitors don't see these on the page. They aren't secret, though: anyone can read them with View Source, so never store anything private in them. But later, your JavaScript could read `data-stock` and show "Only 3 left!", or your CSS could give every `data-category="kitchen"` card a little icon. You'll see exactly how in [Changing Text, Attributes, and Classes](/lessons/javascript/changing-elements).
 
 ## "Can't I just make up my own attribute names?"
 
@@ -105,7 +105,7 @@ The `data-` prefix is a promise from the people who write the HTML standard: "We
 
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<p>My grandmother always said <span lang=\'es\'>poco a poco</span>, little by little.</p>\n\n<p contenteditable=\'true\'>Click this paragraph and start typing. Yes, really.</p>\n\n<p hidden>You cannot see me.</p>\n\n<p dir=\'rtl\'>This line flows right to left.</p>\n\n<article data-product-id=\'1042\' data-stock=\'3\'>\n\t<h3 title=\'Handmade in small batches\'>Ceramic Mug</h3>\n\t<p>Holds 350 ml.</p>\n</article>'"
+	:initial-html="'<p>My grandmother always said <span lang=\'es\'>poco a poco</span>, little by little.</p>\n\n<p contenteditable=\'true\'>Click this paragraph and start typing. Yes, really.</p>\n\n<p hidden>You cannot see me.</p>\n\n<p dir=\'rtl\' lang=\'ar\'>مرحبا بكم في المخبز</p>\n\n<article data-product-id=\'1042\' data-stock=\'3\'>\n\t<h3 title=\'Handmade in small batches\'>Ceramic Mug</h3>\n\t<p>Holds 350 ml.</p>\n</article>'"
 	preview-height="300px"
 />
 

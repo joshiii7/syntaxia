@@ -9,8 +9,11 @@
  * existence; lessons that just want a free-form sandbox keep using
  * <WebPlayground> directly, and adopt <Exercise> only when they want grading.
  */
+import { useData, withBase } from 'vitepress';
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 import WebPlayground from './WebPlayground.vue';
+import LessonNav from './LessonNav.vue';
+import { resolveLesson } from '../data/curriculum';
 import { useLessonRequirements } from '../composables/useLessonRequirements';
 
 const props = defineProps({
@@ -20,6 +23,13 @@ const props = defineProps({
 	panes: { type: Array, default: () => ['html', 'css', 'javascript'] },
 	previewHeight: { type: String, default: '260px' },
 	previewTheme: { type: String, default: 'light' },
+	// Passed straight through to WebPlayground's console panel.
+	showConsole: { type: Boolean, default: false },
+	gradeDelay: { type: Number, default: 50 },
+	// Passed through to WebPlayground. 'workspace' is the full-viewport
+	// final project layout: the checklist moves into a Checks tab, and the toolbar
+	// gets the page title, a back link, a check counter, and the Next link.
+	layout: { type: String, default: 'stacked' },
 	// Optional explicit id for the gating registry — see Quiz.vue's `id` prop for the same pattern.
 	id: { type: String, default: null },
 	// Ordered checks; each: { type, expected, hint }. `type` is one of
@@ -70,10 +80,20 @@ function onGraded(result) {
 	graded.value = true;
 	lastResult.value = result;
 }
+
+const passedCount = computed(() => checkResults.value.filter((result) => result.passed).length);
+
+// Workspace toolbar title: the lesson's full title from curriculum.ts (the
+// same source as the sidebar and breadcrumb), falling back to the page title.
+const { page } = useData();
+const lessonTitle = computed(() => {
+	const [, trackSlug, lessonSlug] = page.value.relativePath.replace(/\.md$/, '').split('/');
+	return resolveLesson(trackSlug, lessonSlug)?.lesson.title ?? page.value.title;
+});
 </script>
 
 <template>
-	<div class="exercise">
+	<div class="exercise" :class="{ 'exercise--workspace': layout === 'workspace' }">
 		<WebPlayground
 			:initial-html="initialHtml"
 			:initial-css="initialCss"
@@ -81,11 +101,47 @@ function onGraded(result) {
 			:panes="panes"
 			:preview-height="previewHeight"
 			:preview-theme="previewTheme"
+			:show-console="showConsole"
+			:grade-delay="gradeDelay"
 			:graded="true"
+			:layout="layout"
 			@graded="onGraded"
-		/>
+		>
+			<template v-if="$slots.instructions" #instructions>
+				<slot name="instructions" />
+			</template>
 
-		<div v-if="graded" class="exercise__result" role="status">
+			<template v-if="layout === 'workspace'" #toolbar-start>
+				<a class="exercise__back" :href="withBase('/lessons/')">&larr; Back to lessons</a>
+				<h1 class="exercise__title">{{ lessonTitle }}</h1>
+			</template>
+
+			<template v-if="layout === 'workspace'" #toolbar-end>
+				<span class="exercise__count" aria-live="polite">
+					<template v-if="!graded">Checking...</template>
+					<template v-else-if="allChecksPassed">All {{ checks.length }} checks passed</template>
+					<template v-else>{{ passedCount }}/{{ checks.length }} checks</template>
+				</span>
+				<LessonNav compact />
+			</template>
+
+			<template v-if="layout === 'workspace'" #extra-tab>
+				<p v-if="!graded" class="exercise__status">Press Run to check your work.</p>
+				<template v-else>
+					<p class="exercise__status" :class="allChecksPassed ? 'exercise__status--pass' : 'exercise__status--fail'">
+						{{ allChecksPassed ? 'All checks passed!' : 'Not quite yet.' }}
+					</p>
+					<ul class="exercise__checks">
+						<li v-for="(result, index) in checkResults" :key="index" class="exercise__check" :class="result.passed ? 'exercise__check--pass' : 'exercise__check--fail'">
+							<span aria-hidden="true">{{ result.passed ? '✓' : '✗' }}</span>
+							<span>{{ result.passed ? 'Passed' : result.check.hint }}</span>
+						</li>
+					</ul>
+				</template>
+			</template>
+		</WebPlayground>
+
+		<div v-if="graded && layout !== 'workspace'" class="exercise__result" role="status">
 			<p class="exercise__status" :class="allChecksPassed ? 'exercise__status--pass' : 'exercise__status--fail'">
 				{{ allChecksPassed ? 'All checks passed!' : 'Not quite yet.' }}
 			</p>
@@ -102,6 +158,37 @@ function onGraded(result) {
 <style scoped>
 .exercise {
 	margin: 24px 0;
+}
+
+.exercise--workspace {
+	height: 100%;
+	margin: 0;
+}
+
+.exercise__back {
+	flex: none;
+	color: var(--vp-c-text-2);
+	text-decoration: none;
+}
+
+.exercise__back:hover {
+	color: var(--vp-c-brand-1);
+}
+
+/* The page's one h1, sized for a toolbar rather than a document. */
+.exercise__title {
+	overflow: hidden;
+	margin: 0;
+	font-size: var(--font-size-sm);
+	font-weight: 600;
+	line-height: 1.4;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.exercise__count {
+	color: var(--vp-c-text-2);
+	white-space: nowrap;
 }
 
 .exercise__result {

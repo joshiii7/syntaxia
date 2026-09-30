@@ -3,7 +3,9 @@ title: What is a Tag, and Your First HTML File
 description: What an HTML tag is, and how to write and view your very first HTML file.
 ---
 
-# What is a Tag, and Your First HTML File
+# Your First HTML File
+
+*A few angle brackets in a plain text file, and you've made a web page.*
 
 In the last lesson, you learned that HTML is a set of instructions for a browser. In this lesson, you will learn what those instructions actually look like, and you will write your first one.
 
@@ -33,14 +35,14 @@ Together, the opening tag, the content, and the closing tag are called an **elem
 
 ## Try it
 
-Here is a real HTML editor, built right into this page. Nothing to install. Type some HTML on the left, and the page it makes appears live on the right.
+Here is a real HTML editor, built right into this page. Nothing to install. Type some HTML in the editor, and the page it makes appears in the preview below it.
 
 <WebPlayground
 	:panes="['html']"
 	:initial-html="'<h1>Hello, world!</h1>\n<p>This is my first HTML file.</p>'"
 />
 
-Try changing the words inside the `<h1>` tag. Watch the preview update as you type.
+Try changing the words inside the `<h1>` tag. The preview updates a moment after you stop typing, or press **Run** to update it right away.
 
 ## How to make a real HTML file on your own computer
 
@@ -66,6 +68,20 @@ In the editor above, add a second paragraph introducing yourself. Something like
 	explanation="A closing tag repeats the same word as the opening tag, but with a forward slash right after the angle bracket."
 />
 
+<Quiz
+	question="What do you call an opening tag, its content, and its closing tag together?"
+	:options="['A file', 'An element', 'A browser', 'A folder']"
+	:answer-index="1"
+	explanation="The whole unit, from the opening tag to the closing tag, is an element."
+/>
+
+<Quiz
+	question="Which part of a file name tells the browser to read it as HTML?"
+	:options="['The first letter', 'The .html ending', 'The folder it is in', 'Its size']"
+	:answer-index="1"
+	explanation="A file whose name ends in .html is read as HTML instructions instead of plain text."
+/>
+
 ## What you learned
 
 - A file is a saved piece of information with a name, stored on your computer.
@@ -73,3 +89,7 @@ In the editor above, add a second paragraph introducing yourself. Something like
 - A tag is a labeled instruction written in angle brackets, like `<h1>`.
 - Most tags come in pairs: an opening tag and a closing tag.
 - An opening tag, its content, and its closing tag together are called an element.
+
+## Up next
+
+You can write a heading and a paragraph. Next, you'll see the full skeleton every real page is built on, in [Anatomy of an HTML Document](/lessons/html/basic-structure).

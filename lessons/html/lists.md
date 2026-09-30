@@ -44,10 +44,15 @@ HTML has a list for each of these.
 Ordered lists also have a few handy attributes:
 
 ```html
-<ol start="5">       <!-- start counting at 5 -->
-<ol reversed>        <!-- count down, like a top-10 countdown -->
-<ol type="A">        <!-- use A, B, C instead of 1, 2, 3 -->
+<ol start="5">
+	<li>Fifth place</li>
+	<li>Sixth place</li>
+</ol>
 ```
+
+- `start="5"` starts counting at 5.
+- `reversed` counts down, like a top-10 countdown.
+- `type="A"` uses A, B, C instead of 1, 2, 3.
 
 How do you choose between `ul` and `ol`? Just ask: "If I shuffled these items, would it be wrong?" If yes, it's ordered. That's the whole decision.
 

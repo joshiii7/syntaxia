@@ -127,7 +127,7 @@ a {
 }
 ```
 
-Adding `!important` to a declaration jumps it over the specificity question entirely. It's the fire alarm: when it goes off, everyone stops following the normal instructions.
+Adding `!important` to a declaration jumps it ahead of every normal declaration, whatever their specificity. (Two `!important` declarations then compete by specificity again, which is exactly how the trouble below starts.) It's the fire alarm: when it goes off, everyone stops following the normal instructions.
 
 And that's exactly why you should almost never use it. If you pull the fire alarm to get your way in a disagreement, the only way anyone can override you is by pulling a *louder* fire alarm. Pretty soon your stylesheet is full of `!important`s fighting each other, and nothing makes sense anymore.
 
@@ -135,7 +135,7 @@ When a rule isn't working, the fix is almost never `!important`. It's understand
 
 ## Your best friend: the browser's developer tools
 
-Right-click any element and choose **Inspect**. In the Styles panel, you'll see every rule that targets that element, listed from most to least specific, with the losing declarations **crossed out**. It literally shows you who won the argument and who lost. When "my CSS isn't working," this is the first place to look, every time. The [Debugging Basics](/lessons/ide/debugging-basics) lesson walks through these tools.
+Right-click any element and choose **Inspect**. In the Styles panel, you'll see every rule that targets that element, listed with the winning rules at the top, and the losing declarations **crossed out**. It literally shows you who won the argument and who lost. When "my CSS isn't working," this is the first place to look, every time. The [Debugging Basics](/lessons/ide/debugging-basics) lesson walks through these tools.
 
 ## Try it
 

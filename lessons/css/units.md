@@ -56,7 +56,7 @@ But here's the magic. If someone sets their browser to larger text, the root siz
 
 Think of it like a recipe written in "cups" instead of grams. Use a bigger cup, and everything scales together, so the proportions stay right.
 
-## `em`: measured against the parent (and it compounds)
+## `em`: measured against a font size (and it compounds)
 
 ```css
 .button {
@@ -67,7 +67,9 @@ Think of it like a recipe written in "cups" instead of grams. Use a bigger cup, 
 
 `em` is relative to the **current element's font size**. So on that button, `1em` is 1.25rem, and the padding grows and shrinks along with the button's text. Make a big button and its padding gets roomier automatically. That's a lovely use of `em`: spacing that stays in proportion to the text it surrounds.
 
-But be careful with `em` on font sizes, because it **compounds**:
+There's one twist. When you use `em` for `font-size` itself, it's measured against the **parent's** font size, since an element can't measure its own size with the size it's still deciding. For everything else, like padding, margin, and width, it's the element's own font size.
+
+That's why you need to be careful with `em` on font sizes, because it **compounds**:
 
 ```css
 li {

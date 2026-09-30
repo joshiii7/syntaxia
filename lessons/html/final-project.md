@@ -1,9 +1,40 @@
 ---
-title: "HTML Capstone Project: Build Your Profile Page"
+title: "HTML Final Project: Build Your Profile Page"
 description: "Put the whole HTML track to work by building a complete personal profile page, guided by a numbered checklist of requirements and a self-check for your finished build."
+layout: page
+sidebar: false
+aside: false
+outline: false
+pageClass: final-project-page
+finalProject: true
 ---
 
-# Capstone: Your Profile Page
+<Exercise
+	:panes="['html']"
+	:initial-html="'<!DOCTYPE html>\n<html lang=\'en\'>\n<head>\n\t<meta charset=\'UTF-8\'>\n\t<!-- Requirement 1: viewport, title, and description go here -->\n</head>\n<body>\n\t<!-- Requirement 2: skip link -->\n\n\t<!-- Requirement 3: header with your h1 and a nav -->\n\n\t<!-- Requirement 4: main, holding requirements 5 to 9 -->\n\n\t<!-- Requirement 10: footer -->\n</body>\n</html>'"
+	:checks="[
+		{ type: 'html-contains', expected: 'name=&quot;viewport&quot;', hint: 'Requirement 1: add a viewport meta tag to the head.' },
+		{ type: 'html-contains', expected: '<title>', hint: 'Requirement 1: add a title to the head.' },
+		{ type: 'html-contains', expected: 'name=&quot;description&quot;', hint: 'Requirement 1: add a meta description to the head.' },
+		{ type: 'html-contains', expected: 'href=&quot;#main-content&quot;', hint: 'Requirement 2: add a skip link pointing to #main-content.' },
+		{ type: 'html-contains', expected: '<header', hint: 'Requirement 3: add a header element.' },
+		{ type: 'html-contains', expected: '<h1', hint: 'Requirement 3: put your name in an h1.' },
+		{ type: 'html-contains', expected: '<nav', hint: 'Requirement 3: add a nav with links to your sections.' },
+		{ type: 'html-contains', expected: 'id=&quot;main-content&quot;', hint: 'Requirement 4: wrap your content in main with id main-content.' },
+		{ type: 'html-contains', expected: '<section', hint: 'Requirements 5, 7, and 9: add your sections.' },
+		{ type: 'html-contains', expected: '<figcaption', hint: 'Requirement 6: add a figure with an img and a figcaption.' },
+		{ type: 'html-contains', expected: 'alt=', hint: 'Requirement 6: give your image alt text.' },
+		{ type: 'html-contains', expected: '<li', hint: 'Requirement 7: add a list of your interests or skills.' },
+		{ type: 'html-contains', expected: '<article', hint: 'Requirement 8: add at least one article.' },
+		{ type: 'html-contains', expected: '<label', hint: 'Requirement 9: give every form control a label.' },
+		{ type: 'html-contains', expected: '<textarea', hint: 'Requirement 9: add a textarea for the message.' },
+		{ type: 'html-contains', expected: 'required', hint: 'Requirement 9: make the name and email fields required.' },
+		{ type: 'html-contains', expected: 'mailto:', hint: 'Requirement 9: add a mailto link.' },
+		{ type: 'html-contains', expected: '<footer', hint: 'Requirement 10: finish with a footer.' }
+	]"
+	layout="workspace"
+>
+<template #instructions>
 
 *You started this track asking "what is a tag?" Today, you build a whole page from scratch.*
 
@@ -25,7 +56,7 @@ You're going to build a **personal profile page**: a single page that introduces
 
 Below is a numbered list of requirements. Treat each one like a quiz question you're answering with code. Each comes with a note on *why* it's there, because the point isn't to tick boxes blindly. It's to show yourself you understand what every piece is for.
 
-Build it in the editor at the bottom of this page, and press **Run** whenever you like. A checker under the editor shows you which requirements it can already see in your code. When they're all green, you've built a complete, professional HTML page.
+Build it in the `index.html` tab of this workspace, and press **Run** whenever you like. The **Checks** tab shows you which requirements the checker can already see in your code. When they're all green, you've built a complete, professional HTML page.
 
 ## Requirements
 
@@ -40,6 +71,8 @@ Your page must start with `<!DOCTYPE html>`, have `lang` on the `<html>` element
 The very first thing inside `<body>` must be a link, `<a href="#main-content">Skip to main content</a>`.
 
 **Why:** Keyboard and screen reader users shouldn't have to wade through your navigation on every visit. Review: [Accessibility Basics](/lessons/html/accessibility-basics).
+
+*For now, it'll be visible at the top of your page. In the CSS track, you'll hide it until someone presses Tab.*
 
 ### 3. A header with your name and a nav
 
@@ -110,35 +143,9 @@ Indent every nested element consistently, use every `id` only once, and once you
 - Add an `<aside>` with a fun fact.
 - Store something on an element with a `data-*` attribute. ([Attributes Deep Dive](/lessons/html/attributes-deep-dive))
 
-## Build it here
+## Using this workspace
 
-The starter below has the skeleton and some comments marking where each requirement goes. Delete the comments as you fill things in. Press **Run** to see your page and update the checklist.
-
-<Exercise
-	:panes="['html']"
-	:initial-html="'<!DOCTYPE html>\n<html lang=\'en\'>\n<head>\n\t<meta charset=\'UTF-8\'>\n\t<!-- Requirement 1: viewport, title, and description go here -->\n</head>\n<body>\n\t<!-- Requirement 2: skip link -->\n\n\t<!-- Requirement 3: header with your h1 and a nav -->\n\n\t<!-- Requirement 4: main, holding requirements 5 to 9 -->\n\n\t<!-- Requirement 10: footer -->\n</body>\n</html>'"
-	preview-height="520px"
-	:checks="[
-		{ type: 'html-contains', expected: 'name=&quot;viewport&quot;', hint: 'Requirement 1: add a viewport meta tag to the head.' },
-		{ type: 'html-contains', expected: '<title>', hint: 'Requirement 1: add a title to the head.' },
-		{ type: 'html-contains', expected: 'name=&quot;description&quot;', hint: 'Requirement 1: add a meta description to the head.' },
-		{ type: 'html-contains', expected: 'href=&quot;#main-content&quot;', hint: 'Requirement 2: add a skip link pointing to #main-content.' },
-		{ type: 'html-contains', expected: '<header', hint: 'Requirement 3: add a header element.' },
-		{ type: 'html-contains', expected: '<h1', hint: 'Requirement 3: put your name in an h1.' },
-		{ type: 'html-contains', expected: '<nav', hint: 'Requirement 3: add a nav with links to your sections.' },
-		{ type: 'html-contains', expected: 'id=&quot;main-content&quot;', hint: 'Requirement 4: wrap your content in main with id main-content.' },
-		{ type: 'html-contains', expected: '<section', hint: 'Requirements 5, 7, and 9: add your sections.' },
-		{ type: 'html-contains', expected: '<figcaption', hint: 'Requirement 6: add a figure with an img and a figcaption.' },
-		{ type: 'html-contains', expected: 'alt=', hint: 'Requirement 6: give your image alt text.' },
-		{ type: 'html-contains', expected: '<li', hint: 'Requirement 7: add a list of your interests or skills.' },
-		{ type: 'html-contains', expected: '<article', hint: 'Requirement 8: add at least one article.' },
-		{ type: 'html-contains', expected: '<label', hint: 'Requirement 9: give every form control a label.' },
-		{ type: 'html-contains', expected: '<textarea', hint: 'Requirement 9: add a textarea for the message.' },
-		{ type: 'html-contains', expected: 'required', hint: 'Requirement 9: make the name and email fields required.' },
-		{ type: 'html-contains', expected: 'mailto:', hint: 'Requirement 9: add a mailto link.' },
-		{ type: 'html-contains', expected: '<footer', hint: 'Requirement 10: finish with a footer.' }
-	]"
-/>
+Everything happens right here. The tabs on the left switch between these instructions and your code in `index.html`, which starts with the skeleton and comments marking where each requirement goes. Delete the comments as you fill things in. The **Result** tab on the right shows your page a moment after you stop typing (or when you press **Run**), and the **Checks** tab lists what the checker can already see. Drag the line between the two sides to give either one more room. On a phone, the **Code** and **Result** buttons in the toolbar switch between them. **Reset** puts the starter code back; press it twice, so a stray click can't wipe your work.
 
 The checker can only see whether each piece *exists*. It can't tell whether your alt text is thoughtful, whether your headings make a sensible outline, or whether your link text is descriptive. Only you can judge that, which is exactly what the next section is for.
 
@@ -163,3 +170,6 @@ If you answered yes to all nine, you've built something a professional would be 
 Right now your page is solid, meaningful, accessible, and... probably plain. Black text, white background, default fonts. That's fine. You've built the house.
 
 Next, we decorate it. In the [CSS track](/lessons/css/intro-to-css), you'll take this exact page and give it color, layout, and personality. Everything you labeled here, every class, every id, every semantic room, is about to become a handle you can style. See you there.
+
+</template>
+</Exercise>

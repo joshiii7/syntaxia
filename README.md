@@ -62,7 +62,7 @@ syntaxia/
 │   │   ├── details-dialog-and-template.md  # details/summary, dialog, template
 │   │   ├── best-practices.md               # habits, anti-patterns, validator, bug hunt
 │   │   ├── html-meets-css-and-js.md        # bridge lesson: link, script defer, hooks
-│   │   └── putting-it-all-together.md      # capstone: graded <Exercise> profile page + self-check
+│   │   └── final-project.md                # final project: graded <Exercise> profile page + self-check
 │   ├── css/                    # 24-page curriculum, in sidebar/prev-next order:
 │   │   ├── intro-to-css.md                       # bridge from HTML, what CSS is, rule anatomy
 │   │   ├── applying-css.md                       # inline vs internal vs external
@@ -87,9 +87,23 @@ syntaxia/
 │   │   ├── layout-patterns.md                    # centering, sticky header/footer, card grid
 │   │   ├── best-practices.md                     # organization, naming, anti-patterns, bug hunt
 │   │   ├── css-meets-javascript.md               # bridge lesson: classList, aria state, variables
-│   │   └── capstone.md                           # graded <Exercise> styling the HTML capstone page
+│   │   └── final-project.md                      # graded <Exercise> styling the HTML final project page
 │   ├── javascript/intro-to-javascript.md
-│   └── python/intro-to-python.md
+│   ├── java/                   # 34-page curriculum, in sidebar/prev-next order:
+│   │   ├── introduction.md ... how-java-runs.md  # Getting Started: what Java is, JDK setup, first program, javac + JVM
+│   │   ├── variables.md ... strings.md           # Values & Operators: types, operators, casting, Scanner, Strings
+│   │   ├── if-else.md ... nested-loops.md        # Control Flow: if/else, switch, loops, break/continue
+│   │   ├── methods.md ... scope.md               # Methods: parameters, return, overloading, scope
+│   │   ├── arrays.md ... arraylist.md            # Arrays & Collections: arrays, 2D arrays, ArrayList
+│   │   ├── classes-and-objects.md ... static-and-this.md  # OOP: classes through interfaces, static and this
+│   │   ├── debugging.md ... file-io.md           # Errors & Files: stack traces, exceptions, text files
+│   │   ├── best-practices.md                     # habits and the classic beginner mistakes checklist
+│   │   └── final-project.md                      # Student Grade Manager console app + reference solution
+│   ├── python/                 # 38-page curriculum (intro-to-python.md through final-project.md: Personal Budget Tracker)
+│   ├── sqlite3/                # 25-page curriculum; its SQL Foundations chapter is shared by the MySQL and Oracle tracks
+│   ├── php/                    # 34-page curriculum (introduction.md through final-project.md: Event Sign-Up Sheet)
+│   ├── mysql/                  # 18-page curriculum (introduction.md through final-project.md: Online Store Database)
+│   └── oracle-database/        # 21-page curriculum (introduction.md through final-project.md: Course Enrollment System)
 ├── public/                     # static assets (favicon, etc.)
 └── index.md                    # home page
 ```
@@ -110,7 +124,7 @@ A single CodeMirror 6 instance. Use it for any language that doesn't need a live
 />
 ```
 
-`language` accepts `html`, `css`, `javascript`, `python`, or `plaintext` (the fallback for every other language in the book — you still get an editor with line numbers, selection, and history, just without syntax highlighting until a dedicated `@codemirror/lang-*` package is added for that language).
+`language` accepts `html`, `css`, `javascript`, `python`, `java`, or `plaintext` (the fallback for every other language in the book — you still get an editor with line numbers, selection, and history, just without syntax highlighting until a dedicated `@codemirror/lang-*` package is added for that language).
 
 ### `WebPlayground`
 
@@ -178,7 +192,29 @@ For every other non-web language the book adds later, evaluate case by case:
 - If a mature WASM runtime exists for that language (e.g. many focus on Python/Ruby/Lua-style dynamic languages) and it's genuinely used interactively, prefer the client-side approach for the same reasons as Python.
 - Once the book covers several languages that have no realistic WASM story (C, Java, Go, etc.), a single Judge0/Piston integration is the more scalable move — one backend covers all of them at once, rather than chasing a WASM runtime per language. At that point, self-host Piston (open source, no per-request cost, no API key to leak) behind the book's own thin API route rather than calling a third-party hosted Judge0 endpoint directly from the browser.
 
-This scaffold ships the Python lesson with `CodeEditor` only (syntax highlighting, no execution) so the Pyodide integration can be added as its own deliberate piece of work rather than bundled into the initial scaffold.
+The Python track's lessons currently use `CodeEditor` only (syntax highlighting, no execution), with a "predict the output" answer block, so the Pyodide integration can be added as its own deliberate piece of work. Every editor program is written to run as-is once it lands. Programs that call `input()` will need a way to supply typed answers: GitHub Pages can't send the COOP/COEP headers that blocking `input()` from a worker requires.
+
+### Java
+
+**Planned default: self-hosted Piston**, behind the book's own thin API route, as described above. Java has no small, mature in-browser runtime, and one Piston backend will also cover the other compiled languages the book adds later. It supports standard input (needed for the `Scanner` lessons) and runs a real JDK, so lessons can use current Java syntax. Nothing is wired up yet: Java lessons currently use `CodeEditor` in Java mode (highlighting only, via `@codemirror/lang-java`), with a "predict the output" answer block instead of a Run button.
+
+**Alternative if the site must stay fully static: CheerpJ**, a Java runtime compiled to WebAssembly that can run `javac` and the resulting program in the browser, with no server at all. Before choosing it, check three things: its license terms for this use, the newest Java version its in-browser compiler supports (it has historically lagged behind current releases), and the size of the first download, which needs a visible loading state.
+
+### PHP
+
+**Decided: in-browser, with `php-wasm`** ([seanmorris/php-wasm](https://github.com/seanmorris/php-wasm), npm `php-wasm`), PHP compiled to WebAssembly. Unlike Java, PHP runs well in the browser: output is usually HTML, which can be shown in the same sandboxed preview `WebPlayground` uses, and the package includes SQLite through PDO, so the database lessons can run in the browser too. Lessons that need real HTTP requests, sessions, or cookies fall back to "predict the output" plus PHP's built-in local server (`php -S localhost:8000`). Nothing is wired up yet: PHP lessons currently use `CodeEditor` in plain-text mode with a "predict the output" answer block, like Java. Every snippet's output was produced by a real PHP 8.5 run; multi-file and web-only examples (forms, sessions, include, Composer, the final project) were run through the built-in server.
+
+**Licensing, the reason for this pick.** `php-wasm` is dual-licensed Apache-2.0 / GPL-2.0, and we use it under **Apache-2.0**, a permissive license that doesn't affect how the site's own code (ISC) is licensed or shared. When it's added:
+
+- keep its license and any `NOTICE` file with the bundled files, as Apache-2.0 requires;
+- add the attribution the PHP License requires for the bundled PHP runtime ("This product includes PHP software, freely available from http://www.php.net/software/"), for example on the About or Accessibility page, or a credits page;
+- pin an exact version, since the package is still pre-1.0.
+
+The alternative, `@php-wasm/web` from WordPress Playground, is more widely used but licensed GPL-2.0-or-later only. Bundling it into the site's served JavaScript would likely bring GPL obligations to what's distributed with it, so it was ruled out.
+
+### MySQL and Oracle Database
+
+Neither can run in the browser: both need a real database server. Their lessons use `CodeEditor` (highlighting only) with a "predict the output" answer block, like Java and PHP. MySQL lesson outputs came from a real MySQL 9.7.2 server, and the PHP examples in them ran against it. Oracle lesson outputs came from Oracle 26ai through the free FreeSQL service (queries, the HR sample tables, and PL/SQL blocks); examples that create tables, sequences, triggers, or packages need a signed-in account there, so their results follow Oracle's documented behavior instead.
 
 ## Conventions
 

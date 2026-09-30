@@ -71,7 +71,7 @@ Here's a gallery of the most common anti-patterns. You'll recognize a few from e
 **Clickable divs.**
 
 ```html
-<!-- Anti-pattern: invisible to keyboards and screen readers -->
+<!-- Anti-pattern: keyboards can't reach it, and screen readers don't announce it as a button -->
 <div onclick="save()">Save</div>
 
 <!-- Better -->

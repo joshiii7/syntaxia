@@ -33,7 +33,7 @@ body { ... }
 .card { ... }
 
 /* 5. Utilities: small single-purpose helpers */
-.visually-hidden { ... }
+.visually-hidden { ... }   /* the pattern from Display */
 ```
 
 This order also works *with* the cascade you learned in [The Cascade and Specificity](/lessons/css/cascade-and-specificity): broad base styles come first, and more specific component styles come later, so they naturally win ties. On bigger projects, each of these sections often becomes its own file.

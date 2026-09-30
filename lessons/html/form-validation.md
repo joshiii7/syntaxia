@@ -37,13 +37,15 @@ That's one more reason to always pick the most specific type.
 <!-- A whole number from 1 to 10 -->
 <input type="number" id="guests" name="guests" min="1" max="10" step="1">
 
-<!-- No dates in the past -->
+<!-- No dates before January 1, 2026 -->
 <input type="date" id="booking-date" name="booking-date" min="2026-01-01">
 ```
 
-- `minlength` and `maxlength` limit how many characters can be typed.
+- `maxlength` stops typing past the limit, and `minlength` is checked when the form is submitted.
 - `min` and `max` limit numbers and dates.
 - `step` sets the allowed increments. `step="0.5"` allows 1, 1.5, 2, and so on.
+
+(To make the earliest date always *today*, you'd set `min` with JavaScript, since plain HTML can't know what day it is.)
 
 ## `pattern`: your own rule
 
@@ -61,7 +63,7 @@ Sometimes you need a specific shape, like a product code that's always three let
 <p id="product-code-hint">Three capital letters then four numbers, like ABC1234.</p>
 ```
 
-That odd-looking `[A-Z]{3}[0-9]{4}` is a **regular expression**, a tiny language for describing text shapes. Read it as "three of A to Z, then four of 0 to 9." Don't worry about learning regular expressions right now. They're a whole topic of their own, and you'll meet them properly in JavaScript. For now, just know that `pattern` exists and roughly how to read a simple one.
+That odd-looking `[A-Z]{3}[0-9]{4}` is a **regular expression**, a tiny language for describing text shapes. Read it as "three of A to Z, then four of 0 to 9." The pattern has to match the *whole* answer, not just part of it. Don't worry about learning regular expressions right now. They're a whole topic of their own, and you'll meet them properly in [Strings and Regular Expressions](/lessons/javascript/strings-and-regex). For now, just know that `pattern` exists and roughly how to read a simple one.
 
 ## Tell people the rules *before* they break them
 
@@ -85,7 +87,7 @@ The receptionist catches honest mistakes. But the building still needs a securit
 <form novalidate>
 ```
 
-`novalidate` turns off the browser's built-in checks for the whole form. Developers sometimes do this when they write their own validation with JavaScript to show custom messages. You'll learn how that works in the [JavaScript track](/lessons/javascript/intro-to-javascript). Until then, let the browser do its job.
+`novalidate` turns off the browser's built-in checks for the whole form. Developers sometimes do this when they write their own validation with JavaScript to show custom messages. You'll learn how that works in [Forms and Custom Validation](/lessons/javascript/forms-with-javascript). Until then, let the browser do its job.
 
 ## Try it
 
@@ -93,7 +95,7 @@ The preview is a locked-down sandbox that blocks real form submissions, so a tin
 
 <WebPlayground
 	:panes="['html', 'css', 'javascript']"
-	:initial-html="'<form>\n\t<p>\n\t\t<label for=\'full-name\'>Full name (required)</label><br>\n\t\t<input type=\'text\' id=\'full-name\' name=\'full-name\' required>\n\t</p>\n\t<p>\n\t\t<label for=\'email\'>Email (required)</label><br>\n\t\t<input type=\'email\' id=\'email\' name=\'email\' required>\n\t</p>\n\t<p>\n\t\t<label for=\'guests\'>Number of guests (1 to 10)</label><br>\n\t\t<input type=\'number\' id=\'guests\' name=\'guests\' min=\'1\' max=\'10\'>\n\t</p>\n\t<p>\n\t\t<label for=\'product-code\'>Voucher code</label><br>\n\t\t<input type=\'text\' id=\'product-code\' name=\'product-code\' pattern=\'[A-Z]{3}[0-9]{4}\' aria-describedby=\'code-hint\'><br>\n\t\t<small id=\'code-hint\'>Three capital letters then four numbers, like ABC1234.</small>\n\t</p>\n\t<button type=\'submit\'>Book a table</button>\n</form>\n<p id=\'result\'></p>'"
+	:initial-html="'<form>\n\t<p>\n\t\t<label for=\'full-name\'>Full name (required)</label><br>\n\t\t<input type=\'text\' id=\'full-name\' name=\'full-name\' required>\n\t</p>\n\t<p>\n\t\t<label for=\'email\'>Email (required)</label><br>\n\t\t<input type=\'email\' id=\'email\' name=\'email\' required>\n\t</p>\n\t<p>\n\t\t<label for=\'guests\'>Number of guests (1 to 10)</label><br>\n\t\t<input type=\'number\' id=\'guests\' name=\'guests\' min=\'1\' max=\'10\'>\n\t</p>\n\t<p>\n\t\t<label for=\'voucher-code\'>Voucher code</label><br>\n\t\t<input type=\'text\' id=\'voucher-code\' name=\'voucher-code\' pattern=\'[A-Z]{3}[0-9]{4}\' aria-describedby=\'code-hint\'><br>\n\t\t<small id=\'code-hint\'>Three capital letters then four numbers, like ABC1234.</small>\n\t</p>\n\t<button type=\'submit\'>Book a table</button>\n</form>\n<p id=\'result\'></p>'"
 	:initial-css="'/* Red outline once the visitor has touched a field and left it invalid. */\ninput:user-invalid {\n\toutline: 2px solid #c0392b;\n}\n'"
 	:initial-js="'// The sandbox blocks real submissions, so this asks the browser to run its checks.\nconst form = document.querySelector(\'form\');\nform.querySelector(\'button\').addEventListener(\'click\', () => {\n\tif (form.reportValidity()) {\n\t\tdocument.querySelector(\'#result\').textContent = \'All answers look good!\';\n\t}\n});\n'"
 	preview-height="380px"

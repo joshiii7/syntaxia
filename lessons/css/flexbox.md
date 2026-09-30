@@ -72,7 +72,7 @@ Every flexbox property works on one axis or the other. Keep that straight and fl
 - `flex-start`: lined up along the top.
 - `flex-end`: lined up along the bottom.
 - `center`: centered on the cross axis. This is the famous "vertical centering" that used to be so hard.
-- `baseline`: lined up by the bottom of their first line of text. Lovely when items have different font sizes.
+- `baseline`: lined up along the baseline of their first line of text, the invisible line the letters sit on. Lovely when items have different font sizes.
 
 ## `gap`: walking space
 

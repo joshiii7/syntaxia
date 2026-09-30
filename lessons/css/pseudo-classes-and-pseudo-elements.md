@@ -66,7 +66,7 @@ article :is(h2, h3, h4) {
 For years, developers wished CSS could style a parent based on what's inside it. Now it can:
 
 ```css
-/* Any card that contains an image gets extra padding */
+/* A card that contains an image loses its top padding, so the image sits flush */
 .card:has(img) {
 	padding-top: 0;
 }
@@ -93,7 +93,7 @@ A **pseudo-element** targets a part of an element, or adds a new piece to it. It
 /* The first letter of every article's first paragraph: a drop cap */
 article p:first-of-type::first-letter {
 	font-size: 3rem;
-	float: left;
+	float: left;          /* lets the paragraph text wrap around the big letter */
 	line-height: 1;
 	margin-right: 6px;
 }
@@ -131,7 +131,7 @@ blockquote::before {
 }
 ```
 
-The `content` property is required. Without it, the pseudo-element doesn't appear at all, even if it's an empty string (`content: "";`, which is common for purely decorative shapes).
+The `content` property is required, even if it's just an empty string (`content: "";`, which is common for purely decorative shapes). Without it, the pseudo-element doesn't appear at all.
 
 One important caution: content added with `::before` and `::after` is **decoration**. Screen readers handle it inconsistently, and people can't select or copy it. So never put meaningful information there. That red asterisk above is fine *only* if the label also says "(required)" in real text, following the don't-rely-on-color rule from [Accessibility Basics](/lessons/html/accessibility-basics).
 
@@ -143,7 +143,7 @@ Quick rule: **one colon for a state or position** (`:hover`, `:first-child`), **
 
 <WebPlayground
 	:panes="['html', 'css']"
-	:initial-html="'<ul class=\'menu\'>\n\t<li>Sourdough</li>\n\t<li>Rye</li>\n\t<li>Focaccia</li>\n\t<li>Brioche</li>\n\t<li>Baguette</li>\n</ul>\n\n<blockquote>Bread is the warmest, kindest of all words.</blockquote>\n\n<p><label class=\'required-label\' for=\'email\'>Email (required)</label></p>'"
+	:initial-html="'<ul class=\'menu\'>\n\t<li>Sourdough</li>\n\t<li>Rye</li>\n\t<li>Focaccia</li>\n\t<li>Brioche</li>\n\t<li>Baguette</li>\n</ul>\n\n<blockquote>Bread is the warmest, kindest of all words.</blockquote>\n\n<p><label class=\'required-label\' for=\'email\'>Email (required)</label> <input type=\'email\' id=\'email\'></p>'"
 	:initial-css="'.menu li:nth-child(odd) {\n\tbackground: #f3f6f8;\n}\n\n.menu li:first-child {\n\tfont-weight: bold;\n}\n\nli::marker {\n\tcolor: #2f6f8f;\n}\n\nblockquote::before {\n\tcontent: \'“\';\n\tfont-size: 2.5rem;\n\tcolor: #2f6f8f;\n}\n\n.required-label::after {\n\tcontent: \' *\';\n\tcolor: crimson;\n}\n'"
 	preview-height="280px"
 />

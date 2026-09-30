@@ -3,7 +3,7 @@ title: "Nesting, Whitespace, and the DOM Family Tree"
 description: "See how HTML elements nest inside each other, why the browser turns your page into a family tree called the DOM, and how whitespace and comments behave."
 ---
 
-# Nesting, Whitespace, and the DOM Family Tree
+# Nesting and the DOM
 
 *Your HTML isn't a flat list of tags. It's a family, and once you see the family tree, a lot of confusing behavior suddenly makes sense.*
 
@@ -22,7 +22,7 @@ HTML nesting works exactly like that:
 </article>
 ```
 
-The `<article>` box holds a heading and a paragraph. The paragraph box holds some text, plus a smaller `<strong>` box around two words.
+The `<article>` box (an element for a self-contained piece of content, which you'll meet properly in [Semantic HTML](/lessons/html/semantic-html)) holds a heading and a paragraph. The paragraph box holds some text, plus a smaller `<strong>` box around two words.
 
 And just like real boxes, there's one rule you can't break: **a box has to close before the box around it closes.** You can't seal the "Kitchen" box while the "Mugs" box is still sticking out through the top.
 
@@ -51,6 +51,8 @@ When the browser reads your HTML, it doesn't keep it as text. It builds a tree o
 	</main>
 </body>
 ```
+
+(`<header>` and `<main>` are more of those named boxes from Semantic HTML: the top of the page, and its main content.)
 
 In family terms:
 
@@ -124,7 +126,7 @@ Anything between `<!--` and `-->` stays hidden from the page. Just remember it's
 
 ## Try it yourself
 
-1. Break the nesting on purpose: change `</strong> coffee` so that `</p>` comes *before* `</strong>`. Run it. Did the bold spill over?
+1. Break the nesting on purpose: in the first paragraph, move `</strong>` so it comes *after* `</p>`, making the tags overlap. Run it. Did the bold spill over?
 2. Fix it, then add a third paragraph as a sibling of the other two, with one `<em>` word inside it.
 3. Notice the extra spaces in "stare out the window." Did any of them survive?
 

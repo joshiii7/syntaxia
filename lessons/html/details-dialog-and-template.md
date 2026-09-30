@@ -66,7 +66,7 @@ That's a **modal dialog**. It pops up over the page, and until you deal with it,
 <button type="button" id="open-dialog">Remove from cart</button>
 ```
 
-Opening a dialog as a modal takes one line of JavaScript (you'll understand it fully in the [JavaScript track](/lessons/javascript/intro-to-javascript)):
+Opening a dialog as a modal takes one line of JavaScript (you'll understand it fully in the JavaScript track's [Events](/lessons/javascript/events) lesson):
 
 ```js
 document.querySelector('#open-dialog').addEventListener('click', () => {
@@ -102,7 +102,7 @@ Imagine baking cookies. You don't sculpt each one by hand. You have one cookie c
 
 Whatever's inside a `<template>` is **not shown** on the page. Images inside it don't load, scripts inside it don't run. It just sits there, waiting. Then JavaScript can stamp out copies, fill each one in (a different reviewer's name and words), and add them to the page. Think of a product page loading 50 customer reviews: one template, 50 cookies.
 
-This is the element you'll understand least deeply right now, and that's fine. It really only comes alive with JavaScript. What matters today is knowing it exists, so when you reach the JavaScript track and need to build lots of repeated pieces, you'll remember: "Wait, HTML has a cookie cutter for this."
+This is the element you'll understand least deeply right now, and that's fine. It really only comes alive with JavaScript. What matters today is knowing it exists, so when you reach [Creating and Removing Elements](/lessons/javascript/creating-elements) and need to build lots of repeated pieces, you'll remember: "Wait, HTML has a cookie cutter for this."
 
 ## Try it
 

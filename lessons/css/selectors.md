@@ -127,7 +127,7 @@ nav a {
 
 /* Child (>): only li elements that are direct children of this ul */
 .menu > li {
-	display: inline-block;
+	color: #2f6f8f;
 }
 
 /* Next sibling (+): a p that comes right after an h2 */
