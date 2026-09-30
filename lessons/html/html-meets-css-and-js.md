@@ -61,7 +61,7 @@ p {
 	border: 2px dashed #f28c28;
 }
 
-/* Only links that are children of nav */
+/* Links anywhere inside a nav */
 nav a {
 	text-decoration: none;
 }
@@ -154,4 +154,4 @@ This editor has been an HTML-only playground for most of the track. Here are all
 
 ## Up next
 
-That's everything. Every piece of the HTML track is now in your hands. There's just one thing left to do: build something real with all of it. Head to [Capstone: Your Profile Page](/lessons/html/putting-it-all-together). After that, the [CSS track](/lessons/css/intro-to-css) is waiting.
+That's everything. Every piece of the HTML track is now in your hands. There's just one thing left to do: build something real with all of it. Head to [Final Project: Your Profile Page](/lessons/html/final-project). After that, the [CSS track](/lessons/css/intro-to-css) is waiting.

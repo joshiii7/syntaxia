@@ -163,7 +163,7 @@ A readable body font, a slightly larger base size, generous line-height, near-bl
 
 ## Try it
 
-The Google Fonts `@import` below needs an internet connection. If you're offline, you'll see the fallback fonts instead, which is a nice demo of why font stacks matter.
+This editor has no HTML head to put a `<link>` in, so the CSS below loads a Google Font with `@import`, CSS's own way of pulling in another stylesheet. It must come first in a stylesheet, and on real pages `<link>` is faster. It also needs an internet connection. If you're offline, you'll see the fallback fonts instead, which is a nice demo of why font stacks matter.
 
 <WebPlayground
 	:panes="['css']"

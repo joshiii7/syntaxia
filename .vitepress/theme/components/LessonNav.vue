@@ -9,14 +9,25 @@
  * gating at all.
  */
 import { useData, withBase } from 'vitepress';
-import { computed, watch } from 'vue';
-import { trackPrevNext } from '../data/curriculum';
+import { computed, useId, watch } from 'vue';
+import { sidebarLabel, trackPrevNext } from '../data/curriculum';
 import { pathPrevNext } from '../data/paths';
 import { useActivePath } from '../composables/useActivePath';
 import { useProgress } from '../composables/useProgress';
 import { useLessonRequirements } from '../composables/useLessonRequirements';
 
-const { page } = useData();
+const props = defineProps({
+	// A single, small "Next" link for a toolbar (the final project workspace),
+	// instead of the full prev/next row under a lesson. It still marks the
+	// lesson complete and keeps the same soft gate.
+	compact: {
+		type: Boolean,
+		default: false,
+	},
+});
+
+const { page, frontmatter } = useData();
+const hintId = useId();
 const { activePathId } = useActivePath();
 const { markLessonComplete } = useProgress();
 const { allPassed, requirements } = useLessonRequirements();
@@ -34,9 +45,15 @@ const prevNext = computed(() => {
 	return trackPrevNext(trackSlug.value, lessonSlug.value);
 });
 
+// A stub lesson (frontmatter `comingSoon: true`) has no quizzes, so
+// allPassed is trivially true there: Next stays unlocked, which is what we
+// want, but the page must never be recorded as completed just by visiting it.
+const isStub = computed(() => frontmatter.value.comingSoon === true);
+
 watch(
 	allPassed,
 	(passed) => {
+		if (isStub.value) return;
 		if (passed && trackSlug.value && lessonSlug.value) markLessonComplete(trackSlug.value, lessonSlug.value);
 	},
 	{ immediate: true },
@@ -48,7 +65,7 @@ const hint = computed(() => {
 	const hasQuiz = failing.some((r) => r.kind === 'quiz');
 	const hasExercise = failing.some((r) => r.kind === 'exercise');
 	if (hasQuiz && hasExercise) return 'Answer the quiz and finish the exercise above to continue.';
-	if (hasExercise) return 'Finish the exercise above to continue.';
+	if (hasExercise) return props.compact ? 'Pass every check to continue.' : 'Finish the exercise above to continue.';
 	return 'Answer the quiz above correctly to continue.';
 });
 
@@ -58,7 +75,21 @@ function onNextClick(event) {
 </script>
 
 <template>
-	<div v-if="trackSlug && lessonSlug" class="lesson-nav">
+	<div v-if="compact && prevNext.next" class="lesson-nav-compact">
+		<a
+			class="lesson-nav__link"
+			:class="{ 'lesson-nav__link--disabled': !allPassed }"
+			:href="withBase(prevNext.next.path)"
+			:aria-disabled="!allPassed"
+			:aria-describedby="allPassed ? undefined : hintId"
+			:title="allPassed ? prevNext.next.lesson.title : hint"
+			@click="onNextClick"
+		>
+			Next: {{ sidebarLabel(prevNext.next.lesson) }} &rarr;
+		</a>
+		<span v-if="!allPassed" :id="hintId" hidden>{{ hint }}</span>
+	</div>
+	<div v-else-if="!compact && trackSlug && lessonSlug" class="lesson-nav">
 		<a v-if="prevNext.prev" class="lesson-nav__link lesson-nav__link--prev" :href="withBase(prevNext.prev.path)">
 			&larr; {{ prevNext.prev.lesson.title }}
 		</a>
@@ -80,6 +111,10 @@ function onNextClick(event) {
 </template>
 
 <style scoped>
+.lesson-nav-compact {
+	white-space: nowrap;
+}
+
 .lesson-nav {
 	display: flex;
 	justify-content: space-between;

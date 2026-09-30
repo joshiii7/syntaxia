@@ -200,6 +200,14 @@ export default defineConfig({
 			]);
 		}
 
+		// Stub lessons (frontmatter `comingSoon: true`) are real, navigable
+		// pages with only a "coming soon" note, so they're kept out of search
+		// results until they're written. (The site doesn't generate a sitemap
+		// yet; if one is added, filter these pages out of it the same way.)
+		if (pageData.frontmatter.comingSoon === true) {
+			head.push(['meta', { name: 'robots', content: 'noindex' }]);
+		}
+
 		return head;
 	},
 

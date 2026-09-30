@@ -29,7 +29,7 @@ Picture a painter's workshop. Instead of mixing the exact brand blue from scratc
 That's you mixing and labeling the tins. A few things to notice:
 
 - A custom property's name **must start with two hyphens**: `--color-brand`.
-- `:root` is a selector for the very top of the page, the `<html>` element. Declaring your variables there makes them available everywhere, because (as you learned in [The Cascade and Specificity](/lessons/css/cascade-and-specificity)) custom properties are **inherited** by every element below.
+- `:root` is a selector for the very top of the page, the `<html>` element. Declaring your variables there makes them available everywhere, because custom properties are **inherited** by every element below, like the text properties you met in [The Cascade and Specificity](/lessons/css/cascade-and-specificity).
 - The names are up to you. Name them by *purpose* (`--color-brand`, `--color-danger`) rather than by appearance (`--blue`). If the brand ever turns green, `--blue: green` would be very confusing.
 
 ## Using the tins: `var()`

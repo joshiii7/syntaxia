@@ -54,17 +54,25 @@ A few rules for the map:
 
 ## Rearranging the rooms for small screens
 
-Here's where named areas really shine. On a phone, you want everything stacked in one column. With a media query (you'll learn those properly in [Responsive Design and Media Queries](/lessons/css/responsive-design)), you can just redraw the map:
+Here's where named areas really shine. On a phone, you want everything stacked in one column. With a media query (you'll learn those properly in [Responsive Design and Media Queries](/lessons/css/responsive-design)), you can just redraw the map. Written mobile-first, the way that lesson recommends, the one-column map is the base, and the two-column map is added for wider screens:
 
 ```css
-@media (max-width: 700px) {
+.page {
+	grid-template-columns: 1fr;
+	grid-template-areas:
+		"header"
+		"main"
+		"sidebar"
+		"footer";
+}
+
+@media (min-width: 44rem) {
 	.page {
-		grid-template-columns: 1fr;
+		grid-template-columns: 220px 1fr;
 		grid-template-areas:
-			"header"
-			"main"
-			"sidebar"
-			"footer";
+			"header  header"
+			"sidebar main"
+			"footer  footer";
 	}
 }
 ```
@@ -97,7 +105,7 @@ It's like setting up a room for a party where you tell the chairs "each of you n
 
 And unlike the flexbox wrapping version from [Flexbox in Practice](/lessons/css/flexbox-in-practice), a leftover card on the last row stays the same size as the others, lined up neatly in its column. That's the two-dimensional difference.
 
-(There's a close cousin, `auto-fill`. The difference only shows when there are fewer items than would fill a row: `auto-fit` stretches the items to fill the row, `auto-fill` keeps empty invisible columns and leaves the items at their minimum size. `auto-fit` is usually what you want.)
+(There's a close cousin, `auto-fill`. The difference only shows when there are fewer items than would fill a row: `auto-fit` stretches the items to fill the row, `auto-fill` keeps empty invisible columns, so the items don't stretch to fill the row. `auto-fit` is usually what you want.)
 
 ## Rows that size themselves
 
@@ -146,7 +154,7 @@ Remember the `margin: auto` trick from the nav bar? Same idea, pointed down. The
 1. Swap the sidebar to the *right* side just by editing the `grid-template-areas` map (and the column sizes).
 2. Change `minmax(160px, 1fr)` to `minmax(260px, 1fr)` and watch how many cards fit per row.
 3. Remove `margin-top: auto` from the buttons. See how they stop lining up?
-4. Add a media query so that below 600px wide, the page becomes one column: header, main, sidebar, footer.
+4. Make the page mobile-first: put a one-column map (header, main, sidebar, footer) in the base `.page` rule, and move the two-column map into a `@media (min-width: 40rem)` query.
 
 ## Check your understanding
 

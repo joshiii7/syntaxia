@@ -90,7 +90,7 @@ Good eye. The live editor on these pages takes your CSS pane and quietly puts it
 
 ## Try it
 
-This time the HTML pane is open too, so you can see all three methods at once.
+This time the HTML pane is open too, so you can see all three methods at once. (In this editor, the HTML pane is the page's body, so its `<style>` element lands there. On a real page, put `<style>` in the head.)
 
 <WebPlayground
 	:panes="['html', 'css']"

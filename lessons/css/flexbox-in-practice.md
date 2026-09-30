@@ -116,7 +116,7 @@ Here's the most common flexbox layout on the web. Logo on the left, links on the
 }
 ```
 
-Look at `margin-left: auto`. In a flex container, an auto margin soaks up *all* the free space on that side, shoving the nav as far right as it can go. It's like pushing one piece of furniture into the far corner. And notice the nav itself is a flex container too, turning the `<ul>` you built in [Links and Navigation](/lessons/html/links) into a horizontal row. Flex containers inside flex items is completely normal. It's flexbox all the way down.
+Look at `margin-left: auto`. In a flex container, an auto margin soaks up *all* the free space on that side, shoving the nav as far right as it can go. It's like pushing one piece of furniture into the far corner. And notice the nav itself is a flex container too, turning the `<ul>` you built in [Links and Navigation](/lessons/html/links) into a horizontal row. Flex containers inside flex items is completely normal. It's flexbox all the way down. (`list-style: none` removes the bullets, and `margin: 0; padding: 0` removes the browser's default list indent.)
 
 ## Pattern 2: the media object
 
@@ -144,7 +144,8 @@ You've probably seen a page with very little content where the footer floats awk
 body {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	min-height: 100dvh;   /* the phone-friendly viewport unit from Units */
+	margin: 0;
 }
 
 main {

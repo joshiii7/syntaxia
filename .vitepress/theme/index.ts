@@ -1,6 +1,6 @@
 import { computed, defineAsyncComponent, h } from 'vue';
 import DefaultTheme from 'vitepress/theme';
-import { useRoute } from 'vitepress';
+import { useData, useRoute } from 'vitepress';
 import type { Theme } from 'vitepress';
 import Quiz from './components/Quiz.vue';
 import HomeSections from './components/HomeSections.vue';
@@ -31,6 +31,18 @@ export default {
 		// so that older check was actually true for the index page too in
 		// any base-prefixed deploy.
 		const isLessonRoute = computed(() => route.path.includes('/lessons/') && !route.path.endsWith('/lessons/'));
+
+		// Final project pages (frontmatter `finalProject: true`) are a full-viewport
+		// workspace instead of a reading page. Their frontmatter also sets
+		// `layout: page` (no doc max-width), `sidebar: false` (VitePress's own
+		// per-page switch, so no sidebar column or gap), and `pageClass:
+		// final-project-page` (the style.css hook). Here they keep the header's
+		// topic bar, via page-top since the page layout has no doc-before,
+		// and drop everything that assumes a scrolling page: the footer and
+		// the scroll-to-top button. Their Next link lives in the workspace
+		// toolbar (Exercise.vue), since doc-after doesn't render either.
+		const { frontmatter } = useData();
+		const isFinalProject = computed(() => frontmatter.value.finalProject === true);
 
 		// layout-bottom is the default theme's supported slot for content
 		// outside the scrolling doc area: a fixed scroll-to-top button and a
@@ -63,11 +75,12 @@ export default {
 		// body, this is how LessonSidebar/TopicNav/Breadcrumb/LessonNav slot
 		// in without replacing DefaultTheme.Layout wholesale.
 		return h(DefaultTheme.Layout, null, {
-			'layout-bottom': () => [
+			'layout-bottom': () => (isFinalProject.value ? null : [
 				h(SiteFooter),
 				h(ScrollToTopButton),
 				isLessonRoute.value ? null : h(ScrollProgress, { key: route.path }),
-			],
+			]),
+			'page-top': () => (isFinalProject.value ? h(TopicNav) : null),
 			'home-hero-image': () => h(HeroVideo),
 			'home-hero-before': () => h(TopicNav),
 			'sidebar-nav-before': () => (isLessonRoute.value ? h(LessonSidebar) : null),

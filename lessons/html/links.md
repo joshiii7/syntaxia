@@ -72,7 +72,7 @@ It works like a bookmark ribbon in a thick book. You can even combine them: `abo
 <a href="https://example.com" target="_blank" rel="noopener">Example (opens in a new tab)</a>
 ```
 
-`target="_blank"` opens the link in a new tab. It's tempting to use this everywhere so people "don't leave your site." Resist that. Taking control of someone's tabs away from them is annoying, and it can confuse people using screen readers, who may not notice a new tab opened at all. If you do use it, say so in the link text, as above. The `rel="noopener"` part is a security habit: it stops the new page from reaching back and messing with yours.
+`target="_blank"` opens the link in a new tab. It's tempting to use this everywhere so people "don't leave your site." Resist that. Taking control of someone's tabs away from them is annoying, and it can confuse people using screen readers, who may not notice a new tab opened at all. If you do use it, say so in the link text, as above. The `rel="noopener"` part is a security habit: it stops the new page from reaching back and messing with yours. Modern browsers now do this automatically for `target="_blank"`, but writing it is still a harmless, explicit habit.
 
 ## Write link text that makes sense on its own
 

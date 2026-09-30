@@ -3,3 +3,5 @@ node_modules/
 .vitepress/dist/
 *.log
 .DS_Store
+# Local-only source media (e.g. the clip public/videos/hero.mp4 was built from)
+assets-source/

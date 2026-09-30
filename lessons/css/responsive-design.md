@@ -138,11 +138,15 @@ Media queries can check more than screen size. They can check what the *visitor*
 	}
 }
 
-/* The visitor has asked for less motion */
+/* The visitor has asked for less motion. (Transitions and Animations explains
+   why this one needs !important.) */
 @media (prefers-reduced-motion: reduce) {
-	* {
-		animation: none;
-		transition: none;
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }
 

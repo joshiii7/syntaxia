@@ -47,7 +47,7 @@
 	 * every page and so takes no room in the flow; the rules further down
 	 * reserve it back. 45px (44px link height + its 1px border-bottom) is the
 	 * fallback: TopicNav measures its real height once mounted and
-	 * overwrites this, since a classic desktop scrollbar makes it taller.
+	 * overwrites this, since text zoom or a late web font can change it.
 	 */
 	--topic-nav-height: 45px;
 
@@ -88,7 +88,7 @@
 	--vp-c-border: #cbd5e1;
 	--vp-c-text-1: #0f172a;
 	--vp-c-text-2: #475569;
-	--vp-c-text-3: #64748b;
+	--vp-c-text-3: #5f6f86;
 }
 
 /*
@@ -531,4 +531,42 @@
 	max-width: none !important;
 	padding: 0 !important;
 	margin: 0 !important;
+}
+
+/*
+ * Final project pages: a full-viewport workspace (see Exercise.vue's
+ * layout="workspace" and WebPlayground.vue). Every rule is scoped to the
+ * `final-project-page` class that those pages' frontmatter (`pageClass`) puts on
+ * .Layout, so every other page keeps its sidebar, max-width, and scrolling.
+ *
+ * The page never scrolls: .VPContent already reserves the fixed header
+ * (nav + topic bar) with its padding-top above, and the page body takes
+ * exactly the rest of the viewport. 100dvh, not 100vh, so mobile browser
+ * toolbars sliding in and out don't cut off the bottom of the workspace.
+ * Each pane inside scrolls on its own.
+ */
+html:has(.final-project-page),
+html:has(.final-project-page) body {
+	overflow: hidden;
+}
+
+.final-project-page .VPContent {
+	padding-bottom: 0 !important;
+}
+
+.final-project-page .VPPage {
+	height: calc(100dvh - var(--vp-nav-height) - var(--topic-nav-height));
+}
+
+/* Every wrapper between the page and the workspace (VitePress nests the
+   rendered Markdown a couple of divs deep) passes the height down, so the
+   workspace fills the page instead of growing to fit its content. */
+.final-project-page .VPPage div:has(.workspace) {
+	height: 100%;
+}
+
+/* Nothing to show in the "On this page" bar here (the page turns its outline
+   off), so it's kept from reserving a row under the header. */
+.final-project-page .VPLocalNav {
+	display: none !important;
 }

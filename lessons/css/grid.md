@@ -79,7 +79,7 @@ Instead of writing `1fr 1fr 1fr 1fr`, `repeat(4, 1fr)` says it once. You'll use 
 
 Here's the idea that unlocks placing things wherever you want. Look at a 3-column grid. It has **four** vertical lines: one at the left edge, one between each pair of columns, and one at the right edge. Grid numbers them 1, 2, 3, 4.
 
-```
+```text
  1       2       3       4
  |  col  |  col  |  col  |
 ```

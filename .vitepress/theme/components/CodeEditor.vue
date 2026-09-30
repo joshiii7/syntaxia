@@ -12,12 +12,13 @@ import { basicSetup } from 'codemirror';
 import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
+import { java } from '@codemirror/lang-java';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { oneDark } from '@codemirror/theme-one-dark';
 
 const props = defineProps({
-	// 'html' | 'css' | 'javascript' | 'python' | 'plaintext'
+	// 'html' | 'css' | 'javascript' | 'python' | 'java' | 'plaintext'
 	language: {
 		type: String,
 		default: 'plaintext',
@@ -59,6 +60,8 @@ function languageExtension(lang) {
 			return javascript();
 		case 'python':
 			return python();
+		case 'java':
+			return java();
 		default:
 			return [];
 	}
@@ -71,6 +74,7 @@ function accessibleLabel() {
 		css: 'CSS',
 		javascript: 'JavaScript',
 		python: 'Python',
+		java: 'Java',
 		plaintext: 'Plain text',
 	};
 	return `${names[props.language] || 'Code'} code editor`;

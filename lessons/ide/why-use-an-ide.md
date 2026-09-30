@@ -9,7 +9,7 @@ The [previous lesson](/lessons/ide/introduction) explained what an IDE actually 
 
 ## A small project barely notices the difference
 
-For a single, short file, a plain text editor and an IDE feel almost the same. You type, you save, you are done. This is exactly why beginners often assume an IDE is unnecessary. The difference only becomes obvious once a project grows past that first small file, which happens surprisingly fast. By the time you reach [Putting It All Together](/lessons/html/putting-it-all-together) later in this book, a single page you build will already involve multiple connected files.
+For a single, short file, a plain text editor and an IDE feel almost the same. You type, you save, you are done. This is exactly why beginners often assume an IDE is unnecessary. The difference only becomes obvious once a project grows past that first small file, which happens surprisingly fast. By the time you reach [Final Project: Your Profile Page](/lessons/html/final-project) later in this book, a single page you build will already involve multiple connected files.
 
 ## Without an IDE, versus with one
 

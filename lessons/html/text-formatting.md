@@ -69,6 +69,7 @@ HTML has an element for each:
 - `<q>` is a short inline quote. Browsers add the quotation marks for you.
 - `<blockquote>` is a longer quote that stands on its own, usually indented.
 - `<cite>` is the *title* of a work, like a book, film, or article.
+- The `cite="..."` **attribute** on a `<blockquote>` is something different: it holds the address of the source, for machines. It isn't shown on the page.
 
 ## Abbreviations
 
@@ -96,9 +97,9 @@ Roses are red,
 
 - `<code>` marks a bit of computer code.
 - `<kbd>` marks a key the user should press.
-- `<pre>` (preformatted) is the one element that **keeps** your spaces and line breaks exactly as you typed them. Remember how the browser normally squashes whitespace? `<pre>` is the exception.
+- `<pre>` (preformatted) is the element that **keeps** your spaces and line breaks exactly as you typed them. Remember how the browser normally squashes whitespace? `<pre>` is the exception.
 
-Wait, what's that `&lt;` thing? If you type `<p>` directly into your text, the browser thinks you're starting a real paragraph. So to *show* a less-than sign, you write `&lt;` (less than) and `&gt;` (greater than). These are called **character entities**. Another one you'll use a lot is `&amp;` for an ampersand.
+Wait, what's that `&lt;` thing? If you type `<p>` directly into your text, the browser thinks you're starting a real paragraph. So to *show* a less-than sign, you write `&lt;` (less than) and `&gt;` (greater than). These are called **character entities**. Another one you'll use a lot is `&amp;` for an ampersand, and for a copyright line, `&copy;` gives you the © symbol.
 
 ## Lines and breaks
 

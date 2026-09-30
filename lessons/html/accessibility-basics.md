@@ -71,7 +71,7 @@ A **skip link** fixes that. It's the very first thing in the `<body>`, and it ju
 </body>
 ```
 
-CSS usually hides it off-screen until someone presses Tab, then slides it into view. Try it on this very site: press Tab right after a page loads.
+CSS usually hides it off-screen until someone presses Tab, then slides it into view. Try it on this very site: press Tab right after a page loads. You'll write that CSS yourself in the CSS track's [Display](/lessons/css/display) lesson.
 
 ## ARIA: a label maker for the gaps
 

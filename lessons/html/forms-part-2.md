@@ -108,7 +108,7 @@ Not every button ends the conversation:
 
 - `submit` sends the form.
 - `reset` wipes every answer back to its starting value. Be careful with this one; nobody likes losing a long form to a misclick.
-- `button` does nothing on its own. It waits for JavaScript to give it a job, which you'll get to do in the [JavaScript track](/lessons/javascript/intro-to-javascript).
+- `button` does nothing on its own. It waits for JavaScript to give it a job, which you'll get to do in the JavaScript track's [Events](/lessons/javascript/events) lesson.
 
 ## Try it
 

@@ -43,7 +43,7 @@ Inline boxes, like `<a>`, `<span>`, `<strong>`, and `<em>`:
 
 - sit **in the line of text**, flowing along like words in a sentence,
 - are only as wide as their content,
-- **ignore `width` and `height`**,
+- **ignore `width` and `height`** (images are the exception: they sit in the line of text, but still take a size),
 - have padding and margin on the left and right that push neighbors away, but top and bottom margins that do **nothing** to the lines around them.
 
 That last point is the one that catches everyone. Why would the browser ignore a vertical margin? Think about a word in the middle of a paragraph. If one word could push itself 40px downward, it would tear the line apart. Inline boxes follow the line, and the line decides the height. Their vertical padding *is* painted (the background grows), but it just overlaps the lines above and below instead of moving them.
@@ -99,7 +99,49 @@ Both make an element disappear, but very differently. Picture a chair in a room:
 
 Use `display: none` when something truly shouldn't be there right now, like a closed menu. Use `visibility: hidden` when you need to keep the space reserved so the layout doesn't jump.
 
-(Remember the HTML `hidden` attribute from [Attributes Deep Dive](/lessons/html/attributes-deep-dive)? Under the hood, the browser applies `display: none` to it.)
+Both of them also hide the element from screen readers.
+
+(Remember the HTML `hidden` attribute from [Attributes Deep Dive](/lessons/html/attributes-deep-dive)? Under the hood, the browser applies `display: none` to it. That's also its catch: your own rule, like `.card { display: flex; }`, beats it, and the "hidden" card shows up again. Many stylesheets add `[hidden] { display: none !important; }` to their reset to keep `hidden` reliable.)
+
+### Hidden from eyes, available to screen readers
+
+Sometimes you want the opposite of `visibility: hidden`: text that screen readers announce but sighted visitors don't see, like "(opens in a new tab)" next to an icon. That's the **visually hidden** pattern, a small utility class found in almost every professional stylesheet:
+
+```css
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+```
+
+It shrinks the element to a single invisible pixel instead of removing it, so it stays in the accessibility tree.
+
+The **skip link** from [Accessibility Basics](/lessons/html/accessibility-basics) needs a variation of that idea: hidden until a keyboard user presses Tab, then visible:
+
+```css
+.skip-link {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 100;
+	padding: 0.5rem 1rem;
+	background: white;
+	transform: translateY(-200%);   /* parked above the top of the page */
+}
+
+.skip-link:focus {
+	transform: translateY(0);         /* slides into view on focus */
+}
+```
+
+Being `position: absolute`, it never takes up room in the page's layout, whether it's showing or not. That matters for the page layouts in [Common Layout Patterns](/lessons/css/layout-patterns).
 
 ## Overflow: an overstuffed suitcase
 

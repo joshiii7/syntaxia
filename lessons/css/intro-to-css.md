@@ -48,7 +48,7 @@ Every piece of CSS you'll ever write is built from the same little pattern. Let'
 ```css
 h1 {
 	color: #2f6f8f;
-	font-size: 2.5rem;
+	font-size: 40px;
 }
 ```
 
@@ -74,7 +74,7 @@ The HTML here is fixed. Edit the CSS pane and press **Run** to restyle it.
 <WebPlayground
 	:panes="['css']"
 	:initial-html="'<h1>Maria Santos</h1>\n<p>Home baker, weekend hiker, and <strong>aspiring web developer</strong>.</p>\n<p>I built this page with HTML. Now I am learning to style it.</p>\n<a href=\'#\'>Read my story</a>'"
-	:initial-css="'h1 {\n\tcolor: #2f6f8f;\n}\n\np {\n\tcolor: #444444;\n}\n'"
+	:initial-css="'h1 {\n\tcolor: #2f6f8f;\n\tfont-size: 40px;\n}\n\np {\n\tcolor: #444444;\n}\n'"
 	preview-height="220px"
 />
 
@@ -82,7 +82,7 @@ The HTML here is fixed. Edit the CSS pane and press **Run** to restyle it.
 
 1. Change the `h1` color to any color name you like, such as `tomato`, `rebeccapurple`, or `seagreen`.
 2. Add a new rule for `strong` that sets `color: crimson;`.
-3. Delete one of the semicolons, run it, and see what breaks. Then put it back. (Getting a feel for how CSS fails quietly now will save you headaches later.)
+3. In the `h1` rule, delete the semicolon after the color value, run it, and see what breaks. Then put it back. (Getting a feel for how CSS fails quietly now will save you headaches later.)
 
 ## Check your understanding
 
@@ -109,4 +109,4 @@ The HTML here is fixed. Edit the CSS pane and press **Run** to restyle it.
 
 ## Up next
 
-You've written your first rules inside this editor. But where does CSS live on a *real* site? There are three places, and one of them is the professional standard. That's [Three Ways to Add CSS](/lessons/css/applying-css). And if you'd like to keep the page you built in the HTML track handy, [Capstone: Your Profile Page](/lessons/html/putting-it-all-together) is where it lives; we'll style it together at the end of this track.
+You've written your first rules inside this editor. But where does CSS live on a *real* site? There are three places, and one of them is the professional standard. That's [Three Ways to Add CSS](/lessons/css/applying-css). And if you'd like to keep the page you built in the HTML track handy, [Final Project: Your Profile Page](/lessons/html/final-project) is where it lives; we'll style it together at the end of this track.

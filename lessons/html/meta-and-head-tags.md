@@ -74,6 +74,7 @@ Remember old library index cards? Title, author, year, subject, all in fixed slo
 	"@context": "https://schema.org",
 	"@type": "Recipe",
 	"name": "Easy Sourdough Bread for Beginners",
+	"image": "https://mariaskitchen.example/images/sourdough.webp",
 	"author": { "@type": "Person", "name": "Maria Santos" },
 	"totalTime": "PT24H",
 	"recipeIngredient": ["500g flour", "350g water", "100g starter", "10g salt"]
@@ -81,7 +82,7 @@ Remember old library index cards? Title, author, year, subject, all in fixed slo
 </script>
 ```
 
-Don't panic about the curly braces. That's JSON, a data format you'll get comfortable with in the [JavaScript track](/lessons/javascript/intro-to-javascript). The idea is what matters: you're telling search engines "this is a recipe, here's the cooking time, here are the ingredients." That's how some search results show star ratings, cooking times, or event dates right in the listing. There are card types for articles, products, events, FAQs, organizations, and many more.
+Don't panic about the curly braces. That's JSON, a data format you'll get comfortable with in the JavaScript track's [JSON](/lessons/javascript/json) lesson. The idea is what matters: you're telling search engines "this is a recipe, here's the cooking time, here are the ingredients." That's how some search results show star ratings, cooking times, or event dates right in the listing. There are card types for articles, products, events, FAQs, organizations, and many more.
 
 ## What about `<meta name="keywords">`?
 

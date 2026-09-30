@@ -17,7 +17,7 @@
  */
 import { useData, withBase } from 'vitepress';
 import { computed, reactive, watch } from 'vue';
-import { curriculum, flattenTrackLessons } from '../data/curriculum';
+import { curriculum, flattenTrackLessons, sidebarLabel } from '../data/curriculum';
 import { findPath } from '../data/paths';
 import { useActivePath } from '../composables/useActivePath';
 
@@ -85,8 +85,8 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 			>
 				<div class="item">
 					<div class="indicator" />
-					<a class="link" :href="withBase(step.path)">
-						<p class="text">{{ step.track.title }}: {{ step.lesson.title }}</p>
+					<a class="link" :href="withBase(step.path)" :title="`${step.track.title}: ${step.lesson.title}`">
+						<p class="text">{{ step.track.title }}: {{ sidebarLabel(step.lesson) }}</p>
 					</a>
 				</div>
 			</div>
@@ -105,7 +105,7 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 					>
 						<div class="item" role="button" tabindex="0" @click="toggleChapter(currentTrack.slug, chapter.id)" @keydown.enter="toggleChapter(currentTrack.slug, chapter.id)">
 							<div class="indicator" />
-							<p class="text">{{ chapter.title }}</p>
+							<p class="text" :title="chapter.title">{{ sidebarLabel(chapter) }}</p>
 							<div class="caret" role="button" aria-label="toggle section" @click.stop="toggleChapter(currentTrack.slug, chapter.id)">
 								<span class="vpi-chevron-right caret-icon" />
 							</div>
@@ -120,8 +120,8 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 							>
 								<div class="item">
 									<div class="indicator" />
-									<a class="link" :href="withBase(`/lessons/${currentTrack.slug}/${lesson.slug}`)">
-										<p class="text">{{ lesson.title }}</p>
+									<a class="link" :href="withBase(`/lessons/${currentTrack.slug}/${lesson.slug}`)" :title="lesson.title">
+										<p class="text">{{ sidebarLabel(lesson) }}</p>
 									</a>
 								</div>
 							</div>
@@ -139,8 +139,8 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
 					>
 						<div class="item">
 							<div class="indicator" />
-							<a class="link" :href="withBase(`/lessons/${currentTrack.slug}/${lesson.lesson.slug}`)">
-								<p class="text">{{ lesson.lesson.title }}</p>
+							<a class="link" :href="withBase(`/lessons/${currentTrack.slug}/${lesson.lesson.slug}`)" :title="lesson.lesson.title">
+								<p class="text">{{ sidebarLabel(lesson.lesson) }}</p>
 							</a>
 						</div>
 					</div>
@@ -160,6 +160,22 @@ const activePathMeta = computed(() => (activePathId.value ? findPath(activePathI
  */
 .lesson-sidebar {
 	padding: 14px 14px 32px;
+}
+
+/* Labels come from each lesson's short sidebarTitle, so they normally fit
+   on one line. This is the safety net for any that don't: one line, cut
+   off with an ellipsis, with the full title in the link's title tooltip.
+   min-width: 0 lets the flex items shrink below their text width, which
+   they otherwise refuse to do, so the ellipsis can actually appear. */
+.lesson-sidebar .link {
+	min-width: 0;
+}
+
+.lesson-sidebar .text {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 /* Room between individual lesson rows (links) — flat-track lessons,

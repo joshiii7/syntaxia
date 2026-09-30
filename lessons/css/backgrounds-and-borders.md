@@ -122,7 +122,7 @@ Think of sanding the sharp corners off a wooden box. A little sanding (8 to 12px
 }
 ```
 
-Shadows are where flat design gets depth. Four numbers and a color:
+Shadows are where flat design gets depth. Up to four numbers and a color (the spread is optional):
 
 1. **Horizontal offset** (`0`): positive moves the shadow right.
 2. **Vertical offset** (`4px`): positive moves it down.

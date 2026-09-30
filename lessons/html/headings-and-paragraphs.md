@@ -46,7 +46,7 @@ A few rules keep your outline honest:
 
 - **One `<h1>` per page**, describing what the whole page is about.
 - **Don't skip levels on the way down.** After an h2, the next level is h3, not h5.
-- **Pick the level by meaning, not size.** Size is a job for CSS, and you'll learn to change it in the [Intro to CSS](/lessons/css/intro-to-css) lesson.
+- **Pick the level by meaning, not size.** Size is a job for CSS, and you'll learn to change it in the [Typography](/lessons/css/typography) lesson.
 
 Going back *up* is fine, by the way. You can finish an h3 section and start a new h2 chapter. That's just starting a new chapter.
 

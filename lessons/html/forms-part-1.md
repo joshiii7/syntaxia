@@ -9,7 +9,7 @@ description: "Forms are a conversation between your visitor and your site. Learn
 
 Think about everything you've built so far. Headings, paragraphs, images, tables. All of it is one-way: the page speaks, the visitor listens.
 
-Forms change that. A form is a **conversation**. Your site asks a question ("What's your name?"), the visitor answers, and then your site responds. Login screens, search bars, checkout pages, "contact us" boxes, even the like button on a post: all conversations, all built on forms.
+Forms change that. A form is a **conversation**. Your site asks a question ("What's your name?"), the visitor answers, and then your site responds. Login screens, search bars, checkout pages, "contact us" boxes: all conversations, all built on forms.
 
 Let's learn to hold one.
 
@@ -27,7 +27,7 @@ Let's learn to hold one.
 The `<form>` element wraps the whole exchange. Its two main attributes say what happens when the visitor finishes answering:
 
 - `action` is **where** the answers get sent, like the address on a reply envelope.
-- `method` is **how** they get sent. `get` puts the answers right in the web address (fine for a search box, since you might want to bookmark the results). `post` tucks them inside the request, out of sight (the right choice for anything private, or anything that changes something, like signing up).
+- `method` is **how** they get sent. `get` puts the answers right in the web address (fine for a search box, since you might want to bookmark the results). `post` tucks them inside the request, out of the address bar and browser history (the right choice for anything private, or anything that changes something, like signing up). It doesn't encrypt anything by itself, though: HTTPS, the padlock in the address bar, is what keeps answers safe on their way.
 
 Where those answers actually go is a server, a program that receives the data and does something with it. That's a story for later in the book, in the backend tracks. For now, we're building the question side of the conversation.
 
@@ -60,7 +60,7 @@ It's like a waiter who asks you a question, then forgets it the moment you open 
 
 When the form is sent, the browser packages up each answer with its `name`:
 
-```
+```text
 email=maria@example.com
 ```
 
@@ -89,6 +89,16 @@ The `type` attribute changes what kind of answer an input expects, and that chan
 
 Picking the right type is like handing someone the right tool before they ask. A phone number field that pops up a number pad instead of the full keyboard? That's a small kindness your visitors will feel even if they never notice why.
 
+## Helping browsers fill it in: `autocomplete`
+
+```html
+<input type="text" id="full-name" name="full-name" autocomplete="name">
+<input type="email" id="email" name="email" autocomplete="email">
+<input type="tel" id="phone" name="phone" autocomplete="tel">
+```
+
+The `autocomplete` attribute tells the browser what kind of answer a field wants, so it can offer to fill it in from what it already knows: a name, an email address, a street address, even a saved password (`autocomplete="current-password"`). For people with motor or memory difficulties, not having to type the same details on every site is a real kindness, and accessibility guidelines ask for it on fields about the visitor themselves. Add it whenever a field asks for personal details.
+
 ## Ending the conversation: `<button>`
 
 ```html
@@ -105,7 +115,7 @@ This preview is a sandbox, so pressing the button won't really send anything any
 
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<form action=\'/subscribe\' method=\'post\'>\n\t<p>\n\t\t<label for=\'full-name\'>Your name</label><br>\n\t\t<input type=\'text\' id=\'full-name\' name=\'full-name\'>\n\t</p>\n\t<p>\n\t\t<label for=\'email\'>Your email address</label><br>\n\t\t<input type=\'email\' id=\'email\' name=\'email\' placeholder=\'name@example.com\'>\n\t</p>\n\t<p>\n\t\t<label for=\'birthday\'>Birthday (optional)</label><br>\n\t\t<input type=\'date\' id=\'birthday\' name=\'birthday\'>\n\t</p>\n\t<button type=\'submit\'>Subscribe to the newsletter</button>\n</form>'"
+	:initial-html="'<form action=\'/subscribe\' method=\'post\'>\n\t<p>\n\t\t<label for=\'full-name\'>Your name</label>\n\t\t<input type=\'text\' id=\'full-name\' name=\'full-name\' autocomplete=\'name\'>\n\t</p>\n\t<p>\n\t\t<label for=\'email\'>Your email address</label>\n\t\t<input type=\'email\' id=\'email\' name=\'email\' autocomplete=\'email\' placeholder=\'name@example.com\'>\n\t</p>\n\t<p>\n\t\t<label for=\'birthday\'>Birthday (optional)</label>\n\t\t<input type=\'date\' id=\'birthday\' name=\'birthday\'>\n\t</p>\n\t<button type=\'submit\'>Subscribe to the newsletter</button>\n</form>'"
 	preview-height="300px"
 />
 

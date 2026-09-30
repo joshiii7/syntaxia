@@ -143,7 +143,7 @@ Scroll inside the preview to see the sticky header in action.
 
 1. Remove `position: relative` from `.card` and run it. Where does the SALE badge go? Put it back.
 2. Move the badge to the bottom-left corner of the card.
-3. Change the header from `sticky` to `fixed` and scroll to the top. Notice how the fixed header now covers the start of the content, because it no longer takes up space?
+3. Change the header from `sticky` to `fixed` and scroll to the top. Notice how the fixed header now covers the start of the content, because it no longer takes up space? (It also shrinks to the width of its text, since a fixed box no longer stretches across its container. Add `left: 0; right: 0;` to stretch it back.)
 4. Change the header's `z-index` to `-1` and scroll. What slides over it?
 
 ## Check your understanding

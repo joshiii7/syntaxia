@@ -22,9 +22,50 @@ const STORAGE_KEY = 'syntaxia:progress:v1';
 
 export interface ProgressState {
 	completedLessons: Record<string, { completedAt: string }>;
+	/** Ids of one-time migrations already applied to this saved state. */
+	migrations?: string[];
 }
 
 const state = reactive<ProgressState>({ completedLessons: {} });
+
+/**
+ * Lessons whose slug changed after learners may already have completed them.
+ * Completion is saved under "track/slug", so without this a renamed lesson
+ * would suddenly show as not done. The old slugs here are the one place the
+ * previous "capstone" naming is kept on purpose (along with the redirect
+ * pages in public/lessons/), since saved progress still uses them.
+ */
+const SLUG_MIGRATIONS: { id: string; renames: Record<string, string> }[] = [
+	{
+		id: 'final-project-rename',
+		renames: {
+			'html/putting-it-all-together': 'html/final-project',
+			'css/capstone': 'css/final-project',
+			'javascript/capstone': 'javascript/final-project',
+		},
+	},
+];
+
+/**
+ * Moves completion from old lesson keys to new ones. Runs each migration
+ * once (its id is recorded in the saved state), and even if it ran again it
+ * would change nothing: an old key is only ever moved to a new key that has
+ * no entry yet, and is then removed.
+ */
+function migrateProgress(progress: ProgressState): void {
+	const applied = new Set(progress.migrations ?? []);
+	for (const migration of SLUG_MIGRATIONS) {
+		if (applied.has(migration.id)) continue;
+		for (const [oldKey, newKey] of Object.entries(migration.renames)) {
+			const entry = progress.completedLessons[oldKey];
+			if (!entry) continue;
+			if (!(newKey in progress.completedLessons)) progress.completedLessons[newKey] = entry;
+			delete progress.completedLessons[oldKey];
+		}
+		applied.add(migration.id);
+	}
+	progress.migrations = [...applied];
+}
 
 if (inBrowser) {
 	try {
@@ -32,6 +73,14 @@ if (inBrowser) {
 		if (raw) Object.assign(state, JSON.parse(raw));
 	} catch {
 		// Corrupt/unreadable localStorage value: start fresh rather than crash.
+	}
+	migrateProgress(state);
+	// The watcher below only sees changes made after it starts, so the
+	// migrated state is saved here directly.
+	try {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+	} catch {
+		// Storage unavailable/full: the migration simply re-runs next visit.
 	}
 	watch(
 		state,

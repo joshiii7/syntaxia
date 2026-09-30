@@ -159,7 +159,7 @@ Click the buttons in the preview. The JavaScript only flips attributes; the CSS 
 
 <Quiz
 	question="Which line toggles the class is-open on an element named menu?"
-	:options="['menu.class = is-open', 'menu.classList.toggle(is-open)', 'menu.style.is-open = true', 'toggle(menu, is-open)']"
+	:options="['menu.class = \'is-open\'', 'menu.classList.toggle(\'is-open\')', 'menu.style.is-open = true', 'toggle(menu, \'is-open\')']"
 	:answer-index="1"
 	explanation="classList.toggle adds the class if it is missing and removes it if it is present."
 />
@@ -173,4 +173,4 @@ Click the buttons in the preview. The JavaScript only flips attributes; the CSS 
 
 ## Up next
 
-That's everything. You now have the full CSS toolkit, plus a clear picture of how it plugs into JavaScript. There's one thing left: take the page you built in the HTML track and make it *yours*. Head to [Capstone: Style Your Profile Page](/lessons/css/capstone). After that, the [JavaScript track](/lessons/javascript/intro-to-javascript) is waiting.
+That's everything. You now have the full CSS toolkit, plus a clear picture of how it plugs into JavaScript. There's one thing left: take the page you built in the HTML track and make it *yours*. Head to [Final Project: Style Your Profile Page](/lessons/css/final-project). After that, the [JavaScript track](/lessons/javascript/intro-to-javascript) is waiting.

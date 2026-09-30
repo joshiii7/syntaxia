@@ -73,13 +73,13 @@ A few attributes don't need a value at all. Their presence alone switches someth
 
 <WebPlayground
 	:panes="['html']"
-	:initial-html="'<h1 id=\'page-title\' title=\'Hover me for a tooltip\'>My Recipes</h1>\n<p class=\'note\'>Preheat the oven first.</p>\n<p>Read more at <a href=\'https://example.com\'>Example Kitchen</a>.</p>\n\n<input type=\'checkbox\' checked> Ingredients ready\n<br>\n<button disabled>Start cooking</button>'"
+	:initial-html="'<h1 id=\'page-title\' title=\'Hover me for a tooltip\'>My Recipes</h1>\n<p class=\'note\'>Preheat the oven first.</p>\n<p>Read more at <a href=\'https://example.com\'>Example Kitchen</a>.</p>\n\n<label><input type=\'checkbox\' checked> Ingredients ready</label>\n<br>\n<button disabled>Start cooking</button>'"
 	preview-height="220px"
 />
 
 ## Try it yourself
 
-1. Hover over the heading. The `title` attribute shows as a small tooltip.
+1. Hover over the heading. The `title` attribute shows as a small tooltip. (Handy for extras, but never put anything important only in a `title`: keyboard and touch users never see the tooltip.)
 2. Remove `checked` from the checkbox and run it again. Then remove `disabled` from the button. Notice how you turn these off by deleting them, not by changing a value.
 3. Give the second paragraph a class of `note warning`, so it's on two teams at once.
 
